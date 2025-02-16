@@ -675,3 +675,15 @@ class Collector:
 
         self.user_defined_stack_report = report_max_map
         return report_max_map
+
+    def add_dynamic_calls(self, dynamic_calls):
+        for dynamic_call in dynamic_calls:
+            call_pair = dynamic_call.split("->")
+            if len(call_pair)!=2:
+                print("Warning invalid dynamic call format: %s" % call_pair)
+                continue
+            caller_str, callee_str = call_pair
+            caller = self.symbol(name=caller_str, qualified=False)
+            callee = self.symbol(name=callee_str, qualified=False)
+            self.add_function_call(caller, callee)
+
