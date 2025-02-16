@@ -49,12 +49,31 @@
         // Y axis
         var y = d3.scaleBand()
             .range([ 0, height ])
-            .domain(groups.map(function(d) { return d; }))
-            .padding(.1);
+            .domain(groups.map(function(d) {
+                let max_static = user_defined_stack_report[d]["max_static_stack_size"];
+                let max_total  = user_defined_stack_report[d]["max_stack_size"];
+                let static_percentage  = Number(max_static*1.0/max_total).toLocaleString(undefined,{style: 'percent', minimumFractionDigits:2});
+                return d+";"+max_static+"/"+max_total+" ("+static_percentage+")";
+            }));
         svg.append("g")
             .call(d3.axisLeft(y))
             .selectAll("text")
-            .attr("transform", "translate(-10,0)rotate(-45)");
+            .attr("class", "ylabel")
+            .attr("transform", "translate(-10,0)");
+
+        var insertLinebreaks = function (d) {
+            var el = d3.select(this);
+            var words = d.split(';');
+            el.text('');
+
+            for (var i = 0; i < words.length; i++) {
+                var tspan = el.append('tspan').text(words[i]);
+                if (i > 0)
+                    tspan.attr('x', 0).attr('dy', '15');
+            }
+        };
+
+        svg.selectAll('.ylabel').each(insertLinebreaks);
 
         var stacks = Object.entries(user_defined_stack_report);
 
