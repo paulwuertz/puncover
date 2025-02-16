@@ -649,7 +649,7 @@ class Collector:
             display_name = sym["display_name"]
             if display_name in function_names:
                 lam = lambda s: s.get(STACK_SIZE, None) if s.get(TYPE, None) == TYPE_FUNCTION else None
-                base_stack_size = traverse_filter_wrapper(sym, lam)
+                base_stack_size = traverse_filter_wrapper(sym, lam) or 0
                 callee_tree_stack_size = traverse_filter_wrapper(sym["deepest_callee_tree"][1][1:], lam)
                 function_max_stack = {
                     "max_static_stack_size": base_stack_size + callee_tree_stack_size,
