@@ -75,6 +75,8 @@ def main():
         default_config_files=['./punconfig.yaml'],
         config_file_parser_class=configargparse.YAMLConfigFileParser
     )
+    parser.add_argument('--add-dynamic-calls', '--add_dynamic_calls', action='append',
+                        help="adds a dynamic callee to another function i.e. --add-dynamic-calls 'func_a->func_1' to add func_1 as a calee to func_a ")
     parser.add_argument('-c', '--config', required=False, is_config_file=True, help='config file path', type=yaml.safe_load)
     parser.add_argument('--gcc-tools-base', '--gcc_tools_base', default=gcc_tools_base,
                         help='filename prefix for your gcc tools, e.g. ~/arm-cs-tools/bin/arm-none-eabi-')
@@ -86,6 +88,7 @@ def main():
                         help='location of your build output')
     parser.add_argument('--debug', action='store_true',
                         help='enable Flask debugger')
+    parser.add_argument('--generate-report', '--generate_report', action='store_true')
     parser.add_argument('--port', dest='port', default=get_default_port(), type=int,
                         help='port the HTTP server runs on')
     parser.add_argument('--host', default='127.0.0.1',
@@ -94,13 +97,10 @@ def main():
                         help="don't automatically open a browser window")
     parser.add_argument('--no-interactive', '--no_interactive', action='store_true',
                         help="don't start the interactive website to browse the elf analysis")
-    parser.add_argument('--generate-report', '--generate_report', action='store_true')
     parser.add_argument('--report-type', '--report_type', default="json")
     parser.add_argument('--report-filename', '--report_filename', default="report")
     parser.add_argument('--report-max-static-stack-usage', '--report_max_static_stack_usage', action='append',
                         help="display_name[:max_stack_size] of functions to report the worst case static stack size with i.e. bg_thread_main or bg_thread_main:1024")
-    parser.add_argument('--add-dynamic-calls', '--add_dynamic_calls', action='append',
-                        help="adds a dynamic callee to another function i.e. --add-dynamic-calls 'func_a->func_1' to add func_1 as a calee to func_a ")
     parser.add_argument('--version', action='version', version='%(prog)s ' + __version__)
     args = parser.parse_args()
 
