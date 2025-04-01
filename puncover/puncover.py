@@ -32,10 +32,10 @@ def get_default_port():
     return DEFAULT_PORT if not is_port_in_use(DEFAULT_PORT) else DEFAULT_PORT_FALLBACK
 
 
-def create_builder(gcc_base_filename, elf_file=None, su_dir=None, src_root=None, dynamic_calls=None):
+def create_builder(gcc_base_filename, elf_file=None, su_dir=None, src_root=None, dynamic_calls=None, output_db=None):
     c = Collector(GCCTools(gcc_base_filename))
     if elf_file:
-        return ElfBuilder(c, src_root, elf_file, su_dir, dynamic_calls)
+        return ElfBuilder(c, src_root, elf_file, su_dir, dynamic_calls, output_db)
     else:
         raise Exception("Unable to configure builder for collector")
 
@@ -89,6 +89,8 @@ def main():
     parser.add_argument('--debug', action='store_true',
                         help='enable Flask debugger')
     parser.add_argument('--generate-report', '--generate_report', action='store_true')
+    parser.add_argument('--output_db','--output-db', dest='output_db',
+                        help='export analyzed elf symbols to a sqlite file')
     parser.add_argument('--port', dest='port', default=get_default_port(), type=int,
                         help='port the HTTP server runs on')
     parser.add_argument('--host', default='127.0.0.1',
@@ -108,8 +110,8 @@ def main():
         print("Unable to find gcc tools base dir (tried searching for 'arm-none-eabi-objdump' on PATH), please specify --gcc-tools-base")
         exit(1)
 
-    builder = create_builder(args.gcc_tools_base, elf_file=args.elf_file,
-                             src_root=args.src_root, su_dir=args.build_dir, dynamic_calls=args.add_dynamic_calls)
+    builder = create_builder(args.gcc_tools_base, elf_file=args.elf_file, src_root=args.src_root,
+                             su_dir=args.build_dir, dynamic_calls=args.add_dynamic_calls, output_db=args.output_db)
     builder.build_if_needed()
 
     stack_report = None

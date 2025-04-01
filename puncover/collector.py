@@ -2,6 +2,7 @@ import fnmatch
 import json
 import os
 import re
+import sqlite3
 import sys
 import pathlib
 
@@ -687,3 +688,94 @@ class Collector:
             callee = self.symbol(name=callee_str, qualified=False)
             self.add_function_call(caller, callee)
 
+    def create_versioned_elf_db(self, db_path):
+        print(f"Open {db_path} to save symbols")
+        con = sqlite3.connect(db_path)
+        cur = con.cursor()
+        cur.execute("""
+            CREATE TABLE IF NOT EXISTS symbol(
+                feature_name TEXT,
+                version TEXT,
+                full_symbol_path TEXT,
+                name TEXT,
+                base_file TEXT,
+                line INTEGER,
+                asm TEXT,
+                type TEXT,
+                address INTEGER,
+                size INTEGER,
+                file TEXT,
+                callers TEXT,
+                callees TEXT,
+                called_from_other_file INTEGER,
+                calls_float_function INTEGER,
+                display_name TEXT,
+                stack_size INTEGER,
+                stack_qualifiers TEXT,
+                deepest_callee_tree TEXT,
+                deepest_caller_tree TEXT,
+                PRIMARY KEY (feature_name, version, full_symbol_path)
+            )
+        """)
+        return con, cur
+
+    def export_output_to_db(self, output_db_path):
+        db_con, db_cur = self.create_versioned_elf_db(output_db_path)
+        for full_path, sym in self.symbols_by_qualified_name.items():
+            # if we use the plain symbols there are circular references
+            # and memory explodes into 10's of GB's serializing it so make
+            # symbols non-circular before serializing them to the database
+            non_circular_sym = {}
+            filepath = "NONE"
+            identifier = "NONE"
+            print(sym["name"])
+            for sym_ele in sym.keys():
+                if sym_ele in [
+                    'name', 'base_file', 'line', 'asm', 'type', 'address', 'size', 'display_name',
+                    'called_from_other_file', 'calls_float_function', 'stack_size', 'stack_qualifiers'
+                ]:
+                    non_circular_sym[sym_ele] = sym[sym_ele]
+                elif sym_ele == "file":
+                    filepath = str(sym["file"]["path"])
+                    non_circular_sym[sym_ele] = filepath
+                elif sym_ele in ['callers', 'callees']:
+                    callexs = []
+                    for callex in sym[sym_ele]:
+                        identifier = str(callex["file"]["path"]) + ":" + callex["display_name"]
+                        callexs += [identifier]
+                    non_circular_sym[sym_ele] = json.dumps(callexs)
+                elif sym_ele in ['deepest_caller_tree', 'deepest_callee_tree']:
+                    callexs = []
+                    size, fns = sym[sym_ele]
+                    non_circular_sym[sym_ele+"_size"] = size
+                    for callex in fns:
+                        identifier = str(callex["file"]["path"]) + ":" + callex["display_name"]
+                        callexs += [identifier]
+                    non_circular_sym[sym_ele] = json.dumps(callexs)
+                elif sym_ele in ['next_function', 'prev_function', 'path']:
+                    # todo nothing?
+                    pass
+                else:
+                    print("unknown key "+ sys_ele)
+
+            command = (f"""
+            INSERT INTO 'symbol' (
+                feature_name, version, full_symbol_path, name, base_file,
+                line, asm, type, address, size, file, callers, callees,
+                called_from_other_file, calls_float_function, display_name,
+                stack_size, stack_qualifiers, deepest_callee_tree, deepest_caller_tree
+            ) VALUES (
+                'feat/test123', 'abc123def567', '{full_path}',
+                '{non_circular_sym.get("name", "?")}', '{non_circular_sym.get("base_file", "?")}', {non_circular_sym.get("line", 0)},
+                '{"\\n".join(non_circular_sym.get("asm", []))}','{non_circular_sym.get("type", "?")}',
+                {int(non_circular_sym.get("address", 0), 16)}, {non_circular_sym.get("size", 0)}, '{non_circular_sym.get("file", "?")}',
+                '{non_circular_sym.get("callers", [])}', '{non_circular_sym.get("callees", [])}',
+                '{non_circular_sym.get("called_from_other_file", "false")}', '{non_circular_sym.get("calls_float_function", "false")}',
+                '{non_circular_sym.get("display_name", "?")}', '{non_circular_sym.get("stack_size", None)}', '{non_circular_sym.get("stack_qualifiers", None)}',
+                '{non_circular_sym.get("deepest_callee_tree", [])}', '{non_circular_sym.get("deepest_caller_tree", [])}'
+            )""")
+            #print(command)
+            db_cur.execute(command)
+            db_con.commit()
+        # TODO add export to json to just share a link?
+        # json.dump(syms, open("syms.json", "w+"), ensure_ascii=False, indent=4)
