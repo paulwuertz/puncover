@@ -651,16 +651,20 @@ class Collector:
             display_name = sym["display_name"]
             if display_name in function_names:
                 lam = lambda s: s.get(STACK_SIZE, None) if s.get(TYPE, None) == TYPE_FUNCTION else None
-                base_stack_size = traverse_filter_wrapper(sym, lam) or 0
-                callee_tree_stack_size = traverse_filter_wrapper(sym["deepest_callee_tree"][1][1:], lam)
+
+                base_stack_size = sym.get("stack_size", 0)
+                max_callee_tree_stack_size = sym["deepest_callee_tree"][0]
+                max_caller_tree_stack_size = sym["deepest_caller_tree"][0]
                 function_max_stack = {
-                    "max_static_stack_size": base_stack_size + callee_tree_stack_size,
+                    # -base_stack_size => is counted in callee's and caler's
+                    "max_static_stack_size": max_callee_tree_stack_size+max_caller_tree_stack_size-base_stack_size,
                     "call_stack": [
                         {
                             "function":   f["display_name"],
                             "name":       f["name"],
                             "stack_size": f.get("stack_size", "???")
-                        } for f in sym["deepest_callee_tree"][1]
+                        } for f in (sym["deepest_callee_tree"][1][1:] + sym["deepest_caller_tree"][1])
+                        # [1:] => dont include the thread itself twice => TODO make it independent of the list order
                     ]
                 }
                 if display_name in function_max_stacks:
