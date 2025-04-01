@@ -65,13 +65,14 @@ def left_strip_from_list(lines):
 
 class Collector:
 
-    def __init__(self, gcc_tools):
+    def __init__(self, gcc_tools, output_db_path):
         self.gcc_tools = gcc_tools
         self.symbols = {}
         self.file_elements = {}
         self.symbols_by_qualified_name = None
         self.symbols_by_name = None
         self.user_defined_stack_report = None
+        self.db_con, self.db_cur = self.create_versioned_elf_db(output_db_path)
 
     def reset(self):
         self.symbols = {}
@@ -774,19 +775,21 @@ class Collector:
                 feature_name, version, full_symbol_path, name, base_file,
                 line, asm, type, address, size, file, callers, callees,
                 called_from_other_file, calls_float_function, display_name,
-                stack_size, stack_qualifiers, deepest_callee_tree, deepest_caller_tree
+                stack_size, stack_qualifiers, deepest_callee_tree, deepest_caller_tree,
+                deepest_callee_tree_size, deepest_caller_tree_size
             ) VALUES (
-                'feat/test123', 'abc123def567', '{full_path}',
+                '{feature_name}', '{feature_version}', '{full_path}',
                 '{non_circular_sym.get("name", "?")}', '{non_circular_sym.get("base_file", "?")}', {non_circular_sym.get("line", 0)},
                 '{"\\n".join(non_circular_sym.get("asm", []))}','{non_circular_sym.get("type", "?")}',
                 {int(non_circular_sym.get("address", 0), 16)}, {non_circular_sym.get("size", 0)}, '{non_circular_sym.get("file", "?")}',
                 '{non_circular_sym.get("callers", [])}', '{non_circular_sym.get("callees", [])}',
                 '{non_circular_sym.get("called_from_other_file", "false")}', '{non_circular_sym.get("calls_float_function", "false")}',
                 '{non_circular_sym.get("display_name", "?")}', '{non_circular_sym.get("stack_size", None)}', '{non_circular_sym.get("stack_qualifiers", None)}',
-                '{non_circular_sym.get("deepest_callee_tree", [])}', '{non_circular_sym.get("deepest_caller_tree", [])}'
+                '{non_circular_sym.get("deepest_callee_tree", [])}', '{non_circular_sym.get("deepest_caller_tree", [])}',
+                '{non_circular_sym.get("deepest_callee_tree_size", 0)}', '{non_circular_sym.get("deepest_caller_tree_size", 0)}'
             )""")
             #print(command)
-            db_cur.execute(command)
-            db_con.commit()
+            self.db_cur.execute(command)
+            self.db_con.commit()
         # TODO add export to json to just share a link?
         # json.dump(syms, open("syms.json", "w+"), ensure_ascii=False, indent=4)
