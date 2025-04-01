@@ -17,6 +17,8 @@ class Builder:
         self.files[path] = 0 if store_empty else os.path.getmtime(path)
 
     def build(self):
+        if self.output_db:
+            self.collector.get_list_of_features_and_versions_in_db(self.feature_name, self.feature_version)
         for f in self.files.keys():
             self.store_file_time(f)
         self.collector.reset()
@@ -26,7 +28,7 @@ class Builder:
         self.collector.parse_su_dir(self.get_su_dir())
         self.build_call_trees()
         if self.output_db:
-            self.collector.export_output_to_db(self.output_db)
+            self.collector.export_output_to_db(self.feature_name, self.feature_version)
 
     def needs_build(self):
         return any([os.path.getmtime(f) > t for f,t in self.files.items()])
@@ -51,12 +53,14 @@ class Builder:
 
 class ElfBuilder(Builder):
 
-    def __init__(self, collector, src_root, elf_file, su_dir, dynamic_calls, output_db):
+    def __init__(self, collector, src_root, elf_file, su_dir, dynamic_calls, output_db, feature_name, feature_version):
         Builder.__init__(self, collector, src_root if src_root else dirname(dirname(elf_file)), dynamic_calls)
         self.store_file_time(elf_file, store_empty=True)
         self.elf_file = pathlib.Path(elf_file)
         self.su_dir = su_dir
         self.output_db = output_db
+        self.feature_name = feature_name
+        self.feature_version = feature_version
 
     def get_elf_path(self):
         return self.elf_file

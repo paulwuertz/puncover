@@ -32,10 +32,13 @@ def get_default_port():
     return DEFAULT_PORT if not is_port_in_use(DEFAULT_PORT) else DEFAULT_PORT_FALLBACK
 
 
-def create_builder(gcc_base_filename, elf_file=None, su_dir=None, src_root=None, dynamic_calls=None, output_db=None):
-    c = Collector(GCCTools(gcc_base_filename))
+def create_builder(
+        gcc_base_filename, elf_file=None, su_dir=None, src_root=None, dynamic_calls=None,
+        output_db=None, feature_name=None, feature_version=None
+    ):
+    c = Collector(GCCTools(gcc_base_filename), output_db)
     if elf_file:
-        return ElfBuilder(c, src_root, elf_file, su_dir, dynamic_calls, output_db)
+        return ElfBuilder(c, src_root, elf_file, su_dir, dynamic_calls, output_db, feature_name, feature_version)
     else:
         raise Exception("Unable to configure builder for collector")
 
@@ -82,6 +85,10 @@ def main():
                         help='filename prefix for your gcc tools, e.g. ~/arm-cs-tools/bin/arm-none-eabi-')
     parser.add_argument('--elf_file', '--elf-file', required=True,
                         help='location of an ELF file')
+    parser.add_argument('--feature_name', '--feature-name', default="unknown",
+                        help='name of the feature to save it in the database i.e. the name of the current git branch')
+    parser.add_argument('--feature_version', '--feature-version', default="unknown",
+                        help='version of the feature to save it in the database i.e. the commit of the branch or pipline ID')
     parser.add_argument('--src_root', '--src-root',
                         help='location of your sources')
     parser.add_argument('--build_dir', '--build-dir',
@@ -111,7 +118,8 @@ def main():
         exit(1)
 
     builder = create_builder(args.gcc_tools_base, elf_file=args.elf_file, src_root=args.src_root,
-                             su_dir=args.build_dir, dynamic_calls=args.add_dynamic_calls, output_db=args.output_db)
+                             su_dir=args.build_dir, dynamic_calls=args.add_dynamic_calls,
+                             output_db=args.output_db, feature_name=args.feature_name, feature_version=args.feature_version)
     builder.build_if_needed()
 
     stack_report = None

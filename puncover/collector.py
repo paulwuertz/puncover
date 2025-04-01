@@ -714,13 +714,24 @@ class Collector:
                 stack_qualifiers TEXT,
                 deepest_callee_tree TEXT,
                 deepest_caller_tree TEXT,
+                deepest_callee_tree_size INTEGER,
+                deepest_caller_tree_size INTEGER,
                 PRIMARY KEY (feature_name, version, full_symbol_path)
             )
         """)
         return con, cur
 
-    def export_output_to_db(self, output_db_path):
-        db_con, db_cur = self.create_versioned_elf_db(output_db_path)
+    def get_list_of_features_and_versions_in_db(self, feature, version):
+        features_and_versions = self.db_cur.execute("SELECT DISTINCT feature_name, version from symbol;")
+        if (feature, version) in features_and_versions.fetchall():
+            print(
+                f"feature+version: {(feature, version)} already present in the exported database - "
+                "please pass a new --feature_name and/or --feature_version to save more then one set of symbols "
+                "in the same database"
+            )
+            exit(-1)
+
+    def export_output_to_db(self, feature_name, feature_version):
         for full_path, sym in self.symbols_by_qualified_name.items():
             # if we use the plain symbols there are circular references
             # and memory explodes into 10's of GB's serializing it so make
@@ -728,7 +739,7 @@ class Collector:
             non_circular_sym = {}
             filepath = "NONE"
             identifier = "NONE"
-            print(sym["name"])
+            # print(sym["name"])
             for sym_ele in sym.keys():
                 if sym_ele in [
                     'name', 'base_file', 'line', 'asm', 'type', 'address', 'size', 'display_name',
