@@ -307,9 +307,12 @@ class PathRenderer(HTMLRenderer):
 
         generic_path = pathlib.Path(path)
         symbol = self.collector.symbol(path)
+        compare_symbol = self.collector.symbol(path, version=request.args["compareto"]) \
+                         if "compareto" in request.args.keys() else None
 
         if symbol:
             self.template_vars["symbol"] = symbol
+            self.template_vars["compare_symbol"] = compare_symbol
             return self.render_template("symbol.html.jinja", "symbol")
 
         file_element = self.collector.file_elements.get(generic_path, None)

@@ -86,10 +86,22 @@ class Collector:
             return str(html_path)
         return symbol[NAME]
 
-    def symbol(self, name, qualified=True):
+    def get_symbol_from_db(self, name, version, qualified):
+        name_column = "full_symbol_path" if qualified else "name"
+        versioned_symbol = self.db_cur.execute(f"SELECT * from symbol WHERE version=? AND {name_column}=?", (version, name))
+        symbol = dict(zip([desc[0] for desc in self.db_cur.description], versioned_symbol.fetchone()))
+        # json strings to dicts
+        symbol["deepest_callee_tree"] = json.loads(symbol["deepest_callee_tree"])
+        symbol["deepest_caller_tree"] = json.loads(symbol["deepest_caller_tree"])
+        return symbol
+
+    def symbol(self, name, qualified=True, version=None):
         self.build_symbol_name_index()
-        index = self.symbols_by_qualified_name if qualified else self.symbols_by_name
-        return index.get(name, None)
+        if version:
+            return self.get_symbol_from_db(name, version, qualified)
+        else:
+            index = self.symbols_by_qualified_name if qualified else self.symbols_by_name
+            return index.get(name, None)
 
     def symbol_by_addr(self, addr):
         int_addr = int(addr, 16)
@@ -695,7 +707,7 @@ class Collector:
 
     def create_versioned_elf_db(self, db_path):
         print(f"Open {db_path} to save symbols")
-        con = sqlite3.connect(db_path)
+        con = sqlite3.connect(db_path, check_same_thread=False)
         cur = con.cursor()
         cur.execute("""
             CREATE TABLE IF NOT EXISTS symbol(
