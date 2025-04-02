@@ -348,6 +348,18 @@ class SymbolRenderer(HTMLRenderer):
 class AllSymbolsRenderer(HTMLRenderer):
 
     def dispatch_request(self, symbol_name=None):
+        if "compareto" in request.args.keys():
+            compare_symbol = self.collector.get_all_symbols_from_db(version=request.args["compareto"])
+            for other_symbol in compare_symbol:
+                symbol_name = other_symbol["name"]
+                if symbol_name in self.collector.symbols_by_name:
+                    if "size" in other_symbol:
+                        other_size = other_symbol["size"]
+                        self.collector.symbols_by_name[symbol_name]["compared_size"] = other_size
+                    if "stack_size" in other_symbol:
+                        other_stack_size = other_symbol["stack_size"]
+                        self.collector.symbols_by_name[symbol_name]["compared_stack_size"] = other_stack_size
+
         return self.render_template("all_symbols.html.jinja", "all")
 
 

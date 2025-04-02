@@ -129,9 +129,25 @@
                 <tr>
                     <td><a href="{{ symbol | symbol_url }}" class="icon-function">{{ symbol.display_name |e }}</a></td>
                     <td>{{ symbol_remarks(symbol) }}</td>
-                    <td class="col_size">{{ symbol.stack_size | bytes }}</td>
+                    <td class="col_size">
+                        {{ symbol.stack_size | bytes }}
+                        {% if symbol.stack_size and symbol.compared_stack_size  %}
+                            {% if symbol.compared_stack_size > symbol.stack_size %}
+                                (+{{ symbol.compared_stack_size - symbol.stack_size }} bytes)
+                            {% elif symbol.compared_stack_size < symbol.stack_size %}
+                                ({{ symbol.compared_stack_size - symbol.stack_size }} bytes)
+                            {% endif %}
+                        {% endif %}
+                    </td>
                     <td class="col_size" style="{{ symbol.size | style_background_bar(group_code_size, color_bar_code) }}">
                     {{ symbol.size | bytes }}
+                    {% if symbol.size and symbol.compared_size  %}
+                        {% if symbol.compared_size > symbol.size %}
+                            (+{{ symbol.compared_size - symbol.size }} bytes)
+                        {% elif symbol.compared_size < symbol.size %}
+                            ({{ symbol.compared_size - symbol.size }} bytes)
+                        {% endif %}
+                    {% endif %}
                     </td>
                     <td class="col_size"></td>
                 </tr>
@@ -150,6 +166,13 @@
                 <td colspan="4"><span class="icon-variable">{{ var.display_name |e }}</span></td>
                 <td class="col_size" style="{{ var | symbol_var_size | style_background_bar(group_var_size, color_bar_var) }}">
                     {{ var | symbol_var_size | bytes }}
+                    {% if var.size and var.compared_size  %}
+                    {% if var.compared_size > var.size %}
+                        (+{{ var.compared_size - var.size }} bytes)
+                    {% elif var.compared_size < var.size %}
+                        ({{ var.compared_size - var.size }} bytes)
+                    {% endif %}
+                {% endif %}
                 </td>
             </tr>
             {% endfor %}

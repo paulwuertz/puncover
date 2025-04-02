@@ -95,6 +95,11 @@ class Collector:
         symbol["deepest_caller_tree"] = json.loads(symbol["deepest_caller_tree"])
         return symbol
 
+    def get_all_symbols_from_db(self, version):
+        versioned_symbol = self.db_cur.execute(f"SELECT * from symbol WHERE version=? ", (version, ))
+        symbol = [dict(zip([desc[0] for desc in self.db_cur.description], row)) for row in versioned_symbol.fetchall()]
+        return symbol
+
     def symbol(self, name, qualified=True, version=None):
         self.build_symbol_name_index()
         if version:
