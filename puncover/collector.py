@@ -757,7 +757,7 @@ class Collector:
                 elif sym_ele in ['callers', 'callees']:
                     callexs = []
                     for callex in sym[sym_ele]:
-                        identifier = str(callex["file"]["path"]) + ":" + callex["display_name"]
+                        identifier = str(callex["file"]["path"]) + "/" + callex["display_name"]
                         callexs += [identifier]
                     non_circular_sym[sym_ele] = json.dumps(callexs)
                 elif sym_ele in ['deepest_caller_tree', 'deepest_callee_tree']:
@@ -765,8 +765,12 @@ class Collector:
                     size, fns = sym[sym_ele]
                     non_circular_sym[sym_ele+"_size"] = size
                     for callex in fns:
-                        identifier = str(callex["file"]["path"]) + ":" + callex["display_name"]
-                        callexs += [identifier]
+                        identifier = str(callex["file"]["path"]) + "/" + callex["display_name"]
+                        callexs += [{
+                            "full_symbol_path": identifier,
+                            "code_size": callex.get("size", "?"),
+                            "stack_size": callex.get("stack_size", "?")
+                        }]
                     non_circular_sym[sym_ele] = json.dumps(callexs)
                 elif sym_ele in ['next_function', 'prev_function', 'path']:
                     # todo nothing?
