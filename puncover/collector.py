@@ -716,8 +716,7 @@ class Collector:
         cur = con.cursor()
         cur.execute("""
             CREATE TABLE IF NOT EXISTS symbol(
-                feature_name TEXT,
-                version TEXT,
+                feature_version TEXT,
                 full_symbol_path TEXT,
                 name TEXT,
                 base_file TEXT,
@@ -738,22 +737,22 @@ class Collector:
                 deepest_caller_tree TEXT,
                 deepest_callee_tree_size INTEGER,
                 deepest_caller_tree_size INTEGER,
-                PRIMARY KEY (feature_name, version, full_symbol_path)
+                PRIMARY KEY (feature_version, full_symbol_path)
             )
         """)
         return con, cur
 
-    def get_list_of_features_and_versions_in_db(self, feature, version):
-        features_and_versions = self.db_cur.execute("SELECT DISTINCT feature_name, version from symbol;")
-        if (feature, version) in features_and_versions.fetchall():
+    def get_list_of_features_and_versions_in_db(self, feature_version):
+        features_and_versions = self.db_cur.execute("SELECT DISTINCT feature_version from symbol;")
+        if (feature_version) in features_and_versions.fetchall():
             print(
-                f"feature+version: {(feature, version)} already present in the exported database - "
-                "please pass a new --feature_name and/or --feature_version to save more then one set of symbols "
+                f"feature+version: {(feature_version)} already present in the exported database - "
+                "please pass a new --feature_version to save more then one set of symbols "
                 "in the same database"
             )
             exit(-1)
 
-    def export_output_to_db(self, feature_name, feature_version):
+    def export_output_to_db(self, feature_version):
         for full_path, sym in self.symbols_by_qualified_name.items():
             # if we use the plain symbols there are circular references
             # and memory explodes into 10's of GB's serializing it so make
@@ -797,13 +796,13 @@ class Collector:
 
             command = (f"""
             INSERT INTO 'symbol' (
-                feature_name, version, full_symbol_path, name, base_file,
+                feature_version, full_symbol_path, name, base_file,
                 line, asm, type, address, size, file, callers, callees,
                 called_from_other_file, calls_float_function, display_name,
                 stack_size, stack_qualifiers, deepest_callee_tree, deepest_caller_tree,
                 deepest_callee_tree_size, deepest_caller_tree_size
             ) VALUES (
-                '{feature_name}', '{feature_version}', '{full_path}',
+                '{feature_version}', '{full_path}',
                 '{non_circular_sym.get("name", "?")}', '{non_circular_sym.get("base_file", "?")}', {non_circular_sym.get("line", 0)},
                 '{"\\n".join(non_circular_sym.get("asm", []))}','{non_circular_sym.get("type", "?")}',
                 {int(non_circular_sym.get("address", 0), 16)}, {non_circular_sym.get("size", 0)}, '{non_circular_sym.get("file", "?")}',
