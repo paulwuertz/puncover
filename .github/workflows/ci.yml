@@ -1,0 +1,63 @@
+name: Python package
+
+on:
+  push:
+    branches: [master]
+
+  pull_request:
+    branches: [master]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
+        # it's convenient to stay on an older ubuntu as long as we need
+        # python3.6:
+        # https://raw.githubusercontent.com/actions/python-versions/main/versions-manifest.json
+        os: [
+            ubuntu-20.04,
+            macos-12,
+            windows-2022
+          ]
+      fail-fast: false
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          # bind pip to a specific version to hopefully avoid breakage
+          pip install pip==23.3
+
+          pip install -r requirements-test.txt
+
+      - name: Run tox
+        # use the version of python in PATH, from the github runner
+        run: tox -e py
+
+      - name: Build release archive
+        # only upload coverage for the 3.10 run
+        if: ${{ matrix.python-version == '3.10' }}
+        run: |
+          pip install wheel==0.37.1
+          python setup.py sdist bdist_wheel
+
+      - name: Archive release
+        if: ${{ matrix.python-version == '3.10' }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: release_dist
+          path: dist
+
+      - name: Upload coverage to Codecov
+        # only upload coverage for the 3.10 run
+        if: ${{ matrix.python-version == '3.10' }}
+        uses: codecov/codecov-action@v3
