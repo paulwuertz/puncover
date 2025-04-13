@@ -84,8 +84,17 @@
         let deletedSymbols = Object.keys(Object.fromEntries(symKey_ref.difference(symKey).entries()));
 
         let symbols_to_show = {};
-        console.log("kwy "+JSON.stringify(Object.keys(selected_symbols)));
 
+        for (const symPath of deletedSymbols) {
+            selected_symbols_to_compare[symPath].remark  += "Deleted!";
+            if(selected_symbols_to_compare[symPath].size){
+                selected_symbols_to_compare[symPath].d_size   = -selected_symbols_to_compare[symPath].size;
+            }
+            if(selected_symbols_to_compare[symPath].stack_size){
+                selected_symbols_to_compare[symPath].d_stack  = -selected_symbols_to_compare[symPath].stack_size;
+            }
+            symbols_to_show[symPath] = selected_symbols_to_compare[symPath];
+        }
         for (const symPath of Object.keys(selected_symbols)) {
             if(deletedSymbols.includes(symPath)){
                 console.log(`${symPath} delted - skip`);
@@ -97,6 +106,7 @@
                 shouldAdd = true;
             }
             else {
+                // if not a new variable check if it has a change in code or stack size
                 if (selected_symbols[symPath].size != selected_symbols_to_compare[symPath].size) {
                     selected_symbols[symPath].d_size = selected_symbols[symPath].size - selected_symbols_to_compare[symPath].size;
                     shouldAdd = true;
@@ -108,7 +118,6 @@
             }
             if(shouldAdd)
             {
-                console.log(selected_symbols[symPath]);
                 symbols_to_show[symPath] = selected_symbols[symPath];
             }
         }
