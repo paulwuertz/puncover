@@ -1,17 +1,23 @@
 <script>
     import { onMount } from 'svelte';
+    import { base } from '$app/paths';
+    import { page } from '$app/stores';
     import { browser } from '$app/environment';
+    import { writable } from "svelte/store"
+    // ui stuff
     import { DataTable } from '@careswitch/svelte-data-table';
     import { Button, Col, Container, Input, Row, Table } from '@sveltestrap/sveltestrap';
 
-    var symbols = $state({});
+    let files = $state({});
+    let elfDataProvided = $state(false);
+    let symbols = $state({});
     let versions = $derived(Object.keys(symbols));
     let selected_version = $state(null);
     let number_of_sybols = $derived.by((symbols, selected_version) => {
 		return (!selected_version) ? 0 : symbols[selected_version].lenght;
 	});
     let selected_path = $state("/");
-    let selected_versions_to_compare = $state([]);
+    let selected_versions_to_compare = $state(null);
     let currentYear = $state(0);
     let function_table_data = $state([]);
     let variable_table_data = $state([]);
@@ -56,15 +62,89 @@
                 { id: 'size', key: 'size', name: 'Static size' },
             ]
         });
-
     }
+
+	$effect(() => {
+		if (files) {
+			// Note that `files` is of type `FileList`, not an Array:
+			// https://developer.mozilla.org/en-US/docs/Web/API/FileList
+			console.log(files);
+            const file = files[0];
+
+            // Validate file existence and type
+            if (!file) {
+                console.log("No file selected. Please choose a file.", "error");
+                return;
+            }
+
+            if (!(file.type.endsWith("JSON") || file.type.endsWith("json"))) {
+                console.log(file.type+"Unsupported file type. Please select a text file.", "error");
+                return;
+            }
+
+            // Read the file
+            const reader = new FileReader();
+            reader.onload = () => {
+                symbols = JSON.parse(reader.result);
+            };
+            reader.onerror = () => {
+                showMessage("Error reading the file. Please try again.", "error");
+            };
+            reader.readAsText(file);
+		}
+	});
 
     onMount(async () => {
         if (browser) {
-            const response = await fetch(`/syms.json`);
-            symbols = await response.json();
             currentYear = (new Date().getFullYear());
-
+            // version of the elf
+            const hasSelectedVersion = $page.url.searchParams.has('selected_version');
+            if (hasSelectedVersion) {
+                const selected_version_param = $page.url.searchParams.get('selected_version')
+                localStorage.selected_version = selected_version_param;
+                selected_version = selected_version_param;
+            } else if (localStorage.getItem("selected_version")) {
+                selected_version = localStorage.getItem("selected_version");
+                // alert("selected_version "+selected_version)
+            }
+            // version of the elf to compare to
+            const hasSelectedVersionToCompare = $page.url.searchParams.has('selected_versions_to_compare');
+            if (hasSelectedVersionToCompare) {
+                const selected_version_to_compare_param = $page.url.searchParams.get('selected_versions_to_compare')
+                localStorage.selected_versions_to_compare = selected_version_to_compare_param;
+                selected_versions_to_compare = selected_version_to_compare_param;
+            } else if (localStorage.getItem("selected_versions_to_compare")) {
+                selected_versions_to_compare = localStorage.getItem("selected_versions_to_compare");
+                // alert("selected_versions_to_compare "+selected_versions_to_compare)
+            }
+            const hasElfURLData = $page.url.searchParams.has('elfURLData');
+            const storedElfURLData = localStorage.getItem("lastOpenElfURL");
+            const elfUrl = (hasElfURLData) ? decodeURIComponent($page.url.searchParams.get('elfURLData'))
+                                           : storedElfURLData;
+            if (elfUrl) {
+                // download data
+                const response = await fetch(elfUrl);
+                const data = await response.json();
+                // persist
+                localStorage.lastOpenElfURL = elfUrl;
+                localStorage.elfStorageDate = new Date().toISOString();
+                symbols = data;
+                //alert(JSON.stringify(symbols))
+                elfDataProvided = true;
+            }
+            // localstorage has 5-10 MB max so split TODO test compression...
+            // let versions = Object.keys(data);
+            // localStorage.elfVersions = versions;
+            // for (const version of versions) {
+            //     localStorage[version] = JSON.stringify(data[version]);
+            // }
+            // else if (localStorage.getItem("elfURLData")) {
+            //     alert("elfURLData found in storage"+localStorage.getItem("elfURLData"))
+            //     elfDataProvided = false;
+            // }
+            else {
+                alert("No ELF data URL passed or stored, please upload it as a file then :)")
+            }
         }
     });
     $inspect(function_table_data);
@@ -94,7 +174,10 @@
         </Col>
         <Col>
             Select a version of the .elf you want to compare against.
-            <Input type="select">
+            <Input type="select"
+                bind:value={selected_versions_to_compare}
+                on:change={updateSelectedSymbols}
+            >
                 {#each versions as version}
                     <option>{version}</option>
                 {/each}
@@ -105,7 +188,10 @@
       <hr>
 
     <Container fluid>
-        {#if !selected_version}
+        {#if !elfDataProvided && !files[0]}
+            <label for="elfinput">Upload a puncover .json file:</label>
+            <input accept="*/json" bind:files id="elfinput" name="elfinput" type="file" />
+        {:else if !selected_version}
             <h3>Select a version to browse elf symbols :)</h3>
         {:else}
             <h3>Function symbols for {selected_version}</h3>
@@ -274,9 +360,9 @@
         {/if}
     </Container>
 
-    {#if selected_version && selected_path === "/"}
+    <!-- {#if selected_version && selected_path === "/"}
     <Button color="warning" href="#/all">Show all symbols</Button>
-    {/if}
+    {/if} -->
 
     <hr>
 
