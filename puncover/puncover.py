@@ -120,7 +120,7 @@ def main():
 
     export_json = {}
     # append file with new version if already exists
-    if args.generate_report and os.path.isfile(args.report_filename):
+    if args.generate_report and os.path.isfile(args.report_filename+".json"):
         export_json = json.load(open(args.report_filename+".json", "r"))
     export_json[args.feature_version] = {}
 
