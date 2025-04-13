@@ -2,6 +2,7 @@
 
 import configargparse
 import os
+import json
 import yaml
 import webbrowser
 from distutils.spawn import find_executable
@@ -34,11 +35,11 @@ def get_default_port():
 
 def create_builder(
         gcc_base_filename, elf_file=None, su_dir=None, src_root=None, dynamic_calls=None,
-        output_db=None, feature_version=None
+        output_db=None, feature_version=None, export_json=None
     ):
     c = Collector(GCCTools(gcc_base_filename), output_db)
     if elf_file:
-        return ElfBuilder(c, src_root, elf_file, su_dir, dynamic_calls, output_db, feature_version)
+        return ElfBuilder(c, src_root, elf_file, su_dir, dynamic_calls, output_db, feature_version, export_json)
     else:
         raise Exception("Unable to configure builder for collector")
 
@@ -115,15 +116,24 @@ def main():
         print("Unable to find gcc tools base dir (tried searching for 'arm-none-eabi-objdump' on PATH), please specify --gcc-tools-base")
         exit(1)
 
+
+    export_json = {}
+    # append file with new version if already exists
+    if args.generate_report and os.path.isfile(args.report_filename):
+        export_json = json.load(open(args.report_filename, "r"))
+    export_json[args.feature_version] = {}
+
     builder = create_builder(args.gcc_tools_base, elf_file=args.elf_file, src_root=args.src_root,
                              su_dir=args.build_dir, dynamic_calls=args.add_dynamic_calls,
-                             output_db=args.output_db, feature_version=args.feature_version)
+                             output_db=args.output_db, feature_version=args.feature_version, export_json=export_json)
     builder.build_if_needed()
 
     stack_report = None
     if args.generate_report:
-        builder.collector.report_max_static_stack_usages_from_function_names(args.report_max_static_stack_usage,
-                                                           filename=args.report_filename, report_type=args.report_type)
+        export_json[args.feature_version]["stack_reports"] = builder.collector.report_max_static_stack_usages_from_function_names(
+            args.report_max_static_stack_usage, report_type=args.report_type
+        )
+        json.dump(export_json, open(args.report_filename+".json", "w+"), ensure_ascii=False, indent=4)
 
     renderers.register_jinja_filters(app.jinja_env)
     renderers.register_urls(app, builder.collector, user_defined_stack_report=stack_report)

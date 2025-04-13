@@ -88,7 +88,7 @@ class Collector:
 
     def get_symbol_from_db(self, name, version, qualified):
         name_column = "full_symbol_path" if qualified else "name"
-        versioned_symbol = self.db_cur.execute(f"SELECT * from symbol WHERE version=? AND {name_column}=?", (version, name))
+        versioned_symbol = self.db_cur.execute(f"SELECT * from symbol WHERE feature_version=? AND {name_column}=?", (version, name))
         symbol = dict(zip([desc[0] for desc in self.db_cur.description], versioned_symbol.fetchone()))
         # json strings to dicts
         symbol["deepest_callee_tree"] = json.loads(symbol["deepest_callee_tree"])
@@ -96,7 +96,7 @@ class Collector:
         return symbol
 
     def get_all_symbols_from_db(self, version):
-        versioned_symbol = self.db_cur.execute(f"SELECT * from symbol WHERE version=? ", (version, ))
+        versioned_symbol = self.db_cur.execute(f"SELECT * from symbol WHERE feature_version=? ", (version, ))
         symbol = [dict(zip([desc[0] for desc in self.db_cur.description], row)) for row in versioned_symbol.fetchall()]
         return symbol
 
@@ -652,7 +652,7 @@ class Collector:
                     self.symbols_by_qualified_name[qualified_name] = s
 
 
-    def report_max_static_stack_usages_from_function_names(self, function_names_and_opt_max_stack, filename, report_type):
+    def report_max_static_stack_usages_from_function_names(self, function_names_and_opt_max_stack, report_type):
         report_max_map = {}
 
         from puncover.renderers import traverse_filter_wrapper
@@ -691,10 +691,6 @@ class Collector:
         for function_name in function_names:
             if function_name not in report_max_map:
                 print(f"WARNING:  Couldn't find symbol '{function_name}' to report")
-
-        with open(f'{filename}.json', 'w') as f:
-            json.dump(report_max_map, f, ensure_ascii=False, indent=4)
-            print(f"Exported report as {f.name}")
 
         self.user_defined_stack_report = report_max_map
         return report_max_map
@@ -752,7 +748,8 @@ class Collector:
             )
             exit(-1)
 
-    def export_output_to_db(self, feature_version):
+    def export_output_to_db(self, feature_version, export_json):
+        symbols = []
         for full_path, sym in self.symbols_by_qualified_name.items():
             # if we use the plain symbols there are circular references
             # and memory explodes into 10's of GB's serializing it so make
@@ -794,6 +791,7 @@ class Collector:
                 else:
                     print("unknown key "+ sys_ele)
 
+            symbols += [non_circular_sym]
             command = (f"""
             INSERT INTO 'symbol' (
                 feature_version, full_symbol_path, name, base_file,
@@ -813,7 +811,7 @@ class Collector:
                 '{non_circular_sym.get("deepest_callee_tree_size", 0)}', '{non_circular_sym.get("deepest_caller_tree_size", 0)}'
             )""")
             #print(command)
-            self.db_cur.execute(command)
-            self.db_con.commit()
-        # TODO add export to json to just share a link?
-        # json.dump(syms, open("syms.json", "w+"), ensure_ascii=False, indent=4)
+            #self.db_cur.execute(command)
+            #self.db_con.commit()
+        # if file exist
+        export_json[feature_version]["symbols"] = symbols
