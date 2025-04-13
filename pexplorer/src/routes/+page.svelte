@@ -20,6 +20,7 @@
     let selected_versions_to_compare = $state(null);
     let selected_symbols = $state({});
     let selected_symbols_to_compare = $state({});
+    let symbols_to_show = $state({});
     let currentYear = $state(0);
     let function_table_data = $state([]);
     let variable_table_data = $state([]);
@@ -83,8 +84,7 @@
         let newSymbols = Object.keys(Object.fromEntries(symKey.difference(symKey_ref).entries()));
         let deletedSymbols = Object.keys(Object.fromEntries(symKey_ref.difference(symKey).entries()));
 
-        let symbols_to_show = {};
-
+        symbols_to_show = {};
         for (const symPath of deletedSymbols) {
             selected_symbols_to_compare[symPath].remark  += "Deleted!";
             if(selected_symbols_to_compare[symPath].size){
@@ -156,7 +156,7 @@
 		if (files) {
 			// Note that `files` is of type `FileList`, not an Array:
 			// https://developer.mozilla.org/en-US/docs/Web/API/FileList
-			console.log(files);
+			console.log("files "+files);
             const file = files[0];
 
             // Validate file existence and type
@@ -287,6 +287,15 @@
         {:else if !selected_version}
             <h3>Select a version to browse elf symbols :)</h3>
         {:else}
+
+            <h3>Summary</h3>
+
+            <p>From {selected_version} to {selected_versions_to_compare} the change in...</p>
+            <ul>
+                <li>...flash/code size is {Object.values(symbols_to_show).filter((e) => {return e["d_size"] && e["type"] === "function";}).reduce((acc, b) => acc  + b["d_size"], 0)} bytes</li>
+                <li>...static RAM size is {Object.values(symbols_to_show).filter((e) => {return e["d_size"] && e["type"] === "variable";}).reduce((acc, b) => acc  + b["d_size"], 0)} bytes</li>
+                <li>...stack size is {Object.values(symbols_to_show).filter((e) => {return e["d_stack"];}).reduce((acc, b) => acc + b["d_stack"], 0)} bytes</li>
+            </ul>
             <h3>Function symbols for {selected_version}</h3>
 
             <Table>
