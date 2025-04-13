@@ -18,6 +18,8 @@
 	});
     let selected_path = $state("/");
     let selected_versions_to_compare = $state(null);
+    let selected_symbols = $state({});
+    let selected_symbols_to_compare = $state({});
     let currentYear = $state(0);
     let function_table_data = $state([]);
     let variable_table_data = $state([]);
@@ -26,9 +28,11 @@
 		data: function_table_data,
 		columns: [
 			{ id: 'name', key: 'name', name: 'Name' },
-			//TODO { id: 'name', key: 'name', name: 'Remarks' },
+            { id: 'remark', key: 'remark', name: 'Remarks' },
 			{ id: 'size', key: 'size', name: 'Code size' },
-			{ id: 'stack_size', key: 'stack_size', name: 'Stack size', sortable: true },
+			{ id: 'd_size', key: 'd_size', name: 'Δ size' },
+			{ id: 'stack_size', key: 'stack_size', name: 'Stack size'},
+			{ id: 'd_stack', key: 'd_stack', name: 'Δ stack' },
 		]
 	}));
     let variable_table = $derived(new DataTable({
@@ -36,30 +40,47 @@
 		data: variable_table_data,
 		columns: [
 			{ id: 'name', key: 'name', name: 'Name' },
+            { id: 'remark', key: 'remark', name: 'Remarks' },
 			{ id: 'size', key: 'size', name: 'Static size' },
+			{ id: 'd_size', key: 'd_size', name: 'Δ size' },
 		]
 	}));
 
+    let symbolsToMap = (syms) => {
+        let symMap = {};
+        for (const sym of syms) {
+            sym.remark = "";
+            symMap[sym.file+sym.display_name] = sym;
+        }
+        return symMap;
+    }
+
     const updateSelectedSymbols = () => {
-        function_table_data = symbols[selected_version].filter((e) => {return e["type"] === "function";})
-        variable_table_data = symbols[selected_version].filter((e) => {return e["type"] === "variable";})
+        selected_symbols = symbolsToMap(symbols[selected_version]["symbols"]);
+        function_table_data = Object.values(selected_symbols).filter((e) => {return e["type"] === "function";})
+        variable_table_data = Object.values(selected_symbols).filter((e) => {return e["type"] === "variable";})
+        selected_symbols_to_compare = symbolsToMap(symbols[selected_versions_to_compare]["symbols"]);
         //alert(function_table_data.length+" !! "+variable_table_data.length)
         function_table = new DataTable({
             pageSize: function_table_data.length,
             data: function_table_data,
             columns: [
                 { id: 'name', key: 'name', name: 'Name' },
-                //{ id: 'name', key: 'name', name: 'Remarks' },
+                { id: 'remark', key: 'remark', name: 'Remarks' },
                 { id: 'size', key: 'size', name: 'Code size' },
-                { id: 'stack_size', key: 'stack_size', name: 'Stack size' },
+                { id: 'd_size', key: 'd_size', name: 'Δ size' },
+                { id: 'stack_size', key: 'stack_size', name: 'Stack size'},
+                { id: 'd_stack', key: 'd_stack', name: 'Δ stack' },
             ]
         });
         variable_table = new DataTable({
             pageSize: variable_table_data.length,
             data: variable_table_data,
-            columns: [
+                columns: [
                 { id: 'name', key: 'name', name: 'Name' },
+                { id: 'remark', key: 'remark', name: 'Remarks' },
                 { id: 'size', key: 'size', name: 'Static size' },
+                { id: 'd_size', key: 'd_size', name: 'Δ size' },
             ]
         });
     }
@@ -97,6 +118,22 @@
     onMount(async () => {
         if (browser) {
             currentYear = (new Date().getFullYear());
+            // load elf data
+            const hasElfURLData = $page.url.searchParams.has('elfURLData');
+            const storedElfURLData = localStorage.getItem("lastOpenElfURL");
+            const elfUrl = (hasElfURLData) ? decodeURIComponent($page.url.searchParams.get('elfURLData'))
+                                           : storedElfURLData;
+            if (elfUrl) {
+                // download data
+                const response = await fetch(elfUrl);
+                const data = await response.json();
+                // persist
+                localStorage.lastOpenElfURL = elfUrl;
+                localStorage.elfStorageDate = new Date().toISOString();
+                symbols = data;
+                //alert(JSON.stringify(symbols))
+                elfDataProvided = true;
+            }
             // version of the elf
             const hasSelectedVersion = $page.url.searchParams.has('selected_version');
             if (hasSelectedVersion) {
@@ -117,21 +154,6 @@
                 selected_versions_to_compare = localStorage.getItem("selected_versions_to_compare");
                 // alert("selected_versions_to_compare "+selected_versions_to_compare)
             }
-            const hasElfURLData = $page.url.searchParams.has('elfURLData');
-            const storedElfURLData = localStorage.getItem("lastOpenElfURL");
-            const elfUrl = (hasElfURLData) ? decodeURIComponent($page.url.searchParams.get('elfURLData'))
-                                           : storedElfURLData;
-            if (elfUrl) {
-                // download data
-                const response = await fetch(elfUrl);
-                const data = await response.json();
-                // persist
-                localStorage.lastOpenElfURL = elfUrl;
-                localStorage.elfStorageDate = new Date().toISOString();
-                symbols = data;
-                //alert(JSON.stringify(symbols))
-                elfDataProvided = true;
-            }
             // localstorage has 5-10 MB max so split TODO test compression...
             // let versions = Object.keys(data);
             // localStorage.elfVersions = versions;
@@ -144,6 +166,10 @@
             // }
             else {
                 alert("No ELF data URL passed or stored, please upload it as a file then :)")
+            }
+            if(elfUrl && selected_version && selected_versions_to_compare)
+            {
+                updateSelectedSymbols()
             }
         }
     });
