@@ -27,7 +27,7 @@
         pageSize: 9999, // TODO
 		data: function_table_data,
 		columns: [
-			{ id: 'name', key: 'name', name: 'Name' },
+			{ id: 'name', key: 'display_name', name: 'Name' },
             { id: 'remark', key: 'remark', name: 'Remarks' },
 			{ id: 'size', key: 'size', name: 'Code size' },
 			{ id: 'd_size', key: 'd_size', name: 'Δ size' },
@@ -39,7 +39,7 @@
         pageSize: 9999, // TODO
 		data: variable_table_data,
 		columns: [
-			{ id: 'name', key: 'name', name: 'Name' },
+			{ id: 'name', key: 'display_name', name: 'Name' },
             { id: 'remark', key: 'remark', name: 'Remarks' },
 			{ id: 'size', key: 'size', name: 'Static size' },
 			{ id: 'd_size', key: 'd_size', name: 'Δ size' },
@@ -50,22 +50,80 @@
         let symMap = {};
         for (const sym of syms) {
             sym.remark = "";
+            sym.newSymbols = false;
+            sym.deletedSymbols = false;
+            sym.d_size = null;
+            sym.d_stack = null;
             symMap[sym.file+sym.display_name] = sym;
         }
         return symMap;
     }
 
+    let symbolsToFunctionMap = (symMap) => {
+        return Object.values(symMap).filter((e) => {return e["type"] === "function";})
+    }
+
+    let symbolsToVariableMap = (symMap) => {
+        return Object.values(symMap).filter((e) => {return e["type"] === "variable";})
+    }
+
+    let symMapToSymNameSet = (symMap) => {
+        return new Set(Object.keys(symMap));
+    }
+
     const updateSelectedSymbols = () => {
         selected_symbols = symbolsToMap(symbols[selected_version]["symbols"]);
-        function_table_data = Object.values(selected_symbols).filter((e) => {return e["type"] === "function";})
-        variable_table_data = Object.values(selected_symbols).filter((e) => {return e["type"] === "variable";})
         selected_symbols_to_compare = symbolsToMap(symbols[selected_versions_to_compare]["symbols"]);
+
+        let symKey = symMapToSymNameSet(selected_symbols);
+        let symKey_ref = symMapToSymNameSet(selected_symbols_to_compare);
+        console.log(symKey);
+        console.log(symKey_ref);
+
+        let newSymbols = Object.keys(Object.fromEntries(symKey.difference(symKey_ref).entries()));
+        let deletedSymbols = Object.keys(Object.fromEntries(symKey_ref.difference(symKey).entries()));
+
+        let symbols_to_show = {};
+        console.log("kwy "+JSON.stringify(Object.keys(selected_symbols)));
+
+        for (const symPath of Object.keys(selected_symbols)) {
+            if(deletedSymbols.includes(symPath)){
+                console.log(`${symPath} delted - skip`);
+                continue;
+            }
+            let shouldAdd = false;
+            if(newSymbols.includes(symPath)){
+                selected_symbols[symPath].remark += "Newly added!";
+                shouldAdd = true;
+            }
+            else {
+                if (selected_symbols[symPath].size != selected_symbols_to_compare[symPath].size) {
+                    selected_symbols[symPath].d_size = selected_symbols[symPath].size - selected_symbols_to_compare[symPath].size;
+                    shouldAdd = true;
+                }
+                if (selected_symbols[symPath].stack_size != selected_symbols_to_compare[symPath].stack_size) {
+                    selected_symbols[symPath].d_stack = selected_symbols[symPath].stack_size - selected_symbols_to_compare[symPath].stack_size;
+                    shouldAdd = true;
+                }
+            }
+            if(shouldAdd)
+            {
+                console.log(selected_symbols[symPath]);
+                symbols_to_show[symPath] = selected_symbols[symPath];
+            }
+        }
+
+        // alert(newSymbols.length)
+        // alert(deletedSymbols.length)
+
+        function_table_data = symbolsToFunctionMap(symbols_to_show);
+        variable_table_data = symbolsToVariableMap(symbols_to_show);
         //alert(function_table_data.length+" !! "+variable_table_data.length)
         function_table = new DataTable({
             pageSize: function_table_data.length,
             data: function_table_data,
             columns: [
-                { id: 'name', key: 'name', name: 'Name' },
+                { id: 'name', key: 'display_name', name: 'Name' },
                 { id: 'remark', key: 'remark', name: 'Remarks' },
                 { id: 'size', key: 'size', name: 'Code size' },
                 { id: 'd_size', key: 'd_size', name: 'Δ size' },
