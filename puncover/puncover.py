@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import configargparse
+import datetime
 import os
 import json
 import yaml
@@ -120,7 +121,7 @@ def main():
     export_json = {}
     # append file with new version if already exists
     if args.generate_report and os.path.isfile(args.report_filename):
-        export_json = json.load(open(args.report_filename, "r"))
+        export_json = json.load(open(args.report_filename+".json", "r"))
     export_json[args.feature_version] = {}
 
     builder = create_builder(args.gcc_tools_base, elf_file=args.elf_file, src_root=args.src_root,
@@ -133,6 +134,7 @@ def main():
         export_json[args.feature_version]["stack_reports"] = builder.collector.report_max_static_stack_usages_from_function_names(
             args.report_max_static_stack_usage, report_type=args.report_type
         )
+        export_json[args.feature_version]["timestamp"] = datetime.datetime.now().isoformat()
         json.dump(export_json, open(args.report_filename+".json", "w+"), ensure_ascii=False, indent=4)
 
     renderers.register_jinja_filters(app.jinja_env)
