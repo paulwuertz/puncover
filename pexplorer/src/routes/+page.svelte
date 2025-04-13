@@ -19,7 +19,9 @@
     let selected_path = $state("/");
     let selected_versions_to_compare = $state(null);
     let selected_symbols = $state({});
+    let selected_thread_stat = $state({});
     let selected_symbols_to_compare = $state({});
+    let selected_thread_stat_to_compare = $state({});
     let symbols_to_show = $state({});
     let currentYear = $state(0);
     let function_table_data = $state([]);
@@ -75,11 +77,13 @@
     const updateSelectedSymbols = () => {
         selected_symbols = symbolsToMap(symbols[selected_version]["symbols"]);
         selected_symbols_to_compare = symbolsToMap(symbols[selected_versions_to_compare]["symbols"]);
+        selected_thread_stat = symbols[selected_version]["stack_reports"];
+        selected_thread_stat_to_compare = symbols[selected_versions_to_compare]["stack_reports"];
 
         let symKey = symMapToSymNameSet(selected_symbols);
         let symKey_ref = symMapToSymNameSet(selected_symbols_to_compare);
-        console.log(symKey);
-        console.log(symKey_ref);
+        console.log("selected_thread_stat "+JSON.stringify(symbols[selected_version]["stack_reports"]));
+        console.log("selected_thread_stat_to_compare "+JSON.stringify(symbols[selected_versions_to_compare]["stack_reports"]));
 
         let newSymbols = Object.keys(Object.fromEntries(symKey.difference(symKey_ref).entries()));
         let deletedSymbols = Object.keys(Object.fromEntries(symKey_ref.difference(symKey).entries()));
@@ -240,7 +244,7 @@
             }
         }
     });
-    $inspect(function_table_data);
+    $inspect(selected_thread_stat);
     $inspect(currentYear);
 </script>
 
@@ -296,6 +300,22 @@
                 <li>...static RAM size is {Object.values(symbols_to_show).filter((e) => {return e["d_size"] && e["type"] === "variable";}).reduce((acc, b) => acc  + b["d_size"], 0)} bytes</li>
                 <li>...stack size is {Object.values(symbols_to_show).filter((e) => {return e["d_stack"];}).reduce((acc, b) => acc + b["d_stack"], 0)} bytes</li>
             </ul>
+
+            {#key selected_thread_stat}
+            <h3>Thread stats</h3> {console.log(selected_thread_stat)}
+
+            <p>From {selected_version} to {selected_versions_to_compare} the change in...</p>
+            <ul>
+                {#each Object.keys(selected_thread_stat) as thread_name (thread_name)}
+                <li>
+                    ...<b>{thread_name}'s</b> static stack usage is
+                    {selected_thread_stat[thread_name].max_static_stack_size - selected_thread_stat_to_compare[thread_name].max_static_stack_size} bytes -
+                    now at {selected_thread_stat[thread_name].max_static_stack_size} / {selected_thread_stat[thread_name].max_stack_size}
+                </li>
+                {/each}
+            </ul>
+            {/key}
+
             <h3>Function symbols for {selected_version}</h3>
 
             <Table>
