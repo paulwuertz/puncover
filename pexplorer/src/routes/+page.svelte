@@ -3,21 +3,16 @@
     import { base } from '$app/paths';
     import { page } from '$app/stores';
     import { browser } from '$app/environment';
-    import { writable } from "svelte/store"
+    import { writable } from "svelte/store";
     // ui stuff
     import { DataTable } from '@careswitch/svelte-data-table';
     import { Button, Col, Container, Input, Row, Table } from '@sveltestrap/sveltestrap';
 
+	import { symbols } from './symbols.svelte.js';
+
     let files = $state();
     let elfDataProvided = $state(false);
-    let symbols = $state({});
-    let versions = $derived(Object.keys(symbols));
-    let selected_version = $state(null);
-    let number_of_sybols = $derived.by((symbols, selected_version) => {
-		return (!selected_version) ? 0 : symbols[selected_version].lenght;
-	});
-    let selected_path = $state("/");
-    let selected_versions_to_compare = $state(null);
+    let versions = $derived(Object.keys(symbols.symbols));
     let selected_symbols = $state({});
     let selected_thread_stat = $state({});
     let selected_symbols_to_compare = $state({});
@@ -75,16 +70,13 @@
     }
 
     const updateSelectedSymbols = () => {
-        selected_symbols = symbolsToMap(symbols[selected_version]["symbols"]);
-        selected_symbols_to_compare = symbolsToMap(symbols[selected_versions_to_compare]["symbols"]);
-        selected_thread_stat = symbols[selected_version]["stack_reports"];
-        selected_thread_stat_to_compare = symbols[selected_versions_to_compare]["stack_reports"];
+        selected_symbols = symbolsToMap(symbols.symbols[symbols.selected_version]["symbols"]);
+        selected_symbols_to_compare = symbolsToMap(symbols.symbols[symbols.selected_versions_to_compare]["symbols"]);
+        selected_thread_stat = symbols.symbols[symbols.selected_version]["stack_reports"];
+        selected_thread_stat_to_compare = symbols.symbols[symbols.selected_versions_to_compare]["stack_reports"];
 
         let symKey = symMapToSymNameSet(selected_symbols);
         let symKey_ref = symMapToSymNameSet(selected_symbols_to_compare);
-        console.log("selected_thread_stat "+JSON.stringify(symbols[selected_version]["stack_reports"]));
-        console.log("selected_thread_stat_to_compare "+JSON.stringify(symbols[selected_versions_to_compare]["stack_reports"]));
-
         let newSymbols = Object.keys(Object.fromEntries(symKey.difference(symKey_ref).entries()));
         let deletedSymbols = Object.keys(Object.fromEntries(symKey_ref.difference(symKey).entries()));
 
@@ -101,7 +93,6 @@
         }
         for (const symPath of Object.keys(selected_symbols)) {
             if(deletedSymbols.includes(symPath)){
-                console.log(`${symPath} delted - skip`);
                 continue;
             }
             let shouldAdd = false;
@@ -159,12 +150,12 @@
     };
 
     const updateSelectedVersion = () => {
-        localStorage.selected_version = selected_version;
+        localStorage.selected_version = symbols.selected_version;
         updateSelectedSymbols();
     };
 
     const updateSelectedVersionsToCompare = () => {
-        localStorage.selected_versions_to_compare = selected_versions_to_compare;
+        localStorage.selected_versions_to_compare = symbols.selected_versions_to_compare;
         updateSelectedSymbols();
     };
 
@@ -189,7 +180,7 @@
             // Read the file
             const reader = new FileReader();
             reader.onload = () => {
-                symbols = JSON.parse(reader.result);
+                symbols.symbols = JSON.parse(reader.result);
             };
             reader.onerror = () => {
                 showMessage("Error reading the file. Please try again.", "error");
@@ -200,20 +191,21 @@
 
     onMount(async () => {
         if (browser) {
-            currentYear = (new Date().getFullYear());
+            currentYear = JSON.stringify(new Date().getFullYear());
             // load elf data
             const hasElfURLData = $page.url.searchParams.has('elfURLData');
             const storedElfURLData = localStorage.getItem("lastOpenElfURL");
             const elfUrl = (hasElfURLData) ? decodeURIComponent($page.url.searchParams.get('elfURLData'))
                                            : storedElfURLData;
-            if (elfUrl) {
+            if (elfUrl && Object.keys(symbols.symbols).length == 0) {
                 // download data
                 const response = await fetch(elfUrl);
                 const data = await response.json();
                 // persist
                 localStorage.lastOpenElfURL = elfUrl;
                 localStorage.elfStorageDate = new Date().toISOString();
-                symbols = data;
+                symbols.symbols = data;
+                console.log("Loaded elf data");
                 //alert(JSON.stringify(symbols))
                 elfDataProvided = true;
             }
@@ -222,20 +214,18 @@
             if (hasSelectedVersion) {
                 const selected_version_param = $page.url.searchParams.get('selected_version')
                 localStorage.selected_version = selected_version_param;
-                selected_version = selected_version_param;
+                symbols.selected_version = selected_version_param;
             } else if (localStorage.getItem("selected_version")) {
-                selected_version = localStorage.getItem("selected_version");
-                // alert("selected_version "+selected_version)
+                symbols.selected_version = localStorage.getItem("selected_version");
             }
             // version of the elf to compare to
-            const hasSelectedVersionToCompare = $page.url.searchParams.has('selected_versions_to_compare');
+            const hasSelectedVersionToCompare = $page.url.searchParams.has('symbols.selected_versions_to_compare');
             if (hasSelectedVersionToCompare) {
-                const selected_version_to_compare_param = $page.url.searchParams.get('selected_versions_to_compare')
+                const selected_version_to_compare_param = $page.url.searchParams.get('symbols.selected_versions_to_compare')
                 localStorage.selected_versions_to_compare = selected_version_to_compare_param;
-                selected_versions_to_compare = selected_version_to_compare_param;
+                symbols.selected_versions_to_compare = selected_version_to_compare_param;
             } else if (localStorage.getItem("selected_versions_to_compare")) {
-                selected_versions_to_compare = localStorage.getItem("selected_versions_to_compare");
-                // alert("selected_versions_to_compare "+selected_versions_to_compare)
+                symbols.selected_versions_to_compare = localStorage.getItem("selected_versions_to_compare");
             }
             // localstorage has 5-10 MB max so split TODO test compression...
             // let versions = Object.keys(data);
@@ -248,16 +238,16 @@
             //     elfDataProvided = false;
             // }
             else {
-                alert("No ELF data URL passed or stored, please upload it as a file then :)")
+                console.log("No ELF data URL passed or stored, please upload it as a file then :)");
             }
-            if(elfUrl && selected_version && selected_versions_to_compare)
+            if(elfUrl && symbols.selected_version && symbols.selected_versions_to_compare)
             {
                 updateSelectedSymbols()
             }
         }
     });
-    $inspect(selected_thread_stat);
-    $inspect(currentYear);
+    // $inspect(selected_thread_stat);
+    // $inspect(currentYear);
 </script>
 
 <style>
@@ -273,7 +263,7 @@
         <Col>
             Select a version of the .elf you want to see:
             <Input type="select"
-                bind:value={selected_version}
+                bind:value={symbols.selected_version}
                 on:change={updateSelectedVersion}
             >
                 {#each versions as version}
@@ -284,7 +274,7 @@
         <Col>
             Select a version of the .elf you want to compare against.
             <Input type="select"
-                bind:value={selected_versions_to_compare}
+                bind:value={symbols.selected_versions_to_compare}
                 on:change={updateSelectedVersionsToCompare}
             >
                 {#each versions as version}
@@ -300,13 +290,13 @@
         {#if !elfDataProvided && files && !files[0]}
             <label for="elfinput">Upload a puncover .json file:</label>
             <input accept="*/json" bind:files id="elfinput" name="elfinput" type="file" />
-        {:else if !selected_version}
+        {:else if !symbols.selected_version}
             <h3>Select a version to browse elf symbols :)</h3>
         {:else}
 
             <h3>Summary</h3>
 
-            <p>From {selected_version} to {selected_versions_to_compare} the change in...</p>
+            <p>From {symbols.selected_version} to {symbols.selected_versions_to_compare} the change in...</p>
             <ul>
                 <li>...flash/code size is {Object.values(symbols_to_show).filter((e) => {return e["d_size"] && e["type"] === "function";}).reduce((acc, b) => acc  + b["d_size"], 0)} bytes</li>
                 <li>...static RAM size is {Object.values(symbols_to_show).filter((e) => {return e["d_size"] && e["type"] === "variable";}).reduce((acc, b) => acc  + b["d_size"], 0)} bytes</li>
@@ -314,9 +304,9 @@
             </ul>
 
             {#key selected_thread_stat}
-            <h3>Thread stats</h3> {console.log(selected_thread_stat)}
+            <h3>Thread stats</h3>
 
-            <p>From {selected_version} to {selected_versions_to_compare} the change in...</p>
+            <p>From {symbols.selected_version} to {symbols.selected_versions_to_compare} the change in...</p>
             <ul>
                 {#each Object.keys(selected_thread_stat) as thread_name (thread_name)}
                 <li>
@@ -328,7 +318,7 @@
             </ul>
             {/key}
 
-            <h3>Function symbols for {selected_version}</h3>
+            <h3>Function symbols for {symbols.selected_version}</h3>
 
             <Table>
                 <thead>
@@ -368,7 +358,7 @@
                 </tbody>
             </Table>
 
-            <h3>Variable symbols for {selected_version}</h3>
+            <h3>Variable symbols for {symbols.selected_version}</h3>
 
             <Table>
                 <thead>

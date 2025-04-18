@@ -19,7 +19,7 @@
             <NavItem><NavLink href="{base}/symbols">Symbols</NavLink></NavItem>
             <NavItem><NavLink href="{base}/threads">Thread (TODO)</NavLink></NavItem>
             <NavItem><NavLink href="{base}/interrupts">Interrupts (TODO)</NavLink></NavItem>
-            <NavItem><NavLink href="{base}/diff">Compare Versions</NavLink></NavItem>
+            <NavItem><NavLink href="{base}/">Compare Versions</NavLink></NavItem>
             <NavItem><NavLink href="{base}/settings">Settings (TODO)</NavLink></NavItem>
             <NavItem><NavLink href="{base}/about">About</NavLink></NavItem>
         </Nav>
