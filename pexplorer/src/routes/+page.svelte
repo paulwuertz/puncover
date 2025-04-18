@@ -126,9 +126,6 @@
             }
         }
 
-        // alert(newSymbols.length)
-        // alert(deletedSymbols.length)
-
         function_table_data = symbolsToFunctionMap(symbols_to_show);
         variable_table_data = symbolsToVariableMap(symbols_to_show);
         //alert(function_table_data.length+" !! "+variable_table_data.length)
@@ -154,7 +151,22 @@
                 { id: 'd_size', key: 'd_size', name: 'Δ size' },
             ]
         });
-    }
+    };
+
+
+    const updateElfDataURL = () => {
+            // TODO
+    };
+
+    const updateSelectedVersion = () => {
+        localStorage.selected_version = selected_version;
+        updateSelectedSymbols();
+    };
+
+    const updateSelectedVersionsToCompare = () => {
+        localStorage.selected_versions_to_compare = selected_versions_to_compare;
+        updateSelectedSymbols();
+    };
 
 	$effect(() => {
 		if (files) {
@@ -262,7 +274,7 @@
             Select a version of the .elf you want to see:
             <Input type="select"
                 bind:value={selected_version}
-                on:change={updateSelectedSymbols}
+                on:change={updateSelectedVersion}
             >
                 {#each versions as version}
                     <option>{version}</option>
@@ -273,7 +285,7 @@
             Select a version of the .elf you want to compare against.
             <Input type="select"
                 bind:value={selected_versions_to_compare}
-                on:change={updateSelectedSymbols}
+                on:change={updateSelectedVersionsToCompare}
             >
                 {#each versions as version}
                     <option>{version}</option>
