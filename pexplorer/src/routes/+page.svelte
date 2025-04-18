@@ -8,7 +8,7 @@
     import { DataTable } from '@careswitch/svelte-data-table';
     import { Button, Col, Container, Input, Row, Table } from '@sveltestrap/sveltestrap';
 
-    let files = $state({});
+    let files = $state();
     let elfDataProvided = $state(false);
     let symbols = $state({});
     let versions = $derived(Object.keys(symbols));
@@ -297,7 +297,7 @@
       <hr>
 
     <Container fluid>
-        {#if !elfDataProvided && !files[0]}
+        {#if !elfDataProvided && files && !files[0]}
             <label for="elfinput">Upload a puncover .json file:</label>
             <input accept="*/json" bind:files id="elfinput" name="elfinput" type="file" />
         {:else if !selected_version}
