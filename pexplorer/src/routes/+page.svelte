@@ -10,6 +10,11 @@
 
 	import { symbols } from './symbols.svelte.js';
 
+	let { data } = $props();
+    symbols.symbols = data.symbols;
+    symbols.selected_version = data.selected_version;
+    symbols.selected_versions_to_compare = data.selected_versions_to_compare;
+    symbols.elfDataProvided = data.elfDataProvided;
     let files = $state();
     let versions = $derived(Object.keys(symbols.symbols));
     let selected_symbols = $state({});
@@ -198,6 +203,8 @@
                 if(symbols.selected_version && symbols.selected_versions_to_compare)
                 {
                     updateSelectedSymbols();
+                } else {
+                    console.log("ELF loaded, please select which version to show :)");
                 }
             }
         }
