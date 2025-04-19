@@ -11,7 +11,6 @@
 	import { symbols } from './symbols.svelte.js';
 
     let files = $state();
-    let elfDataProvided = $state(false);
     let versions = $derived(Object.keys(symbols.symbols));
     let selected_symbols = $state({});
     let selected_thread_stat = $state({});
@@ -193,56 +192,13 @@
         if (browser) {
             currentYear = JSON.stringify(new Date().getFullYear());
             // load elf data
-            const hasElfURLData = $page.url.searchParams.has('elfURLData');
-            const storedElfURLData = localStorage.getItem("lastOpenElfURL");
-            const elfUrl = (hasElfURLData) ? decodeURIComponent($page.url.searchParams.get('elfURLData'))
-                                           : storedElfURLData;
-            if (elfUrl && Object.keys(symbols.symbols).length == 0) {
-                // download data
-                const response = await fetch(elfUrl);
-                const data = await response.json();
-                // persist
-                localStorage.lastOpenElfURL = elfUrl;
-                localStorage.elfStorageDate = new Date().toISOString();
-                symbols.symbols = data;
-                console.log("Loaded elf data");
-                //alert(JSON.stringify(symbols))
-                elfDataProvided = true;
-            }
-            // version of the elf
-            const hasSelectedVersion = $page.url.searchParams.has('selected_version');
-            if (hasSelectedVersion) {
-                const selected_version_param = $page.url.searchParams.get('selected_version')
-                localStorage.selected_version = selected_version_param;
-                symbols.selected_version = selected_version_param;
-            } else if (localStorage.getItem("selected_version")) {
-                symbols.selected_version = localStorage.getItem("selected_version");
-            }
-            // version of the elf to compare to
-            const hasSelectedVersionToCompare = $page.url.searchParams.has('symbols.selected_versions_to_compare');
-            if (hasSelectedVersionToCompare) {
-                const selected_version_to_compare_param = $page.url.searchParams.get('symbols.selected_versions_to_compare')
-                localStorage.selected_versions_to_compare = selected_version_to_compare_param;
-                symbols.selected_versions_to_compare = selected_version_to_compare_param;
-            } else if (localStorage.getItem("selected_versions_to_compare")) {
-                symbols.selected_versions_to_compare = localStorage.getItem("selected_versions_to_compare");
-            }
-            // localstorage has 5-10 MB max so split TODO test compression...
-            // let versions = Object.keys(data);
-            // localStorage.elfVersions = versions;
-            // for (const version of versions) {
-            //     localStorage[version] = JSON.stringify(data[version]);
-            // }
-            // else if (localStorage.getItem("elfURLData")) {
-            //     alert("elfURLData found in storage"+localStorage.getItem("elfURLData"))
-            //     elfDataProvided = false;
-            // }
-            else {
+            if (Object.keys(symbols.symbols).length == 0) {
                 console.log("No ELF data URL passed or stored, please upload it as a file then :)");
-            }
-            if(elfUrl && symbols.selected_version && symbols.selected_versions_to_compare)
-            {
-                updateSelectedSymbols()
+            } else {
+                if(symbols.selected_version && symbols.selected_versions_to_compare)
+                {
+                    updateSelectedSymbols();
+                }
             }
         }
     });
@@ -287,7 +243,7 @@
       <hr>
 
     <Container fluid>
-        {#if !elfDataProvided && files && !files[0]}
+        {#if !symbols.elfDataProvided && files && !files[0]}
             <label for="elfinput">Upload a puncover .json file:</label>
             <input accept="*/json" bind:files id="elfinput" name="elfinput" type="file" />
         {:else if !symbols.selected_version}
