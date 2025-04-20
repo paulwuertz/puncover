@@ -40,10 +40,10 @@ export async function load({ url }) {
         componentData.selected_version = localStorage.getItem("selected_version");
     }
     // version of the elf to compare to
-    const hasSelectedVersionToCompare = url.searchParams.has('symbols.selected_versions_to_compare');
+    const hasSelectedVersionToCompare = url.searchParams.has('selected_versions_to_compare');
     if (hasSelectedVersionToCompare)
     {
-        const selected_version_to_compare_param = url.searchParams.get('symbols.selected_versions_to_compare')
+        const selected_version_to_compare_param = url.searchParams.get('selected_versions_to_compare')
         localStorage.selected_versions_to_compare = selected_version_to_compare_param;
         componentData.selected_versions_to_compare = selected_version_to_compare_param;
     }
