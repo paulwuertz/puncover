@@ -20,12 +20,13 @@
     <NavbarToggler on:click={() => (isOpen = !isOpen)} />
     <Collapse {isOpen} navbar expand="md" on:update={handleUpdate}>
         <Nav class="ms-auto" navbar>
-            <NavItem><NavLink href="{base}/symbols">Symbols</NavLink></NavItem>
-            <NavItem><NavLink href="{base}/threads">Thread (TODO)</NavLink></NavItem>
-            <NavItem><NavLink href="{base}/interrupts">Interrupts (TODO)</NavLink></NavItem>
+            <NavItem><NavLink href="{base}/">Browse (TODO)</NavLink></NavItem>
             <NavItem><NavLink href="{base}/">Compare Versions</NavLink></NavItem>
-            <NavItem><NavLink href="{base}/settings">Settings (TODO)</NavLink></NavItem>
-            <NavItem><NavLink href="{base}/about">About</NavLink></NavItem>
+            <NavItem><NavLink href="{base}/">Interrupts (TODO)</NavLink></NavItem>
+            <NavItem><NavLink href="{base}/symbols">Symbols</NavLink></NavItem>
+            <NavItem><NavLink href="{base}/">Thread (TODO)</NavLink></NavItem>
+            <NavItem><NavLink href="{base}/">Settings (TODO)</NavLink></NavItem>
+            <NavItem><NavLink href="{base}/">About (TODO)</NavLink></NavItem>
         </Nav>
     </Collapse>
   </Navbar>
