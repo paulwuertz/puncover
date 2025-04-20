@@ -22,7 +22,6 @@
     let selected_symbols_to_compare = $state({});
     let selected_thread_stat_to_compare = $state({});
     let symbols_to_show = $state({});
-    let currentYear = $state(0);
     let function_table_data = $state([]);
     let variable_table_data = $state([]);
     let function_table = $derived(new DataTable({
@@ -195,7 +194,6 @@
 
     onMount(async () => {
         if (browser) {
-            currentYear = JSON.stringify(new Date().getFullYear());
             // load elf data
             if (Object.keys(symbols.symbols).length == 0) {
                 console.log("No ELF data URL passed or stored, please upload it as a file then :)");
@@ -362,18 +360,6 @@
             </Table>
         {/if}
     </Container>
-
-    <!-- {#if selected_version && selected_path === "/"}
-    <Button color="warning" href="#/all">Show all symbols</Button>
-    {/if} -->
-
-    <hr>
-
-    <div id="page-footer">
-        brought to you with &#128150;
-        by <a href="https://twitter.com/hbehrens">Heiko Behrens</a>, Paul Würtz
-        <span class="secondary">– MIT license, copyright &copy; 2014-{{ currentYear }}</span>
-    </div>
 </div>
 
 

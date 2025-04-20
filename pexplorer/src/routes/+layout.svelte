@@ -34,3 +34,11 @@
 </nav>
 
 {@render children()}
+
+<hr>
+
+<div id="page-footer">
+    brought to you with &#128150;
+    by <a href="https://twitter.com/hbehrens">Heiko Behrens</a>, Paul Würtz
+    <span class="secondary">– MIT license, copyright &copy; 2014-2025</span>
+</div>
