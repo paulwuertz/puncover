@@ -1,14 +1,32 @@
+
 <script>
+    /**
+    * Copyright -
+    *  Milosch Meriac (2016)
+    *  Jan Jongboom (2017)
+    *  Liyou Zhou (2017)
+    *  Paul Würtz (2025)
+    *
+    *  Licensed under the Apache License, Version 2.0 (the "License");
+    *  you may not use this file except in compliance with the License.
+    *  You may obtain a copy of the License at
+    *      http://www.apache.org/licenses/LICENSE-2.0
+    *  Unless required by applicable law or agreed to in writing, software
+    *  distributed under the License is distributed on an "AS IS" BASIS,
+    *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    *  See the License for the specific language governing permissions and
+    *  limitations under the License.
+    */
     import { onMount } from 'svelte';
     import { base } from '$app/paths';
     import { page } from '$app/stores';
     import { browser } from '$app/environment';
     import { writable } from "svelte/store";
     // ui stuff
-    import { DataTable } from '@careswitch/svelte-data-table';
-    import { Badge, Button, Col, Container, Input, Row, Table } from '@sveltestrap/sveltestrap';
+    import * as d3 from 'd3';
+    import { Badge, Button, Col, Container, Input, Row } from '@sveltestrap/sveltestrap';
 
-	import { symbols } from '../symbols.svelte.js';
+	import { symbols } from './symbols.svelte.js';
 
 	let { data } = $props();
     symbols.symbols = data.symbols;
@@ -16,29 +34,10 @@
     symbols.selected_versions_to_compare = data.selected_versions_to_compare;
     symbols.elfDataProvided = data.elfDataProvided;
     let files = $state();
-    let versions = $derived(Object.keys(symbols.symbols));
+    let versions = $derived(Object.keys(symbols.symbols || []));
     let selected_symbols = $state({});
     let function_table_data = $state([]);
     let variable_table_data = $state([]);
-    let function_table = $derived(new DataTable({
-        pageSize: 9999, // TODO
-		data: function_table_data,
-		columns: [
-			{ id: 'name', key: 'display_name', name: 'Name' },
-            { id: 'remark', key: 'remark', name: 'Remarks' },
-			{ id: 'size', key: 'size', name: 'Code size' },
-			{ id: 'stack_size', key: 'stack_size', name: 'Stack size'},
-		]
-	}));
-    let variable_table = $derived(new DataTable({
-        pageSize: 999999, // TODO
-		data: variable_table_data,
-		columns: [
-			{ id: 'name', key: 'display_name', name: 'Name' },
-            { id: 'remark', key: 'remark', name: 'Remarks' },
-			{ id: 'size', key: 'size', name: 'Static size' },
-		]
-	}));
 
     let symbolsToMap = (syms) => {
         let symMap = {};
@@ -127,7 +126,7 @@
     onMount(async () => {
         if (browser) {
             // load elf data
-            if (Object.keys(symbols.symbols).length == 0) {
+            if (symbols.symbols && Object.keys(symbols.symbols).length == 0) {
                 console.log("No ELF data URL passed or stored, please upload it as a file then :)");
             } else {
                 if(symbols.selected_version && symbols.selected_versions_to_compare)
