@@ -6,7 +6,7 @@
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
-        "deploy": "npm run build && touch build/.nojekyll && touch build/stat__data.json && npx gh-pages -d build",
+		"deploy": "npm run build && touch build/.nojekyll && npx gh-pages -d build",
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''"
 	},
@@ -21,7 +21,7 @@
 	"dependencies": {
 		"@careswitch/svelte-data-table": "^0.6.3",
 		"@sveltestrap/sveltestrap": "^7.1.0",
-		"d3": "^7.9.0",
+		"d3": "^3.5.16",
 		"gh-pages": "^6.3.0"
 	}
 }
