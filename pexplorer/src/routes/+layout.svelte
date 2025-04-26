@@ -21,7 +21,7 @@
     <Collapse {isOpen} navbar expand="md" on:update={handleUpdate}>
         <Nav class="ms-auto" navbar>
             <NavItem><NavLink href="{base}/">Browse (TODO)</NavLink></NavItem>
-            <NavItem><NavLink href="{base}/">Compare Versions</NavLink></NavItem>
+            <NavItem><NavLink href="{base}/diff">Compare Versions</NavLink></NavItem>
             <NavItem><NavLink href="{base}/">Interrupts (TODO)</NavLink></NavItem>
             <NavItem><NavLink href="{base}/symbols">Symbols</NavLink></NavItem>
             <NavItem><NavLink href="{base}/">Thread (TODO)</NavLink></NavItem>
