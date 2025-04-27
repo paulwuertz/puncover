@@ -3,7 +3,7 @@ export const prerender = false;
 export const ssr = false;
 export const csr = true;
 
-export async function load({ url }) {
+export async function load({ fetch, url }) {
     // load elf data
     let componentData = {};
 
@@ -20,12 +20,12 @@ export async function load({ url }) {
         localStorage.lastOpenElfURL = elfUrl;
         localStorage.elfStorageDate = new Date().toISOString();
         componentData.symbols = data;
-        console.log("Loaded elf data");
+        console.log("Loaded elf data", elfUrl, Object.keys(componentData.symbols).length);
         componentData.elfDataProvided = true;
     }
     else
     {
-        console.log("Loaded elf data", elfUrl, Object.keys(symbols.symbols).length);
+        console.log("No elf loaded data");
     }
     // version of the elf
     const hasSelectedVersion = url.searchParams.has('selected_version');
