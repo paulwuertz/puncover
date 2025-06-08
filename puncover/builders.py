@@ -25,7 +25,7 @@ class Builder:
         self.collector.add_dynamic_calls(self.dynamic_calls)
         self.collector.parse_su_dir(self.get_su_dir())
         self.build_call_trees()
-        if self.output_db:
+        if self.export_json:
             self.collector.export_to_json(self.feature_version, export_json_path=self.export_json)
 
     def needs_build(self):
