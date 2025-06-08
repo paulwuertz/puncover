@@ -102,7 +102,7 @@ def main():
                         help='port the HTTP server runs on')
     parser.add_argument('--host', default='127.0.0.1',
                         help='host IP the HTTP server runs on')
-    parser.add_argument('--no-open-browser', action='store_true',
+    parser.add_argument('--open_interactive_browser_session', type=bool,
                         help="don't automatically open a browser window")
     parser.add_argument('--no-interactive', '--no_interactive', action='store_true',
                         help="don't start the interactive website to browse the elf analysis")
@@ -135,7 +135,7 @@ def main():
             args.report_max_static_stack_usage, report_type=args.report_type
         )
         export_json[args.feature_version]["timestamp"] = datetime.datetime.now().isoformat()
-        json.dump(export_json, open(args.report_filename+".json", "w+"), ensure_ascii=False, indent=4)
+        json.dump(export_json, open(args.report_filename+".json", "w+"), ensure_ascii=False)
 
     renderers.register_jinja_filters(app.jinja_env)
     renderers.register_urls(app, builder.collector, user_defined_stack_report=stack_report)
@@ -151,12 +151,11 @@ def main():
 
         # Open a browser window, only if this is the first instance of the server
         # from https://stackoverflow.com/a/63216793
-        if not args.no_open_browser and not os.environ.get("WERKZEUG_RUN_MAIN"):
+        if not args.open_interactive_browser_session and not os.environ.get("WERKZEUG_RUN_MAIN"):
             # wait one second before starting, so the flask server is ready and we
             # don't see a 404 for a moment first
             Timer(1, open_browser, kwargs={"host":args.host, "port":args.port}).start()
-
-        app.run(host=args.host, port=args.port)
+            app.run(host=args.host, port=args.port)
 
 
 if __name__ == '__main__':
