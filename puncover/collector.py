@@ -790,28 +790,7 @@ class Collector:
                     pass
                 else:
                     print("unknown key "+ sys_ele)
-
+            # add flatten symbol to list
             symbols += [non_circular_sym]
-            command = (f"""
-            INSERT INTO 'symbol' (
-                feature_version, full_symbol_path, name, base_file,
-                line, asm, type, address, size, file, callers, callees,
-                called_from_other_file, calls_float_function, display_name,
-                stack_size, stack_qualifiers, deepest_callee_tree, deepest_caller_tree,
-                deepest_callee_tree_size, deepest_caller_tree_size
-            ) VALUES (
-                '{feature_version}', '{full_path}',
-                '{non_circular_sym.get("name", "?")}', '{non_circular_sym.get("base_file", "?")}', {non_circular_sym.get("line", 0)},
-                '{"\\n".join(non_circular_sym.get("asm", []))}','{non_circular_sym.get("type", "?")}',
-                {int(non_circular_sym.get("address", 0), 16)}, {non_circular_sym.get("size", 0)}, '{non_circular_sym.get("file", "?")}',
-                '{non_circular_sym.get("callers", [])}', '{non_circular_sym.get("callees", [])}',
-                '{non_circular_sym.get("called_from_other_file", "false")}', '{non_circular_sym.get("calls_float_function", "false")}',
-                '{non_circular_sym.get("display_name", "?")}', '{non_circular_sym.get("stack_size", None)}', '{non_circular_sym.get("stack_qualifiers", None)}',
-                '{non_circular_sym.get("deepest_callee_tree", [])}', '{non_circular_sym.get("deepest_caller_tree", [])}',
-                '{non_circular_sym.get("deepest_callee_tree_size", 0)}', '{non_circular_sym.get("deepest_caller_tree_size", 0)}'
-            )""")
-            #print(command)
-            #self.db_cur.execute(command)
-            #self.db_con.commit()
         # if file exist
         export_json[feature_version]["symbols"] = symbols
