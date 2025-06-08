@@ -2,7 +2,6 @@ import fnmatch
 import json
 import os
 import re
-import sqlite3
 import sys
 import pathlib
 
@@ -72,7 +71,6 @@ class Collector:
         self.symbols_by_qualified_name = None
         self.symbols_by_name = None
         self.user_defined_stack_report = None
-        self.db_con, self.db_cur = self.create_versioned_elf_db(output_db_path)
 
     def reset(self):
         self.symbols = {}
@@ -85,20 +83,6 @@ class Collector:
             html_path = pathlib.Path.joinpath(symbol[PATH], symbol[NAME])
             return str(html_path)
         return symbol[NAME]
-
-    def get_symbol_from_db(self, name, version, qualified):
-        name_column = "full_symbol_path" if qualified else "name"
-        versioned_symbol = self.db_cur.execute(f"SELECT * from symbol WHERE feature_version=? AND {name_column}=?", (version, name))
-        symbol = dict(zip([desc[0] for desc in self.db_cur.description], versioned_symbol.fetchone()))
-        # json strings to dicts
-        symbol["deepest_callee_tree"] = json.loads(symbol["deepest_callee_tree"])
-        symbol["deepest_caller_tree"] = json.loads(symbol["deepest_caller_tree"])
-        return symbol
-
-    def get_all_symbols_from_db(self, version):
-        versioned_symbol = self.db_cur.execute(f"SELECT * from symbol WHERE feature_version=? ", (version, ))
-        symbol = [dict(zip([desc[0] for desc in self.db_cur.description], row)) for row in versioned_symbol.fetchall()]
-        return symbol
 
     def symbol(self, name, qualified=True, version=None):
         self.build_symbol_name_index()
@@ -661,8 +645,8 @@ class Collector:
             print(f"ERROR - requested report type {report_type} not supported, select one of {SUPPORTED_REPORT_TYPES}")
             return
 
-        function_names = [f.split(":")[0] if ":" else f for f in function_names_and_opt_max_stack]
-        function_max_stacks = {f.split(":")[0]: f.split(":")[1] if ":" else None for f in function_names_and_opt_max_stack}
+        function_names = [f.split(":::")[0] if ":::" else f for f in function_names_and_opt_max_stack]
+        function_max_stacks = {f.split(":::")[0]: f.split(":::")[1] if ":::" else None for f in function_names_and_opt_max_stack}
 
         for sym in self.symbols.values():
             display_name = sym["display_name"]
@@ -706,49 +690,7 @@ class Collector:
             callee = self.symbol(name=callee_str, qualified=False)
             self.add_function_call(caller, callee)
 
-    def create_versioned_elf_db(self, db_path):
-        print(f"Open {db_path} to save symbols")
-        con = sqlite3.connect(db_path, check_same_thread=False)
-        cur = con.cursor()
-        cur.execute("""
-            CREATE TABLE IF NOT EXISTS symbol(
-                feature_version TEXT,
-                full_symbol_path TEXT,
-                name TEXT,
-                base_file TEXT,
-                line INTEGER,
-                asm TEXT,
-                type TEXT,
-                address INTEGER,
-                size INTEGER,
-                file TEXT,
-                callers TEXT,
-                callees TEXT,
-                called_from_other_file INTEGER,
-                calls_float_function INTEGER,
-                display_name TEXT,
-                stack_size INTEGER,
-                stack_qualifiers TEXT,
-                deepest_callee_tree TEXT,
-                deepest_caller_tree TEXT,
-                deepest_callee_tree_size INTEGER,
-                deepest_caller_tree_size INTEGER,
-                PRIMARY KEY (feature_version, full_symbol_path)
-            )
-        """)
-        return con, cur
-
-    def get_list_of_features_and_versions_in_db(self, feature_version):
-        features_and_versions = self.db_cur.execute("SELECT DISTINCT feature_version from symbol;")
-        if (feature_version) in features_and_versions.fetchall():
-            print(
-                f"feature+version: {(feature_version)} already present in the exported database - "
-                "please pass a new --feature_version to save more then one set of symbols "
-                "in the same database"
-            )
-            exit(-1)
-
-    def export_output_to_db(self, feature_version, export_json):
+    def export_to_json(self, feature_version, export_json_path):
         symbols = []
         for full_path, sym in self.symbols_by_qualified_name.items():
             # if we use the plain symbols there are circular references
@@ -760,7 +702,7 @@ class Collector:
             # print(sym["name"])
             for sym_ele in sym.keys():
                 if sym_ele in [
-                    'name', 'base_file', 'line', 'asm', 'type', 'address', 'size', 'display_name',
+                    'name', 'base_file', 'line', 'type', 'address', 'size', 'display_name',
                     'called_from_other_file', 'calls_float_function', 'stack_size', 'stack_qualifiers'
                 ]:
                     non_circular_sym[sym_ele] = sym[sym_ele]
@@ -789,8 +731,8 @@ class Collector:
                     # todo nothing?
                     pass
                 else:
-                    print("unknown key "+ sys_ele)
+                    print("unknown key " + sym_ele)
             # add flatten symbol to list
             symbols += [non_circular_sym]
         # if file exist
-        export_json[feature_version]["symbols"] = symbols
+        export_json_path[feature_version]["symbols"] = symbols

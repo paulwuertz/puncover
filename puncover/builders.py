@@ -17,8 +17,6 @@ class Builder:
         self.files[path] = 0 if store_empty else os.path.getmtime(path)
 
     def build(self):
-        if self.output_db:
-            self.collector.get_list_of_features_and_versions_in_db(self.feature_version)
         for f in self.files.keys():
             self.store_file_time(f)
         self.collector.reset()
@@ -28,7 +26,7 @@ class Builder:
         self.collector.parse_su_dir(self.get_su_dir())
         self.build_call_trees()
         if self.output_db:
-            self.collector.export_output_to_db(self.feature_version, self.export_json)
+            self.collector.export_to_json(self.feature_version, export_json_path=self.export_json)
 
     def needs_build(self):
         return any([os.path.getmtime(f) > t for f,t in self.files.items()])
