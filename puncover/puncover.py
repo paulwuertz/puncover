@@ -110,6 +110,10 @@ def main():
     parser.add_argument('--report-filename', '--report_filename', default="report")
     parser.add_argument('--report-max-static-stack-usage', '--report_max_static_stack_usage', action='append',
                         help="display_name[:max_stack_size] of functions to report the worst case static stack size with i.e. bg_thread_main or bg_thread_main:1024")
+    parser.add_argument('--error_on_exceeded_stack_usage', type=bool, default=False,
+                        help="If to exit with an os.EX_CONFIG (78) error on exceededing a functions stack usage")
+    parser.add_argument('--warn_threshold_size_for_max_static_stack_usage', default=0, type=int,
+                        help='Number of bytes before exiting with os.EX_TEMPFAIL (75) as a WARNING')
     parser.add_argument('--version', action='version', version='%(prog)s ' + __version__)
     args = parser.parse_args()
 
@@ -131,11 +135,16 @@ def main():
 
     stack_report = None
     if args.generate_report:
-        export_json[args.feature_version]["stack_reports"] = builder.collector.report_max_static_stack_usages_from_function_names(
-            args.report_max_static_stack_usage, report_type=args.report_type
+        warning_threshold = args.warn_threshold_size_for_max_static_stack_usage
+        report_max_map, report_status, error_msg = builder.collector.report_max_static_stack_usages_from_function_names(
+            args.report_max_static_stack_usage, report_type=args.report_type, warning_threshold=warning_threshold
         )
+        export_json[args.feature_version]["stack_reports"] = report_max_map
         export_json[args.feature_version]["timestamp"] = datetime.datetime.now().isoformat()
         json.dump(export_json, open(args.report_filename+".json", "w+"), ensure_ascii=False)
+        if args.error_on_exceeded_stack_usage and report_status != os.EX_OK:
+            print("ERR "+error_msg)
+            exit(report_status)
 
     renderers.register_jinja_filters(app.jinja_env)
     renderers.register_urls(app, builder.collector, user_defined_stack_report=stack_report)

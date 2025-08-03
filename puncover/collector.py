@@ -636,9 +636,11 @@ class Collector:
                     self.symbols_by_qualified_name[qualified_name] = s
 
 
-    def report_max_static_stack_usages_from_function_names(self, function_names_and_opt_max_stack, report_type):
+    def report_max_static_stack_usages_from_function_names(self, function_names_and_opt_max_stack, report_type, warning_threshold):
         report_max_map = {}
-
+        WARNING_RETURN_CODE = os.EX_TEMPFAIL
+        ERROR_RETURN_CODE = os.EX_CONFIG
+        OK_RETURN_CODE = os.EX_OK
         from puncover.renderers import traverse_filter_wrapper
 
         if report_type not in SUPPORTED_REPORT_TYPES:
@@ -647,6 +649,8 @@ class Collector:
 
         function_names = [f.split(":::")[0] if ":::" else f for f in function_names_and_opt_max_stack]
         function_max_stacks = {f.split(":::")[0]: f.split(":::")[1] if ":::" else None for f in function_names_and_opt_max_stack}
+        report_status = os.EX_OK
+        reported_fn_with_stack_error = []
 
         for sym in self.symbols.values():
             display_name = sym["display_name"]
@@ -656,9 +660,10 @@ class Collector:
                 base_stack_size = sym.get("stack_size", 0)
                 max_callee_tree_stack_size = sym["deepest_callee_tree"][0]
                 max_caller_tree_stack_size = sym["deepest_caller_tree"][0]
+                max_static_stack_size = max_callee_tree_stack_size+max_caller_tree_stack_size-base_stack_size
                 function_max_stack = {
                     # -base_stack_size => is counted in callee's and caler's
-                    "max_static_stack_size": max_callee_tree_stack_size+max_caller_tree_stack_size-base_stack_size,
+                    "max_static_stack_size": max_static_stack_size,
                     "call_stack": [
                         {
                             "function":   f["display_name"],
@@ -669,7 +674,20 @@ class Collector:
                     ]
                 }
                 if display_name in function_max_stacks:
-                    function_max_stack["max_stack_size"] = int(function_max_stacks[display_name])
+                    fn_max_stack_size = int(function_max_stacks[display_name])
+                    function_max_stack["max_stack_size"] = fn_max_stack_size
+                    # errors exceeding user stack
+                    if max_static_stack_size > fn_max_stack_size:
+                        fn_err = f"{sym["display_name"]} exceed configured stack size {max_static_stack_size} > {fn_max_stack_size}"
+                        reported_fn_with_stack_error += [fn_err]
+                        report_status = ERROR_RETURN_CODE
+                    # early warnings with user threshold
+                    if max_static_stack_size > fn_max_stack_size - warning_threshold:
+                        fn_warning = f"{sym["display_name"]} close to configured stack size {max_static_stack_size} > ({fn_max_stack_size} +- {warning_threshold})"
+                        reported_fn_with_stack_error += [fn_warning]
+                    if max_static_stack_size > fn_max_stack_size - warning_threshold and report_status != ERROR_RETURN_CODE:
+                        report_status = WARNING_RETURN_CODE
+
                 report_max_map[display_name] = function_max_stack
 
         for function_name in function_names:
@@ -677,7 +695,7 @@ class Collector:
                 print(f"WARNING:  Couldn't find symbol '{function_name}' to report")
 
         self.user_defined_stack_report = report_max_map
-        return report_max_map
+        return report_max_map, report_status, "\n".join(reported_fn_with_stack_error)
 
     def add_dynamic_calls(self, dynamic_calls):
         for dynamic_call in dynamic_calls:
