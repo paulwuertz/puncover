@@ -84,13 +84,10 @@ class Collector:
             return str(html_path)
         return symbol[NAME]
 
-    def symbol(self, name, qualified=True, version=None):
+    def symbol(self, name, qualified=True):
         self.build_symbol_name_index()
-        if version:
-            return self.get_symbol_from_db(name, version, qualified)
-        else:
-            index = self.symbols_by_qualified_name if qualified else self.symbols_by_name
-            return index.get(name, None)
+        index = self.symbols_by_qualified_name if qualified else self.symbols_by_name
+        return index.get(name, None)
 
     def symbol_by_addr(self, addr):
         int_addr = int(addr, 16)
