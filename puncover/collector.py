@@ -708,7 +708,8 @@ class Collector:
 
     def export_to_json(self, feature_version, export_json_path):
         symbols = []
-        if not self.symbols_by_qualified_name: return
+        if not self.symbols_by_qualified_name:
+            self.build_symbol_name_index()
         for full_path, sym in self.symbols_by_qualified_name.items():
             # if we use the plain symbols there are circular references
             # and memory explodes into 10's of GB's serializing it so make
