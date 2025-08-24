@@ -698,6 +698,7 @@ class Collector:
         return report_max_map, report_status, "\n".join(reported_fn_with_stack_error)
 
     def add_dynamic_calls(self, dynamic_calls):
+        if not dynamic_calls: return
         for dynamic_call in dynamic_calls:
             call_pair = dynamic_call.split("->")
             if len(call_pair)!=2:
@@ -710,6 +711,7 @@ class Collector:
 
     def export_to_json(self, feature_version, export_json_path):
         symbols = []
+        if not self.symbols_by_qualified_name: return
         for full_path, sym in self.symbols_by_qualified_name.items():
             # if we use the plain symbols there are circular references
             # and memory explodes into 10's of GB's serializing it so make
