@@ -250,7 +250,6 @@ class HTMLRenderer(View):
             "all_symbols": collector.all_symbols(),
             "all_functions": collector.all_functions(),
             "all_variables": collector.all_variables(),
-            "user_defined_stack_report": collector.user_defined_stack_report,
             "now": datetime.now(),
         }
 
@@ -290,13 +289,8 @@ class HTMLRenderer(View):
 
 class OverviewRenderer(HTMLRenderer):
 
-    def __init__(self, collector, user_defined_stack_report):
-        super().__init__(collector)
-        self.user_defined_stack_report = collector.user_defined_stack_report
-
     def dispatch_request(self):
-        self.template_vars["user_defined_stack_report"] = self.user_defined_stack_report if self.user_defined_stack_report else False
-        return self.render_template("overview.html.jinja", "index.html")
+       return self.render_template("overview.html.jinja", "index.html")
 
 
 class PathRenderer(HTMLRenderer):
@@ -307,12 +301,9 @@ class PathRenderer(HTMLRenderer):
 
         generic_path = pathlib.Path(path)
         symbol = self.collector.symbol(path)
-        compare_symbol = self.collector.symbol(path, version=request.args["compareto"]) \
-                         if "compareto" in request.args.keys() else None
 
         if symbol:
             self.template_vars["symbol"] = symbol
-            self.template_vars["compare_symbol"] = compare_symbol
             return self.render_template("symbol.html.jinja", "symbol")
 
         file_element = self.collector.file_elements.get(generic_path, None)
@@ -382,8 +373,8 @@ def register_jinja_filters(jinja_env):
 
 
 
-def register_urls(app, collector, user_defined_stack_report=None):
-    app.add_url_rule("/", view_func=OverviewRenderer.as_view("overview", collector=collector, user_defined_stack_report=user_defined_stack_report))
+def register_urls(app, collector):
+    app.add_url_rule("/", view_func=OverviewRenderer.as_view("overview", collector=collector))
     app.add_url_rule("/all/", view_func=AllSymbolsRenderer.as_view("all", collector=collector))
     app.add_url_rule("/path/<path:path>/", view_func=PathRenderer.as_view("path", collector=collector))
     app.add_url_rule("/symbol/<string:symbol_name>", view_func=SymbolRenderer.as_view("symbol", collector=collector))

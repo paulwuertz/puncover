@@ -145,7 +145,7 @@ def main():
             exit(report_status)
 
     renderers.register_jinja_filters(app.jinja_env)
-    renderers.register_urls(app, builder.collector, user_defined_stack_report=stack_report)
+    renderers.register_urls(app, builder.collector)
     app.wsgi_app = BuilderMiddleware(app.wsgi_app, builder)
 
     if args.debug:

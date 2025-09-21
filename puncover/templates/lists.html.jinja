@@ -129,25 +129,9 @@
                 <tr>
                     <td><a href="{{ symbol | symbol_url }}" class="icon-function">{{ symbol.display_name |e }}</a></td>
                     <td>{{ symbol_remarks(symbol) }}</td>
-                    <td class="col_size">
-                        {{ symbol.stack_size | bytes }}
-                        {% if symbol.stack_size and symbol.compared_stack_size  %}
-                            {% if symbol.compared_stack_size > symbol.stack_size %}
-                                (+{{ symbol.compared_stack_size - symbol.stack_size }} bytes)
-                            {% elif symbol.compared_stack_size < symbol.stack_size %}
-                                ({{ symbol.compared_stack_size - symbol.stack_size }} bytes)
-                            {% endif %}
-                        {% endif %}
-                    </td>
+                    <td class="col_size">{{ symbol.stack_size | bytes }}</td>
                     <td class="col_size" style="{{ symbol.size | style_background_bar(group_code_size, color_bar_code) }}">
                     {{ symbol.size | bytes }}
-                    {% if symbol.size and symbol.compared_size  %}
-                        {% if symbol.compared_size > symbol.size %}
-                            (+{{ symbol.compared_size - symbol.size }} bytes)
-                        {% elif symbol.compared_size < symbol.size %}
-                            ({{ symbol.compared_size - symbol.size }} bytes)
-                        {% endif %}
-                    {% endif %}
                     </td>
                     <td class="col_size"></td>
                 </tr>
@@ -166,13 +150,6 @@
                 <td colspan="4"><span class="icon-variable">{{ var.display_name |e }}</span></td>
                 <td class="col_size" style="{{ var | symbol_var_size | style_background_bar(group_var_size, color_bar_var) }}">
                     {{ var | symbol_var_size | bytes }}
-                    {% if var.size and var.compared_size  %}
-                    {% if var.compared_size > var.size %}
-                        (+{{ var.compared_size - var.size }} bytes)
-                    {% elif var.compared_size < var.size %}
-                        ({{ var.compared_size - var.size }} bytes)
-                    {% endif %}
-                {% endif %}
                 </td>
             </tr>
             {% endfor %}
@@ -200,21 +177,19 @@
 {%- endmacro %}
 
 
-{% macro function_stats(functions, stack_base=0, functions_to_compare={}, functions_to_compare_sz=0, functions_to_compare_cs=0) -%}
+{% macro function_stats(functions, stack_base=0) -%}
     <table class="table table-bordered table-hover table-condensed">
         <thead>
             <tr>
                 <th rowspan="2">#</th>
-                <th colspan="3" style="text-align: center">Stack</th>
-                <th colspan="3" style="text-align: center">Code</th>
+                <th colspan="2" style="text-align: center">Stack</th>
+                <th colspan="2" style="text-align: center">Code</th>
                 <th rowspan="2" width="100%">Name</th>
             </tr>
             <tr>
                 <th class="col_size">&sum; = {{ functions | symbol_stack_size(stack_base) | bytes }}</th>
                 <th class="col_size"></th>
-                <th class="col_size"> {% if functions_to_compare_sz %}compared version &sum; = {{ functions_to_compare_sz }} {% endif %} </th>
                 <th class="col_size">&sum;= {{ functions | unique | symbol_code_size | bytes }}</th>
-                <th class="col_size"></th>
                 <th class="col_size"></th>
             </tr>
         </thead>
@@ -234,21 +209,6 @@
             {% endif %}
                 </td>
                 <td class="col_size">
-                {% if function.stack_size and functions_to_compare %}
-                    {% for function_version in functions_to_compare %}
-                    {% if function.name == function_version.full_symbol_path.split('/')[-1] %}
-                        {% if function.stack_size > function_version.stack_size %}
-                            was {{ function_version.stack_size }} bytes (+{{ function.stack_size - function_version.stack_size }} bytes)
-                        {% elif function.stack_size < function_version.stack_size %}
-                            was {{ function_version.stack_size }} bytes ({{ function.stack_size - function_version.stack_size }} bytes)
-                        {% else %}
-                            same
-                        {% endif %}
-                    {% endif %}
-                    {% endfor %}
-                {% endif %}
-                </td>
-                <td class="col_size">
                     {% if not loop.last %}
                     {% if functions[loop.index - 1:] | unique | symbol_code_size != functions[loop.index:] | unique | symbol_code_size %}
                     {{ functions[loop.index - 1:] | unique | symbol_code_size | bytes }}
@@ -256,21 +216,6 @@
                     {% endif %}
                 </td>
                 <td class="col_size">{{ function | symbol_code_size | bytes }}</td>
-                <td class="col_size">
-                {% if functions_to_compare %}
-                    {% for function_version in functions_to_compare %}
-                    {% if function.name == function_version.full_symbol_path.split('/')[-1] %}
-                        {% if function.size > function_version.code_size %}
-                            was {{ function_version.code_size }} bytes (+{{ function.size - function_version.code_size }} bytes)
-                        {% elif function.size < function_version.code_size %}
-                            was {{ function_version.code_size }} bytes ({{ function.size - function_version.code_size }} bytes)
-                        {% else %}
-                            same
-                        {% endif %}
-                    {% endif %}
-                    {% endfor %}
-                {% endif %}
-                </td>
                 <td><a href="{{ function | symbol_url }}" class="icon-function">{{ function.display_name | e}}</a></td>
             </tr>
         {% endfor %}
