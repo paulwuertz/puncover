@@ -720,7 +720,7 @@ class Collector:
             # print(sym["name"])
             for sym_ele in sym.keys():
                 if sym_ele in [
-                    'name', 'base_file', 'line', 'type', 'address', 'size', 'display_name',
+                    'name', 'base_file', 'asm', 'line', 'type', 'address', 'size', 'display_name',
                     'called_from_other_file', 'calls_float_function', 'stack_size', 'stack_qualifiers'
                 ]:
                     non_circular_sym[sym_ele] = sym[sym_ele]
