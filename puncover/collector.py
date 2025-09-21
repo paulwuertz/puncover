@@ -64,7 +64,7 @@ def left_strip_from_list(lines):
 
 class Collector:
 
-    def __init__(self, gcc_tools, output_db_path):
+    def __init__(self, gcc_tools):
         self.gcc_tools = gcc_tools
         self.symbols = {}
         self.file_elements = {}

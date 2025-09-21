@@ -36,11 +36,11 @@ def get_default_port():
 
 def create_builder(
         gcc_base_filename, elf_file=None, su_dir=None, src_root=None, dynamic_calls=None,
-        output_db=None, feature_version=None, export_json=None
+        feature_version=None, export_json=None
     ):
-    c = Collector(GCCTools(gcc_base_filename), output_db)
+    c = Collector(GCCTools(gcc_base_filename))
     if elf_file:
-        return ElfBuilder(c, src_root, elf_file, su_dir, dynamic_calls, output_db, feature_version, export_json)
+        return ElfBuilder(c, src_root, elf_file, su_dir, dynamic_calls, feature_version, export_json)
     else:
         raise Exception("Unable to configure builder for collector")
 
@@ -96,8 +96,6 @@ def main():
     parser.add_argument('--debug', action='store_true',
                         help='enable Flask debugger')
     parser.add_argument('--generate-report', '--generate_report', action='store_true')
-    parser.add_argument('--output_db','--output-db', dest='output_db',
-                        help='export analyzed elf symbols to a sqlite file')
     parser.add_argument('--port', dest='port', default=get_default_port(), type=int,
                         help='port the HTTP server runs on')
     parser.add_argument('--host', default='127.0.0.1',
@@ -130,7 +128,7 @@ def main():
 
     builder = create_builder(args.gcc_tools_base, elf_file=args.elf_file, src_root=args.src_root,
                              su_dir=args.build_dir, dynamic_calls=args.add_dynamic_calls,
-                             output_db=args.output_db, feature_version=args.feature_version, export_json=export_json)
+                             feature_version=args.feature_version, export_json=export_json)
     builder.build_if_needed()
 
     stack_report = None

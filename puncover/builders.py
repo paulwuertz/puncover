@@ -51,12 +51,11 @@ class Builder:
 
 class ElfBuilder(Builder):
 
-    def __init__(self, collector, src_root, elf_file, su_dir, dynamic_calls, output_db, feature_version, export_json):
+    def __init__(self, collector, src_root, elf_file, su_dir, dynamic_calls, feature_version, export_json):
         Builder.__init__(self, collector, src_root if src_root else dirname(dirname(elf_file)), dynamic_calls)
         self.store_file_time(elf_file, store_empty=True)
         self.elf_file = pathlib.Path(elf_file)
         self.su_dir = su_dir
-        self.output_db = output_db
         self.feature_version = feature_version
         self.export_json = export_json
 
