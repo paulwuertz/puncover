@@ -37,12 +37,44 @@ To get worst-case stack usage puncover relies on the `-fstack-usage` compilation
 
 Compiling with `-fstack-usage` generates stack usage files in the build directory as [introduced to GCC by adacore](https://www.adacore.com/uploads/techPapers/Stack_Analysis.pdf). For each compiled *.c a coresponding *.su is created, containing a line for each function with it's determined stack usage and a qualifier label, that can hint that a function has a non-statically determined - dynamic stack-usage.
 
-## Non-intereactive usage
+### Non-intereactive usage
 
 For montitor firmware changes in CI it can be useful to run puncover and get out some numbers. For getting stack usage of some RTOS threads i.e.
 
 ```bash
 puncover --elf_file ~/zephyrproject/zephyr/samples/modules/lvgl/demos/build/zephyr/zephyr.elf --build_dir ~/zephyrproject/zephyr/samples/modules/lvgl/demos/build/ --generate-report --report-max-static-stack-usage ready_thread --report-max-static-stack-usage shell_thread --report-max-static-stack-usage main --report-max-static-stack-usage unready_thread --report-max-static-stack-usage bg_thread_main --no-interactive
+```
+
+### Configuration file
+
+For larger configuration a file based configuration might be more comfortable to use.
+
+The only necessary option then is `puncover -c config.yaml`
+
+An example configuration file might look like this:
+
+```yaml
+elf_file: ~/cannectivity/build/zephyr/zephyr.elf
+build_dir: ~/cannectivity/build/
+src_root: ~/cannectivity/
+port: 5001
+feature_version: "cannectivity-1.2"
+generate-report: true
+report-type: json
+report-filename: report
+report-max-static-stack-usage: [
+  bg_thread_main:::1024,
+  led_thread:::1024,
+  gs_usb_tx_thread:::1024,
+  gs_usb_rx_thread:::1024,
+  log_process_thread_func:::768,
+]
+add-dynamic-calls: [
+    z_impl_can_send->can_mcan_send,
+    can_mcan_send->gs_usb_can_tx_callback,
+]
+error_on_exceeded_stack_usage: true
+warn_threshold_size_for_max_static_stack_usage: 100
 ```
 
 ## Running Tests Locally
