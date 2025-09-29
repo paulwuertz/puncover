@@ -18,7 +18,7 @@ or function.
 Install with pip:
 
 ```bash
-pip install puncover
+pip install --user git+https://github.com/paulwuertz/puncover/
 ```
 
 Run it by passing the binary to analyze:
@@ -30,6 +30,12 @@ puncover --elf_file project.elf
 ```
 
 Open the link in your browser to view the analysis.
+
+### Stack usage
+
+To get worst-case stack usage puncover relies on the `-fstack-usage` compilation option and the build directory has to be passed additionally like `puncover --elf_file project.elf --build_dir $PWD/build`.
+
+Compiling with `-fstack-usage` generates stack usage files in the build directory as [introduced to GCC by adacore](https://www.adacore.com/uploads/techPapers/Stack_Analysis.pdf). For each compiled *.c a coresponding *.su is created, containing a line for each function with it's determined stack usage and a qualifier label, that can hint that a function has a non-statically determined - dynamic stack-usage.
 
 ## Non-intereactive usage
 
