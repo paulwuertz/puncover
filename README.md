@@ -77,6 +77,12 @@ error_on_exceeded_stack_usage: true
 warn_threshold_size_for_max_static_stack_usage: 100
 ```
 
+### Report export
+
+If the `generate-report` option is selected as true, then a .json report is generated or appended.
+
+A new entry in the object contained in the file configured at `report-filename` is created under the key of the configured `feature_version`. If the file does not exist it is created containing only one report of this run. If the `feature_version` is already defined in the report file it will be overwritten.
+
 ## Running Tests Locally
 
 ### Setup
