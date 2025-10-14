@@ -644,8 +644,8 @@ class Collector:
             print(f"ERROR - requested report type {report_type} not supported, select one of {SUPPORTED_REPORT_TYPES}")
             return
 
-        function_names = [f.split(":::")[0] if ":::" else f for f in function_names_and_opt_max_stack]
-        function_max_stacks = {f.split(":::")[0]: f.split(":::")[1] if ":::" else None for f in function_names_and_opt_max_stack}
+        function_names = [f.split(":::")[0] if ":::" else f for f in function_names_and_opt_max_stack or []]
+        function_max_stacks = {f.split(":::")[0]: f.split(":::")[1] if ":::" else None for f in function_names_and_opt_max_stack or []}
         report_status = os.EX_OK
         reported_fn_with_stack_error = []
 
