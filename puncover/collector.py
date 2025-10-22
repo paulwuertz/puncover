@@ -675,12 +675,12 @@ class Collector:
                     function_max_stack["max_stack_size"] = fn_max_stack_size
                     # errors exceeding user stack
                     if max_static_stack_size > fn_max_stack_size:
-                        fn_err = f"{sym["display_name"]} exceed configured stack size {max_static_stack_size} > {fn_max_stack_size}"
+                        fn_err = f"""{sym["display_name"]} exceed configured stack size {max_static_stack_size} > {fn_max_stack_size}"""
                         reported_fn_with_stack_error += [fn_err]
                         report_status = ERROR_RETURN_CODE
                     # early warnings with user threshold
                     if max_static_stack_size > fn_max_stack_size - warning_threshold:
-                        fn_warning = f"{sym["display_name"]} close to configured stack size {max_static_stack_size} > ({fn_max_stack_size} +- {warning_threshold})"
+                        fn_warning = f"""{sym["display_name"]} close to configured stack size {max_static_stack_size} > ({fn_max_stack_size} +- {warning_threshold})"""
                         reported_fn_with_stack_error += [fn_warning]
                     if max_static_stack_size > fn_max_stack_size - warning_threshold and report_status != ERROR_RETURN_CODE:
                         report_status = WARNING_RETURN_CODE
