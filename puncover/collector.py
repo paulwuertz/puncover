@@ -402,7 +402,7 @@ class Collector:
 
         self.elf_mtime = os.path.getmtime(elf_file)
 
-    def parse_su_dir(self, su_dir):
+    def parse_build_dir(self, su_dir):
         def gen_find(filepat, top):
             for path, dirlist, filelist in os.walk(top):
                 for name in fnmatch.filter(filelist, filepat):

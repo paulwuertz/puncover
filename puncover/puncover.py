@@ -36,10 +36,10 @@ def get_default_port():
     return DEFAULT_PORT if not is_port_in_use(DEFAULT_PORT) else DEFAULT_PORT_FALLBACK
 
 
-def create_builder(gcc_base_filename, elf_file=None, su_dir=None, src_root=None):
+def create_builder(gcc_base_filename, elf_file=None, build_dir=None, src_root=None):
     c = Collector(GCCTools(gcc_base_filename))
     if elf_file:
-        return ElfBuilder(c, src_root, elf_file, su_dir)
+        return ElfBuilder(c, src_root, elf_file, build_dir)
     else:
         raise Exception("Unable to configure builder for collector")
 
@@ -180,7 +180,7 @@ def main():
         exit(1)
 
     builder = create_builder(
-        args.gcc_tools_base, elf_file=elf_file, src_root=args.src_root, su_dir=args.build_dir
+        args.gcc_tools_base, elf_file=elf_file, src_root=args.src_root, build_dir=args.build_dir
     )
     builder.build_if_needed()
 
