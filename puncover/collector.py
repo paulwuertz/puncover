@@ -2,6 +2,7 @@ import fnmatch
 import os
 import pathlib
 import re
+import json
 import sys
 
 NAME = "name"
@@ -851,3 +852,17 @@ class Collector:
         # if file exist
         export_json_data["functions"] = fn_symbols
         export_json_data["variables"] = var_symbols
+
+    def export_function_calls_to_file(self, export_filename):
+        calls = []
+        for sym in self.symbols.values():
+            symname = sym[NAME]
+            for callee in sym.get(CALLEES, []):
+                calleename = callee[NAME]
+                calls += [{
+                    "from": symname,
+                    "to": calleename
+                }]
+        print(f"found {len(calls)} function calls to export to")
+        export_filename = export_filename if ".json" in export_filename else export_filename + ".json"
+        open(export_filename, "w").write(json.dumps(calls, indent=4))

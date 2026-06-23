@@ -126,6 +126,12 @@ def main():
         help="generate a JSON report file",
     )
     parser.add_argument(
+        "--export-function-call-to-file",
+        "--export_function_call_to_file",
+        default=None,
+        help="generate a file listing all function calls",
+    )
+    parser.add_argument(
         "--report-type",
         "--report_type",
         default="json",
@@ -202,6 +208,9 @@ def main():
         export_json[args.report_tag] = tag_data
         with open(args.report_filename + ".json", "w") as f:
             json.dump(export_json, f, indent=4, ensure_ascii=False)
+
+    if args.export_function_call_to_file:
+        builder.collector.export_function_calls_to_file(args.export_function_call_to_file)
 
     if args.non_interactive:
         return
