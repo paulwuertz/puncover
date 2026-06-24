@@ -47,11 +47,12 @@ class Builder:
 
 
 class ElfBuilder(Builder):
-    def __init__(self, collector, src_root, elf_file, build_dir):
+    def __init__(self, collector, src_root, elf_file, build_dir, calls_from_build_dir):
         Builder.__init__(self, collector, src_root if src_root else dirname(dirname(elf_file)))
         self.store_file_time(elf_file, store_empty=True)
         self.elf_file = pathlib.Path(elf_file)
         self.build_dir = build_dir
+        self.calls_from_build_dir = calls_from_build_dir
 
     def get_elf_path(self):
         return self.elf_file

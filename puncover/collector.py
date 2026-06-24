@@ -477,7 +477,7 @@ class Collector:
         ci = kv_decoder(ci_file_content)
         return ci
 
-    def parse_build_dir(self, build_dir):
+    def parse_build_dir(self, build_dir, calls_from_build_dir):
         def gen_find(filepat, top):
             for path, dirlist, filelist in os.walk(top):
                 for name in fnmatch.filter(filelist, filepat):
@@ -503,15 +503,30 @@ class Collector:
             for line in get_stack_usage_lines(build_dir):
                 self.parse_stack_usage_line(line)
             print("parsing callgraph starting at %s" % build_dir)
-            call_files = gen_find("*.ci", build_dir)
-            i=0
+
             call_edges = []
+            call_files = gen_find("*.ci", build_dir)
             for ci in call_files:
                 cu_call_data = self.get_ci_edges_and_nodes(ci)
                 call_edges += cu_call_data["graph"].get("edges", [])
-            unique_calls = set(c["sourcename"] + " ==> " + c["targetname"] for c in call_edges)
+            unique_calls = set((c["sourcename"], c["targetname"]) for c in call_edges)
             unique_calls_list = sorted(list(unique_calls))
-            print("len(call_edges)", len(call_edges), "len unique_calls", len(unique_calls_list))
+
+            if calls_from_build_dir:
+                for call in unique_calls_list:
+                    call_from, call_to = call
+                    call_from_file_name, call_from_function_name = (
+                        call_from.split(":", 2) if ":" in call_from else ("", call_from)
+                    )
+                    call_to_file_name, call_to_function_name = (
+                        call_to.split(":", 2) if ":" in call_to else ("", call_to)
+                    )
+                    from_sym = self.symbol(call_from_function_name, qualified=False)
+                    to_sym = self.symbol(call_to_function_name, qualified=False)
+                    if from_sym and to_sym:
+                        self.add_function_call(from_sym, to_sym)
+                        print(call_from, call_to)
+                print("len(call_edges)", len(call_edges), "len unique_calls", len(unique_calls_list))
 
     def sorted_by_size(self, symbols):
         return sorted(symbols, key=lambda k: k.get("size", 0), reverse=True)
@@ -532,10 +547,11 @@ class Collector:
 
     def add_function_call(self, caller, callee):
         if caller != callee:
-            if callee not in caller[CALLEES]:
-                caller[CALLEES].append(callee)
-            if caller not in callee[CALLERS]:
-                callee[CALLERS].append(caller)
+            # TODO check calls to type function...
+            if callee not in caller.get(CALLEES, []):
+                caller[CALLEES] = caller.get(CALLEES, []) + [callee]
+            if caller not in callee.get(CALLERS, []):
+                callee[CALLERS] = callee.get(CALLERS, []) + [caller]
                 caller_file = caller.get("file", None)
                 callee_file = callee.get("file", None)
                 if callee_file and caller_file and callee_file != caller_file:
@@ -568,20 +584,21 @@ class Collector:
 
         return False
 
-    def enhance_call_tree_from_assembly_line(self, function, line):
-        self.add_function_call_from_assembly_line(function, line)
+    def enhance_call_tree_from_assembly_line(self, function, line, calls_from_build_dir):
+        if not calls_from_build_dir:
+            self.add_function_call_from_assembly_line(function, line)
         self.annotate_indirect_call(function, line)
 
-    def enhance_call_tree(self):
+    def enhance_call_tree(self, calls_from_build_dir):
         for f in self.all_functions():
             for k in [CALLERS, CALLEES]:
                 f[k] = f.get(k, [])
 
         for f in self.all_functions():
             if ASM in f:
-                [self.enhance_call_tree_from_assembly_line(f, line) for line in f[ASM]]
+                [self.enhance_call_tree_from_assembly_line(f, line, calls_from_build_dir) for line in f[ASM]]
 
-    def enhance(self, src_root):
+    def enhance(self, src_root, calls_from_build_dir):
         self.normalize_files_paths(src_root)
         print("enhancing function sizes")
         self.enhance_function_size_from_assembly()
@@ -592,7 +609,7 @@ class Collector:
         print("enhancing assembly")
         self.enhance_assembly()
         print("enhancing call tree")
-        self.enhance_call_tree()
+        self.enhance_call_tree(calls_from_build_dir)
         print("enhancing siblings")
         self.enhance_sibling_symbols()
         self.enhance_symbol_flags()
