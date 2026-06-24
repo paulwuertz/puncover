@@ -4,6 +4,7 @@ import pathlib
 import re
 import json
 import sys
+import rapidjson
 
 NAME = "name"
 DISPLAY_NAME = "display_name"
@@ -403,7 +404,80 @@ class Collector:
 
         self.elf_mtime = os.path.getmtime(elf_file)
 
-    def parse_build_dir(self, su_dir):
+    def get_ci_edges_and_nodes(self, ci_file):
+        """
+        TODO: Maybe a proper VCG parser would be better.
+        This came out of beeing happy, that 30 lines convert VCG to json.
+        Now it is a 70 line code wart...
+
+        Using rapidjson was for accepting trailing commas.
+        The mess of a decoder was to unit repeated edge and node keys...
+        """
+        def has_edges_or_nodes(data):
+            nr_edges = sum([1 if d[0] == "edge" else 0 for d in data])
+            nr_nodes = sum([1 if d[0] == "node" else 0 for d in data])
+            return nr_edges != 0 or nr_edges != 0
+
+        def extract_edges_and_nodes(data):
+            new_data = {}
+            edges = []
+            nodes = []
+            for d in data:
+                if d[0] == "edge":
+                    edges += [d[1]]
+                elif d[0] == "node":
+                    nodes += [d[1]]
+                else:
+                    new_data[d[0]] = d[1]
+            # add grouped data
+            new_data["edges"] = edges
+            new_data["nodes"] = nodes
+            return new_data
+
+        class KVPairsDecoder(rapidjson.Decoder):
+            # def __init__(self, *args, **kwargs):
+            #     super(KVPairsDecoder, self).__init__(*args, **kwargs)
+
+            #     super().__init__(self, parse_mode=rapidjson.PM_TRAILING_COMMAS,)
+            def start_object(self, *args, **kwargs):
+                return []
+            def end_object(self, data, *args, **kwargs):
+                if has_edges_or_nodes(data):
+                    return extract_edges_and_nodes(data)
+                elif isinstance(data, list):
+                    return {t[0]:t[1] for t in data}
+                else:
+                    return data
+        kv_decoder = KVPairsDecoder(parse_mode=rapidjson.PM_TRAILING_COMMAS)
+
+        unquouted_keys = [
+            "graph", "title", "edge", "sourcename",
+            "node", "targetname", "shape", "label",
+        ]
+        unquouted_values = [" ellipse " ] # the only exception / symbol?
+
+        ci_file_content = open(ci_file).read()
+        # add "s around keys
+        for attr in unquouted_keys:
+            attr_unquotes = attr + ":"
+            attr_quotes = '"' + attr + '":'
+            ci_file_content = ci_file_content.replace(attr_unquotes, attr_quotes)
+            # sometimes there is an extra space in the middle -.-
+            attr_unquotes = attr + " :"
+            ci_file_content = ci_file_content.replace(attr_unquotes, attr_quotes)
+        ci_file_content = ci_file_content.replace(unquouted_values[0], '"'+unquouted_values[0]+'"')
+        # add commas after closing quotes and braces
+        ci_file_content = re.sub(r'(?<=[A-Za-z0-9>])"(?!:)', '",', ci_file_content)
+        ci_file_content = ci_file_content.replace('}"', '},"')
+        ci_file_content = ci_file_content.replace('}\n"', '},\n"')
+        # add top level objects braces
+        ci_file_content = "{"+ ci_file_content +"}"
+
+        # From string: use rapidjson.loads
+        ci = kv_decoder(ci_file_content)
+        return ci
+
+    def parse_build_dir(self, build_dir):
         def gen_find(filepat, top):
             for path, dirlist, filelist in os.walk(top):
                 for name in fnmatch.filter(filelist, filepat):
@@ -418,16 +492,26 @@ class Collector:
                 for item in s:
                     yield item
 
-        def get_stack_usage_lines(su_dir):
-            names = gen_find("*.su", su_dir)
+        def get_stack_usage_lines(build_dir):
+            names = gen_find("*.su", build_dir)
             files = gen_open(names)
             lines = gen_cat(files)
             return lines
 
-        if su_dir:
-            print("parsing stack usages starting at %s" % su_dir)
-            for line in get_stack_usage_lines(su_dir):
+        if build_dir:
+            print("parsing stack usages starting at %s" % build_dir)
+            for line in get_stack_usage_lines(build_dir):
                 self.parse_stack_usage_line(line)
+            print("parsing callgraph starting at %s" % build_dir)
+            call_files = gen_find("*.ci", build_dir)
+            i=0
+            call_edges = []
+            for ci in call_files:
+                cu_call_data = self.get_ci_edges_and_nodes(ci)
+                call_edges += cu_call_data["graph"].get("edges", [])
+            unique_calls = set(c["sourcename"] + " ==> " + c["targetname"] for c in call_edges)
+            unique_calls_list = sorted(list(unique_calls))
+            print("len(call_edges)", len(call_edges), "len unique_calls", len(unique_calls_list))
 
     def sorted_by_size(self, symbols):
         return sorted(symbols, key=lambda k: k.get("size", 0), reverse=True)

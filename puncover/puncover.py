@@ -102,6 +102,12 @@ def main():
     parser.add_argument("--build_dir", "--build-dir", help="location of your build output")
     parser.add_argument("--debug", action="store_true", help="enable Flask debugger")
     parser.add_argument(
+        "--get-function-calls-from-build-dir-only",
+        "--get_function_calls_from_build_dir_only",
+        action="store_true",
+        help="enable Flask debugger"
+    )
+    parser.add_argument(
         "--port",
         dest="port",
         default=get_default_port(),
