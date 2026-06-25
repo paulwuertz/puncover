@@ -590,12 +590,12 @@ class Collector:
 
         return False
 
-    def enhance_call_tree_from_assembly_line(self, function, line, calls_from_build_dir):
+    def enhance_call_tree_from_assembly_line(self, function, line, calls_from_build_dir=False):
         if not calls_from_build_dir:
             self.add_function_call_from_assembly_line(function, line)
         self.annotate_indirect_call(function, line)
 
-    def enhance_call_tree(self, calls_from_build_dir):
+    def enhance_call_tree(self, calls_from_build_dir=False):
         for f in self.all_functions():
             for k in [CALLERS, CALLEES]:
                 f[k] = f.get(k, [])
