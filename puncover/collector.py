@@ -435,10 +435,6 @@ class Collector:
             return new_data
 
         class KVPairsDecoder(rapidjson.Decoder):
-            # def __init__(self, *args, **kwargs):
-            #     super(KVPairsDecoder, self).__init__(*args, **kwargs)
-
-            #     super().__init__(self, parse_mode=rapidjson.PM_TRAILING_COMMAS,)
             def start_object(self, *args, **kwargs):
                 return []
             def end_object(self, data, *args, **kwargs):
@@ -521,6 +517,11 @@ class Collector:
                     call_to_file_name, call_to_function_name = (
                         call_to.split(":", 2) if ":" in call_to else ("", call_to)
                     )
+                    # TODO is there a general schema to what GCC adds to the names?
+                    # can the name left of the first dot be used?
+                    call_from_function_name = call_from_function_name.replace(".isra","").replace(".constprop","").replace(".0","")
+                    call_to_function_name = call_to_function_name.replace(".isra","").replace(".constprop","").replace(".0","")
+                    # find symbols of the call
                     from_sym = self.symbol(call_from_function_name, qualified=False)
                     to_sym = self.symbol(call_to_function_name, qualified=False)
                     if from_sym and to_sym:
