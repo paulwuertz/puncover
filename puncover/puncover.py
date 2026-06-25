@@ -36,7 +36,9 @@ def get_default_port():
     return DEFAULT_PORT if not is_port_in_use(DEFAULT_PORT) else DEFAULT_PORT_FALLBACK
 
 
-def create_builder(gcc_base_filename, elf_file=None, build_dir=None, src_root=None, calls_from_build_dir=False):
+def create_builder(
+    gcc_base_filename, elf_file=None, build_dir=None, src_root=None, calls_from_build_dir=False
+):
     c = Collector(GCCTools(gcc_base_filename))
     if elf_file:
         return ElfBuilder(c, src_root, elf_file, build_dir, calls_from_build_dir)
@@ -105,7 +107,7 @@ def main():
         "--get-function-calls-from-build-dir-only",
         "--get_function_calls_from_build_dir_only",
         action="store_true",
-        help="enable Flask debugger"
+        help="enable Flask debugger",
     )
     parser.add_argument(
         "--port",
@@ -196,7 +198,7 @@ def main():
         elf_file=elf_file,
         src_root=args.src_root,
         build_dir=args.build_dir,
-        calls_from_build_dir = args.get_function_calls_from_build_dir_only
+        calls_from_build_dir=args.get_function_calls_from_build_dir_only,
     )
     builder.build_if_needed()
 

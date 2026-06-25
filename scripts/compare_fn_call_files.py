@@ -41,14 +41,24 @@ for k in map2:
         diff12 = to_set1.difference(to_set2)
         diff21 = to_set2.difference(to_set1)
         if len(to_set1) > len(to_set2):
-            more_calls_in_fn1 += [k + f" has {len(diff12)} (of {len(to_set1)-len(to_set2)}) more calls: " + ",".join(diff12)]
+            more_calls_in_fn1 += [
+                k
+                + f" has {len(diff12)} (of {len(to_set1) - len(to_set2)}) more calls: "
+                + ",".join(diff12)
+            ]
         elif len(to_set1) < len(to_set2):
-            more_calls_in_fn2 += [k + f" has {len(diff21)} (of {len(to_set2)-len(to_set1)}) more calls: " + ",".join(diff21)]
+            more_calls_in_fn2 += [
+                k
+                + f" has {len(diff21)} (of {len(to_set2) - len(to_set1)}) more calls: "
+                + ",".join(diff21)
+            ]
         if to_set1.symmetric_difference(to_set2):
             distinct_calls += [
-                k +
-                f" \n\t\tonly in {file1}: " + ",".join(diff12) +
-                f" \n\t\tonly in {file2}: " + ",".join(diff21)
+                k
+                + f" \n\t\tonly in {file1}: "
+                + ",".join(diff12)
+                + f" \n\t\tonly in {file2}: "
+                + ",".join(diff21)
             ]
 
 for k in map1:
@@ -68,8 +78,12 @@ pprint(removed)
 print("\n=== Different ===")
 more_f1_equal = 100 * len(more_calls_in_fn1) / max(len(data1), len(data2))
 more_f2_equal = 100 * len(more_calls_in_fn2) / max(len(data1), len(data2))
-print(f"{len(more_calls_in_fn1)} or {more_f1_equal:.2f}% of functions with more calls found in {file1}: {"\n\t* ".join(more_calls_in_fn1)}")
-print(f"{len(more_calls_in_fn2)} or {more_f2_equal:.2f}% of functions with more calls found in {file2}: {"\n\t* ".join(more_calls_in_fn2)}")
+print(
+    f"{len(more_calls_in_fn1)} or {more_f1_equal:.2f}% of functions with more calls found in {file1}: {'\n\t* '.join(more_calls_in_fn1)}"
+)
+print(
+    f"{len(more_calls_in_fn2)} or {more_f2_equal:.2f}% of functions with more calls found in {file2}: {'\n\t* '.join(more_calls_in_fn2)}"
+)
 
 distinct_calls_percent = 100 * len(distinct_calls) / max(len(data1), len(data2))
 # TODO this is just the two above combined?!
@@ -77,8 +91,12 @@ distinct_calls_percent = 100 * len(distinct_calls) / max(len(data1), len(data2))
 
 percent_equal = 100 * len(unchanged) / max(len(data1), len(data2))
 # repeat one line resume at the end
-print(f"{len(more_calls_in_fn1)} or {more_f1_equal:.2f}% of functions with more calls found in {file1}")
-print(f"{len(more_calls_in_fn2)} or {more_f2_equal:.2f}% of functions with more calls found in {file2}")
+print(
+    f"{len(more_calls_in_fn1)} or {more_f1_equal:.2f}% of functions with more calls found in {file1}"
+)
+print(
+    f"{len(more_calls_in_fn2)} or {more_f2_equal:.2f}% of functions with more calls found in {file2}"
+)
 # TODO this is just the two above combined?!
 # print(f"{len(distinct_calls)} or {distinct_calls_percent:.2f}% of functions with distinct calls between both files")
 print(f"{len(unchanged)} or {percent_equal:.2f} of functions have equal calls in both files")

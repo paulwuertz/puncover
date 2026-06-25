@@ -1,9 +1,10 @@
 import fnmatch
+import json
 import os
 import pathlib
 import re
-import json
 import sys
+
 import rapidjson
 
 NAME = "name"
@@ -408,15 +409,16 @@ class Collector:
         """
         TODO: Maybe a proper VCG parser would be better.
         This came out of beeing happy, that 30 lines convert VCG to json.
-        Now it is a 70 line code wart...
+        Now it is a 80 line code wart...
 
         Using rapidjson was for accepting trailing commas.
         The mess of a decoder was to unit repeated edge and node keys...
         """
+
         def has_edges_or_nodes(data):
             nr_edges = sum([1 if d[0] == "edge" else 0 for d in data])
             nr_nodes = sum([1 if d[0] == "node" else 0 for d in data])
-            return nr_edges != 0 or nr_edges != 0
+            return nr_edges != 0 or nr_nodes != 0
 
         def extract_edges_and_nodes(data):
             new_data = {}
@@ -437,20 +439,28 @@ class Collector:
         class KVPairsDecoder(rapidjson.Decoder):
             def start_object(self, *args, **kwargs):
                 return []
+
             def end_object(self, data, *args, **kwargs):
                 if has_edges_or_nodes(data):
                     return extract_edges_and_nodes(data)
                 elif isinstance(data, list):
-                    return {t[0]:t[1] for t in data}
+                    return {t[0]: t[1] for t in data}
                 else:
                     return data
+
         kv_decoder = KVPairsDecoder(parse_mode=rapidjson.PM_TRAILING_COMMAS)
 
         unquouted_keys = [
-            "graph", "title", "edge", "sourcename",
-            "node", "targetname", "shape", "label",
+            "graph",
+            "title",
+            "edge",
+            "sourcename",
+            "node",
+            "targetname",
+            "shape",
+            "label",
         ]
-        unquouted_values = [" ellipse " ] # the only exception / symbol?
+        unquouted_values = [" ellipse "]  # the only exception / symbol?
 
         ci_file_content = open(ci_file).read()
         # add "s around keys
@@ -461,13 +471,15 @@ class Collector:
             # sometimes there is an extra space in the middle -.-
             attr_unquotes = attr + " :"
             ci_file_content = ci_file_content.replace(attr_unquotes, attr_quotes)
-        ci_file_content = ci_file_content.replace(unquouted_values[0], '"'+unquouted_values[0]+'"')
+        ci_file_content = ci_file_content.replace(
+            unquouted_values[0], '"' + unquouted_values[0] + '"'
+        )
         # add commas after closing quotes and braces
         ci_file_content = re.sub(r'(?<=[A-Za-z0-9>])"(?!:)', '",', ci_file_content)
         ci_file_content = ci_file_content.replace('}"', '},"')
         ci_file_content = ci_file_content.replace('}\n"', '},\n"')
         # add top level objects braces
-        ci_file_content = "{"+ ci_file_content +"}"
+        ci_file_content = "{" + ci_file_content + "}"
 
         # From string: use rapidjson.loads
         ci = kv_decoder(ci_file_content)
@@ -519,8 +531,16 @@ class Collector:
                     )
                     # TODO is there a general schema to what GCC adds to the names?
                     # can the name left of the first dot be used?
-                    call_from_function_name = call_from_function_name.replace(".isra","").replace(".constprop","").replace(".0","")
-                    call_to_function_name = call_to_function_name.replace(".isra","").replace(".constprop","").replace(".0","")
+                    call_from_function_name = (
+                        call_from_function_name.replace(".isra", "")
+                        .replace(".constprop", "")
+                        .replace(".0", "")
+                    )
+                    call_to_function_name = (
+                        call_to_function_name.replace(".isra", "")
+                        .replace(".constprop", "")
+                        .replace(".0", "")
+                    )
                     # find symbols of the call
                     from_sym = self.symbol(call_from_function_name, qualified=False)
                     to_sym = self.symbol(call_to_function_name, qualified=False)
@@ -532,7 +552,9 @@ class Collector:
                             print(f"\t- from {call_from_function_name}")
                         if not to_sym:
                             print(f"\t- to {call_to_function_name}")
-                print("len(call_edges)", len(call_edges), "len unique_calls", len(unique_calls_list))
+                print(
+                    "len(call_edges)", len(call_edges), "len unique_calls", len(unique_calls_list)
+                )
 
     def sorted_by_size(self, symbols):
         return sorted(symbols, key=lambda k: k.get("size", 0), reverse=True)
@@ -602,7 +624,10 @@ class Collector:
 
         for f in self.all_functions():
             if ASM in f:
-                [self.enhance_call_tree_from_assembly_line(f, line, calls_from_build_dir) for line in f[ASM]]
+                [
+                    self.enhance_call_tree_from_assembly_line(f, line, calls_from_build_dir)
+                    for line in f[ASM]
+                ]
 
     def enhance(self, src_root, calls_from_build_dir):
         self.normalize_files_paths(src_root)
@@ -968,10 +993,9 @@ class Collector:
             for callee in sym.get(CALLEES, []):
                 calleename = callee[NAME]
                 fn_calls += [calleename]
-            calls += [{
-                "from": symname,
-                "to": sorted(fn_calls)
-            }]
+            calls += [{"from": symname, "to": sorted(fn_calls)}]
         print(f"found {len(calls)} function calls to export to")
-        export_filename = export_filename if ".json" in export_filename else export_filename + ".json"
+        export_filename = (
+            export_filename if ".json" in export_filename else export_filename + ".json"
+        )
         open(export_filename, "w").write(json.dumps(calls, indent=4))
