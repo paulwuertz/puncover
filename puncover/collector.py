@@ -525,7 +525,12 @@ class Collector:
                     to_sym = self.symbol(call_to_function_name, qualified=False)
                     if from_sym and to_sym:
                         self.add_function_call(from_sym, to_sym)
-                        print(call_from, call_to)
+                    else:
+                        print("WARNING: Did not find:")
+                        if not from_sym:
+                            print(f"\t- from {call_from_function_name}")
+                        if not to_sym:
+                            print(f"\t- to {call_to_function_name}")
                 print("len(call_edges)", len(call_edges), "len unique_calls", len(unique_calls_list))
 
     def sorted_by_size(self, symbols):
@@ -956,14 +961,16 @@ class Collector:
 
     def export_function_calls_to_file(self, export_filename):
         calls = []
-        for sym in self.symbols.values():
+        for sym in self.all_functions():
             symname = sym[NAME]
+            fn_calls = []
             for callee in sym.get(CALLEES, []):
                 calleename = callee[NAME]
-                calls += [{
-                    "from": symname,
-                    "to": calleename
-                }]
+                fn_calls += [calleename]
+            calls += [{
+                "from": symname,
+                "to": sorted(fn_calls)
+            }]
         print(f"found {len(calls)} function calls to export to")
         export_filename = export_filename if ".json" in export_filename else export_filename + ".json"
         open(export_filename, "w").write(json.dumps(calls, indent=4))
