@@ -21,8 +21,7 @@ class Builder:
             self.store_file_time(f)
         self.collector.reset()
         self.collector.parse_elf(self.get_elf_path())
-        self.collector.enhance(self.src_root, self.calls_from_build_dir)
-        self.collector.parse_build_dir(self.get_build_dir(), self.calls_from_build_dir)
+        self.collector.enhance(self.src_root, self.get_build_dir(), self.calls_from_build_dir)
         self.build_call_trees()
 
     def needs_build(self):
