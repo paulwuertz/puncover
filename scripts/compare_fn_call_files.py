@@ -91,6 +91,7 @@ distinct_calls_percent = 100 * len(distinct_calls) / max(len(data1), len(data2))
 
 percent_equal = 100 * len(unchanged) / max(len(data1), len(data2))
 # repeat one line resume at the end
+print(f"{len(unchanged)} or {percent_equal:.2f} of functions have equal calls in both files")
 print(
     f"{len(more_calls_in_fn1)} or {more_f1_equal:.2f}% of functions with more calls found in {file1}"
 )
@@ -99,4 +100,3 @@ print(
 )
 # TODO this is just the two above combined?!
 # print(f"{len(distinct_calls)} or {distinct_calls_percent:.2f}% of functions with distinct calls between both files")
-print(f"{len(unchanged)} or {percent_equal:.2f} of functions have equal calls in both files")

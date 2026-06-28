@@ -121,6 +121,14 @@ class Collector:
         int_addr = int(addr, 16)
         return self.symbols.get(int_addr, None)
 
+    def function_by_name(self, name):
+        matched_function = filter(
+            lambda sym: sym[NAME] == name and sym.get(TYPE, None) == TYPE_FUNCTION,
+            self.symbols.values(),
+        )
+        # TODO what if 2 fn's have the same name?
+        return next(matched_function, None)
+
     def add_symbol(
         self,
         name,
@@ -536,8 +544,6 @@ class Collector:
                     call_to_file_name, call_to_function_name = (
                         call_to.split(":", 2) if ":" in call_to else ("", call_to)
                     )
-                    if "tcp_recv_cb" in call_from:
-                        print("asdas")
                     # TODO is there a general schema to what GCC adds to the names?
                     # can the name left of the first dot be used?
                     call_from_function_name = (
@@ -553,8 +559,8 @@ class Collector:
                         .replace(".0", "")
                     )
                     # find symbols of the call
-                    from_sym = self.symbol(call_from_function_name, qualified=False)
-                    to_sym = self.symbol(call_to_function_name, qualified=False)
+                    from_sym = self.function_by_name(call_from_function_name)
+                    to_sym = self.function_by_name(call_to_function_name)
                     if from_sym and to_sym:
                         self.add_function_call(from_sym, to_sym)
                     elif from_sym and call_to_function_name == GCC_INDIRECT_CALL_LABEL:
