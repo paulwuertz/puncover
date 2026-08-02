@@ -841,7 +841,8 @@ class Collector:
                     # todo nothing?
                     pass
                 else:
-                    print("unknown key " + sym_ele)
+                    pass
+                    # print("unknown key " + sym_ele)
             # add flatten symbol to list
             symbols = fn_symbols if non_circular_sym["type"] == "function" else var_symbols
             non_circular_sym.pop("type")
@@ -849,3 +850,19 @@ class Collector:
         # if file exist
         export_json_data["functions"] = fn_symbols
         export_json_data["variables"] = var_symbols
+
+    def print_stack_size_report(self):
+        print("┌" + 73 * "─" + "┐")
+        for function_name in self.user_defined_stack_report:
+            stack_report = self.user_defined_stack_report[function_name]
+            worst_stack_size = stack_report["max_static_stack_size"]
+            max_static_stack_size = stack_report["max_stack_size"]
+            stack_use_percent = worst_stack_size / max_static_stack_size * 100
+            progressbar_20_full = int(stack_use_percent / 100.0 * 20)
+            progressbar_20_empty = 20 - progressbar_20_full
+            # │ log_process_thread_func   - 100.0% - 11111/22222 - │███████████████-----│
+            print(
+                f"│ {function_name:<25} - {f'{stack_use_percent:.1f}':>5}% - {worst_stack_size:>5}"
+                f"/{max_static_stack_size:>5}b - {progressbar_20_full * '█'}{progressbar_20_empty * '-'}│"
+            )
+        print("└" + 73 * "─" + "┘")
