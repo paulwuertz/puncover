@@ -1,0 +1,3 @@
+Build the firmware. Change the paths to the build dir...
+
+Run `uv run make -C tests/ all` from the parent dir.

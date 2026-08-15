@@ -1,0 +1,4768 @@
+[
+    {
+        "from": "usbd_handle_ctrl_xfer",
+        "to": [
+            "__aeabi_read_tp",
+            "net_buf_frag_del",
+            "net_buf_simple_add_le16",
+            "net_buf_simple_add_mem",
+            "net_buf_simple_add_u8",
+            "net_buf_simple_tailroom",
+            "net_buf_unref",
+            "nonstd_request",
+            "reqtype_is_to_host",
+            "sreq_feature_halt_notify",
+            "sreq_get_desc_cfg",
+            "udc_ctrl_data_alloc",
+            "udc_ctrl_status_alloc",
+            "udc_ep_set_halt",
+            "udc_set_address",
+            "udc_test_mode",
+            "usbd_bus_speed",
+            "usbd_caps_speed",
+            "usbd_config_exist",
+            "usbd_config_get_current",
+            "usbd_config_set",
+            "usbd_enqueue_setup",
+            "usbd_enqueue_status_in",
+            "usbd_ep_clear_halt",
+            "usbd_ep_ctrl_data_in_alloc",
+            "usbd_ep_ctrl_enqueue",
+            "usbd_ep_is_halted",
+            "usbd_ep_set_halt",
+            "usbd_get_descriptor",
+            "usbd_interface_set",
+            "usbd_msg_pub_simple",
+            "usbd_str_desc_get_idx",
+            "z_impl_hwinfo_get_device_id",
+            "z_impl_z_log_msg_simple_create_0",
+            "z_impl_z_log_msg_simple_create_1",
+            "z_impl_z_log_msg_simple_create_2"
+        ]
+    },
+    {
+        "from": "__l_vfprintf",
+        "to": [
+            "__indirect_call",
+            "__indirect_call",
+            "__indirect_call",
+            "__indirect_call",
+            "__indirect_call",
+            "__indirect_call",
+            "__indirect_call",
+            "__indirect_call",
+            "__indirect_call",
+            "__indirect_call",
+            "__ultoa_invert",
+            "strnlen"
+        ]
+    },
+    {
+        "from": "gs_usb_control_to_dev",
+        "to": [
+            "__aeabi_read_tp",
+            "__indirect_call",
+            "__indirect_call",
+            "__indirect_call",
+            "__indirect_call",
+            "gs_usb_reset_channel",
+            "z_impl_can_set_timing",
+            "z_impl_can_set_timing_data",
+            "z_impl_z_log_msg_static_create",
+            "z_log_msg_simple_create_1",
+            "z_log_msg_simple_create_2"
+        ]
+    },
+    {
+        "from": "cbprintf_package_convert",
+        "to": [
+            "__indirect_call",
+            "__indirect_call",
+            "__indirect_call",
+            "__indirect_call",
+            "__indirect_call",
+            "__indirect_call",
+            "__indirect_call",
+            "is_ptr",
+            "memcpy",
+            "strlen",
+            "z_impl_z_log_msg_static_create"
+        ]
+    },
+    {
+        "from": "USB_DeviceLpc3511IpControl",
+        "to": [
+            "OSA_EnterCritical",
+            "OSA_ExitCritical",
+            "USB_DeviceLpc3511IpCancel",
+            "USB_DeviceLpc3511IpEndpointDeinit",
+            "USB_DeviceLpc3511IpSetDefaultState",
+            "USB_DeviceLpc3511IpTransaction",
+            "USB_DeviceLpcIp3511MallocMaxPacketBuffer"
+        ]
+    },
+    {
+        "from": "cbvprintf_package",
+        "to": [
+            "memcpy",
+            "strlen"
+        ]
+    },
+    {
+        "from": "USB_DeviceLpcIp3511IsrFunction",
+        "to": [
+            "USB_DeviceLpc3511IpCancel",
+            "USB_DeviceLpc3511IpDoPreviousTransactionMemcpy",
+            "USB_DeviceLpc3511IpEndpointPrime",
+            "USB_DeviceLpc3511IpTokenUpdate",
+            "USB_DeviceLpc3511IpTransaction",
+            "USB_DeviceNotificationTrigger"
+        ]
+    },
+    {
+        "from": "__udivmoddi4",
+        "to": []
+    },
+    {
+        "from": "gs_usb_control_to_host",
+        "to": [
+            "__aeabi_read_tp",
+            "__indirect_call",
+            "__indirect_call",
+            "__indirect_call",
+            "__indirect_call",
+            "net_buf_add_mem",
+            "net_buf_simple_add_le32",
+            "z_impl_z_log_msg_simple_create_0",
+            "z_log_msg_simple_create_1",
+            "z_log_msg_simple_create_2"
+        ]
+    },
+    {
+        "from": "log_output_process",
+        "to": [
+            "cbpprintf_external",
+            "log_output_flush",
+            "newline_print",
+            "print_formatted",
+            "z_log_get_tag"
+        ]
+    },
+    {
+        "from": "can_mcan_send",
+        "to": [
+            "can_mcan_read_reg",
+            "can_mcan_write_mram",
+            "can_mcan_write_reg",
+            "k_mutex_lock",
+            "k_mutex_unlock",
+            "z_impl_k_sem_give",
+            "z_impl_k_sem_take",
+            "z_impl_z_log_msg_simple_create_2",
+            "z_log_msg_simple_create_0",
+            "z_log_msg_simple_create_1"
+        ]
+    },
+    {
+        "from": "udc_mcux_work_handler",
+        "to": [
+            "__indirect_call",
+            "k_mem_slab_free",
+            "net_buf_simple_add",
+            "udc_buf_get",
+            "udc_buf_peek",
+            "udc_ep_buf_clear_zlp",
+            "udc_ep_buf_has_zlp",
+            "udc_ep_disable_internal",
+            "udc_ep_enable_internal",
+            "udc_ep_set_busy",
+            "udc_get_ep_cfg",
+            "udc_mcux_control",
+            "udc_mcux_ep_try_feed",
+            "udc_mcux_lock",
+            "udc_setup_received",
+            "udc_submit_ep_event",
+            "udc_submit_event",
+            "udc_unlock_internal",
+            "z_impl_k_queue_get",
+            "z_impl_z_log_msg_simple_create_0"
+        ]
+    },
+    {
+        "from": "usbd_thread",
+        "to": [
+            "__indirect_call",
+            "__indirect_call",
+            "__indirect_call",
+            "udc_device_speed",
+            "usbd_class_bcast_event",
+            "usbd_class_handle_xfer",
+            "usbd_config_set",
+            "usbd_handle_ctrl_xfer",
+            "usbd_msg_pub_simple",
+            "z_impl_k_msgq_get",
+            "z_impl_z_log_msg_simple_create_0",
+            "z_impl_z_log_msg_static_create"
+        ]
+    },
+    {
+        "from": "udc_mcux_driver_preinit",
+        "to": [
+            "k_work_init",
+            "pinctrl_configure_pins",
+            "pinctrl_lookup_state",
+            "udc_register_ep",
+            "z_impl_k_mutex_init",
+            "z_impl_k_queue_init",
+            "z_impl_z_log_msg_simple_create_0"
+        ]
+    },
+    {
+        "from": "init_configuration",
+        "to": [
+            "__indirect_call",
+            "__indirect_call",
+            "udc_ep_try_config",
+            "unassign_eps",
+            "usbd_class_desc_len",
+            "z_impl_z_log_msg_simple_create_0"
+        ]
+    },
+    {
+        "from": "cannectivity_usb_init",
+        "to": [
+            "usbd_add_configuration",
+            "usbd_add_descriptor",
+            "usbd_caps_speed",
+            "usbd_device_set_bcd_device",
+            "usbd_device_set_bcd_usb",
+            "usbd_device_set_code_triple",
+            "usbd_enable",
+            "usbd_init",
+            "usbd_register_class",
+            "z_impl_z_log_msg_simple_create_0",
+            "z_log_msg_simple_create_1"
+        ]
+    },
+    {
+        "from": "z_arm_fault",
+        "to": [
+            "bus_fault",
+            "mem_manage_fault",
+            "usage_fault",
+            "z_arm_fatal_error",
+            "z_impl_z_log_msg_simple_create_1",
+            "z_impl_z_log_msg_static_create",
+            "z_log_msg_simple_create_0"
+        ]
+    },
+    {
+        "from": "can_calc_timing_internal",
+        "to": [
+            "__indirect_call"
+        ]
+    },
+    {
+        "from": "can_mcan_line_0_isr",
+        "to": [
+            "__indirect_call",
+            "__indirect_call",
+            "__indirect_call",
+            "can_mcan_get_state",
+            "can_mcan_read_mram",
+            "can_mcan_read_reg",
+            "can_mcan_write_reg",
+            "z_impl_k_sem_give",
+            "z_log_msg_simple_create_0",
+            "z_log_msg_simple_create_1"
+        ]
+    },
+    {
+        "from": "can_mcan_init",
+        "to": [
+            "can_mcan_clear_mram",
+            "can_mcan_enable_configuration_change",
+            "can_mcan_enter_init_mode",
+            "can_mcan_exit_sleep_mode",
+            "can_mcan_read_reg",
+            "can_mcan_write_reg",
+            "z_impl_can_calc_timing",
+            "z_impl_can_calc_timing_data",
+            "z_impl_can_set_timing",
+            "z_impl_can_set_timing_data",
+            "z_impl_device_is_ready",
+            "z_impl_k_sem_init",
+            "z_log_msg_simple_create_0",
+            "z_log_msg_simple_create_1"
+        ]
+    },
+    {
+        "from": "gs_usb_can_state_change_callback",
+        "to": [
+            "__indirect_call",
+            "__indirect_call",
+            "gs_usb_buf_alloc",
+            "gs_usb_get_bulk_in_ep_addr",
+            "k_queue_append",
+            "net_buf_add_mem",
+            "net_buf_simple_add_le32",
+            "z_impl_k_sem_give",
+            "z_log_msg_simple_create_1",
+            "z_log_msg_simple_create_2"
+        ]
+    },
+    {
+        "from": "gs_usb_tx_thread",
+        "to": [
+            "gs_usb_get_bulk_in_ep_addr",
+            "memcpy",
+            "memset",
+            "net_buf_add_mem",
+            "net_buf_reset",
+            "net_buf_simple_pull_mem",
+            "net_buf_unref",
+            "z_impl_can_send",
+            "z_impl_k_queue_get",
+            "z_log_msg_simple_create_1",
+            "z_log_msg_simple_create_2"
+        ]
+    },
+    {
+        "from": "USB_DeviceLpc3511IpCancel",
+        "to": [
+            "OSA_EnterCritical",
+            "OSA_ExitCritical",
+            "USB_DeviceNotificationTrigger"
+        ]
+    },
+    {
+        "from": "can_mcan_get_message",
+        "to": [
+            "__indirect_call",
+            "can_mcan_read_mram",
+            "can_mcan_read_reg",
+            "can_mcan_write_reg",
+            "memset",
+            "z_log_msg_simple_create_0",
+            "z_log_msg_simple_create_1"
+        ]
+    },
+    {
+        "from": "z_arm_mpu_init",
+        "to": [
+            "arm_core_mpu_disable",
+            "arm_core_mpu_enable",
+            "mem_attr_get_regions",
+            "region_allocate_and_init",
+            "region_init"
+        ]
+    },
+    {
+        "from": "work_queue_main",
+        "to": [
+            "__indirect_call",
+            "flag_test_and_clear",
+            "z_impl_k_sem_give",
+            "z_impl_k_yield",
+            "z_sched_wait",
+            "z_sched_wake"
+        ]
+    },
+    {
+        "from": "mpu_configure_regions_and_partition",
+        "to": [
+            "arm_cmse_mpu_region_get",
+            "mpu_configure_region",
+            "region_allocate_and_init",
+            "z_impl_z_log_msg_simple_create_1"
+        ]
+    },
+    {
+        "from": "usbd_add_configuration",
+        "to": [
+            "k_mutex_unlock",
+            "usbd_add_descriptor",
+            "usbd_caps_speed",
+            "usbd_device_lock",
+            "usbd_str_desc_get_idx",
+            "z_impl_z_log_msg_simple_create_1",
+            "z_log_msg_simple_create_0"
+        ]
+    },
+    {
+        "from": "USART_Init",
+        "to": [
+            "FLEXCOMM_Init",
+            "USART_SetBaudRate"
+        ]
+    },
+    {
+        "from": "cannectivity_led_event",
+        "to": [
+            "led_event_enqueue",
+            "sys_timepoint_calc",
+            "sys_timepoint_timeout",
+            "z_impl_z_log_msg_simple_create_1",
+            "z_log_msg_static_create"
+        ]
+    },
+    {
+        "from": "smf_set_state",
+        "to": [
+            "__indirect_call",
+            "__indirect_call",
+            "__indirect_call",
+            "smf_execute_all_entry_actions",
+            "z_impl_z_log_msg_simple_create_0",
+            "z_impl_z_log_msg_static_create"
+        ]
+    },
+    {
+        "from": "gs_usb_register",
+        "to": [
+            "__indirect_call",
+            "__indirect_call",
+            "can_add_rx_filter",
+            "z_impl_device_is_ready",
+            "z_impl_k_sem_init",
+            "z_log_msg_simple_create_1",
+            "z_log_msg_simple_create_2"
+        ]
+    },
+    {
+        "from": "z_thread_abort",
+        "to": [
+            "arch_coprocessors_disable",
+            "ready_thread",
+            "sys_dlist_remove",
+            "unpend_thread_no_timeout",
+            "z_abort_timeout",
+            "z_dummy_thread_init",
+            "z_reset_time_slice",
+            "z_swap_irqlock"
+        ]
+    },
+    {
+        "from": "cannectivity_led_init",
+        "to": [
+            "k_msgq_init",
+            "k_poll_event_init",
+            "k_work_poll_init",
+            "k_work_poll_submit",
+            "smf_set_initial",
+            "sys_timepoint_calc",
+            "z_impl_device_is_ready",
+            "z_impl_k_timer_start",
+            "z_impl_z_log_msg_simple_create_1",
+            "z_impl_z_log_msg_simple_create_2"
+        ]
+    },
+    {
+        "from": "clock_init",
+        "to": [
+            "CLOCK_AttachClk",
+            "CLOCK_EnableUsbhs0DeviceClock",
+            "CLOCK_EnableUsbhs0PhyPllClock",
+            "CLOCK_SetClkDiv",
+            "CLOCK_SetFLASHAccessCyclesForFreq",
+            "CLOCK_SetPLL1Freq",
+            "CLOCK_SetupExtClocking",
+            "CLOCK_SetupFROClocking",
+            "POWER_SetVoltageForFreq",
+            "memset"
+        ]
+    },
+    {
+        "from": "can_mcan_configure_mram",
+        "to": [
+            "can_mcan_enable_configuration_change",
+            "can_mcan_enter_init_mode",
+            "can_mcan_exit_sleep_mode",
+            "can_mcan_write_reg",
+            "z_log_msg_simple_create_0"
+        ]
+    },
+    {
+        "from": "z_add_timeout",
+        "to": [
+            "elapsed",
+            "first",
+            "next_timeout",
+            "sys_clock_set_timeout"
+        ]
+    },
+    {
+        "from": "usbd_add_descriptor",
+        "to": [
+            "usbd_device_register_vreq",
+            "z_impl_k_mutex_lock",
+            "z_impl_k_mutex_unlock"
+        ]
+    },
+    {
+        "from": "can_mcan_add_rx_filter",
+        "to": [
+            "can_mcan_add_rx_filter_std",
+            "can_mcan_write_mram",
+            "k_mutex_lock",
+            "k_mutex_unlock",
+            "z_log_msg_simple_create_0",
+            "z_log_msg_simple_create_1"
+        ]
+    },
+    {
+        "from": "led_state_identify_run",
+        "to": [
+            "led_off_dt",
+            "led_on_dt",
+            "smf_set_state",
+            "z_log_msg_static_create"
+        ]
+    },
+    {
+        "from": "sys_heap_free",
+        "to": [
+            "chunk_size",
+            "free_list_add",
+            "free_list_remove",
+            "merge_chunks",
+            "z_impl_z_log_msg_static_create"
+        ]
+    },
+    {
+        "from": "led_gpio_init",
+        "to": [
+            "__indirect_call",
+            "z_impl_device_is_ready",
+            "z_impl_z_log_msg_simple_create_1",
+            "z_impl_z_log_msg_static_create"
+        ]
+    },
+    {
+        "from": "z_timer_expiration_handler",
+        "to": [
+            "__indirect_call",
+            "z_add_timeout",
+            "z_impl_k_uptime_ticks",
+            "z_ready_thread",
+            "z_unpend_thread_no_timeout"
+        ]
+    },
+    {
+        "from": "register_events",
+        "to": [
+            "add_event"
+        ]
+    },
+    {
+        "from": "gs_usb_can_rx_callback",
+        "to": [
+            "__indirect_call",
+            "gs_usb_buf_alloc",
+            "gs_usb_get_bulk_in_ep_addr",
+            "k_queue_append",
+            "net_buf_add_mem",
+            "net_buf_simple_add_le32",
+            "z_impl_k_sem_give",
+            "z_log_msg_simple_create_1"
+        ]
+    },
+    {
+        "from": "z_impl_z_log_msg_static_create",
+        "to": [
+            "cbprintf_package_convert",
+            "z_log_msg_alloc",
+            "z_log_msg_finalize"
+        ]
+    },
+    {
+        "from": "sreq_get_desc_cfg",
+        "to": [
+            "__aeabi_read_tp",
+            "__indirect_call",
+            "net_buf_simple_add_mem",
+            "net_buf_simple_remove_mem",
+            "net_buf_simple_tailroom",
+            "usbd_bus_speed",
+            "usbd_caps_speed",
+            "usbd_config_get",
+            "z_impl_z_log_msg_simple_create_1"
+        ]
+    },
+    {
+        "from": "CLOCK_EnableUsbhs0PhyPllClock",
+        "to": [
+            "SDK_DelayAtLeastUs"
+        ]
+    },
+    {
+        "from": "net_buf_alloc_len",
+        "to": [
+            "__indirect_call",
+            "memset",
+            "net_buf_destroy",
+            "sys_timepoint_calc",
+            "sys_timepoint_timeout",
+            "z_impl_k_queue_get"
+        ]
+    },
+    {
+        "from": "mpsc_pbuf_alloc",
+        "to": [
+            "__indirect_call",
+            "add_skip_item",
+            "drop_item_locked",
+            "free_space",
+            "idx_inc",
+            "k_is_in_isr",
+            "post_drop_action",
+            "z_impl_k_sem_take"
+        ]
+    },
+    {
+        "from": "can_mcan_start",
+        "to": [
+            "__indirect_call",
+            "__indirect_call",
+            "can_mcan_read_reg",
+            "can_mcan_write_reg",
+            "k_mutex_lock",
+            "k_mutex_unlock",
+            "z_impl_k_uptime_ticks",
+            "z_log_msg_simple_create_1"
+        ]
+    },
+    {
+        "from": "sys_clock_set_timeout",
+        "to": [
+            "elapsed"
+        ]
+    },
+    {
+        "from": "k_work_poll_submit_to_queue",
+        "to": [
+            "clear_event_registrations",
+            "k_work_submit_to_queue",
+            "register_events",
+            "z_abort_timeout",
+            "z_add_timeout"
+        ]
+    },
+    {
+        "from": "drop_item_locked",
+        "to": [
+            "__indirect_call",
+            "add_skip_item",
+            "idx_inc",
+            "rd_idx_inc"
+        ]
+    },
+    {
+        "from": "nxp_lpc_mcan_init",
+        "to": [
+            "__indirect_call",
+            "__indirect_call",
+            "__indirect_call",
+            "can_mcan_configure_mram",
+            "can_mcan_init",
+            "can_mcan_write_reg",
+            "pinctrl_configure_pins",
+            "pinctrl_lookup_state",
+            "z_impl_device_is_ready",
+            "z_impl_z_log_msg_simple_create_0",
+            "z_impl_z_log_msg_simple_create_1"
+        ]
+    },
+    {
+        "from": "z_fatal_error",
+        "to": [
+            "k_sys_fatal_error_handler",
+            "k_thread_name_get",
+            "z_impl_k_thread_abort",
+            "z_impl_z_log_msg_simple_create_0",
+            "z_impl_z_log_msg_static_create"
+        ]
+    },
+    {
+        "from": "usbd_interface_modify",
+        "to": [
+            "__indirect_call",
+            "usbd_bus_speed",
+            "usbd_ep_disable",
+            "usbd_ep_enable",
+            "z_impl_z_log_msg_static_create"
+        ]
+    },
+    {
+        "from": "z_impl_k_mutex_lock",
+        "to": [
+            "adjust_owner_prio",
+            "z_pend_curr",
+            "z_reschedule"
+        ]
+    },
+    {
+        "from": "sys_heap_aligned_alloc",
+        "to": [
+            "alloc_chunk",
+            "chunk_size",
+            "free_list_add",
+            "split_chunks",
+            "sys_heap_alloc"
+        ]
+    },
+    {
+        "from": "queue_insert",
+        "to": [
+            "unpend_thread_no_timeout",
+            "z_abort_timeout",
+            "z_handle_obj_poll_events",
+            "z_ready_thread",
+            "z_reschedule",
+            "z_thread_malloc"
+        ]
+    },
+    {
+        "from": "z_impl_can_send",
+        "to": [
+            "__indirect_call",
+            "__indirect_call",
+            "z_impl_k_sem_init",
+            "z_impl_k_sem_take",
+            "z_impl_z_log_msg_static_create"
+        ]
+    },
+    {
+        "from": "gs_usb_request",
+        "to": [
+            "gs_usb_get_bulk_in_ep_addr",
+            "gs_usb_get_bulk_out1_ep_addr",
+            "gs_usb_get_bulk_out2_ep_addr",
+            "gs_usb_out_start",
+            "k_queue_append",
+            "net_buf_unref",
+            "usbd_ep_buf_free",
+            "z_impl_k_sem_give",
+            "z_impl_z_log_msg_simple_create_0",
+            "z_log_msg_simple_create_1",
+            "z_log_msg_simple_create_2"
+        ]
+    },
+    {
+        "from": "z_thread_prio_set",
+        "to": [
+            "sys_dlist_remove",
+            "z_reset_time_slice"
+        ]
+    },
+    {
+        "from": "can_mcan_add_rx_filter_std",
+        "to": [
+            "can_mcan_write_mram",
+            "k_mutex_lock",
+            "k_mutex_unlock",
+            "z_log_msg_simple_create_0",
+            "z_log_msg_simple_create_1"
+        ]
+    },
+    {
+        "from": "put_msg_in_queue",
+        "to": [
+            "memcpy",
+            "unpend_thread_no_timeout",
+            "z_abort_timeout",
+            "z_handle_obj_poll_events",
+            "z_pend_curr",
+            "z_ready_thread",
+            "z_reschedule"
+        ]
+    },
+    {
+        "from": "mem_manage_fault",
+        "to": [
+            "z_impl_z_log_msg_simple_create_1",
+            "z_log_msg_simple_create_0"
+        ]
+    },
+    {
+        "from": "bus_fault",
+        "to": [
+            "z_impl_z_log_msg_simple_create_1",
+            "z_log_msg_simple_create_0"
+        ]
+    },
+    {
+        "from": "intc_nxp_pint_init",
+        "to": [
+            "PINT_Init",
+            "arm_irq_enable",
+            "arm_irq_priority_set",
+            "memset"
+        ]
+    },
+    {
+        "from": "mcux_lpc_syscon_clock_control_get_subsys_rate",
+        "to": [
+            "CLOCK_GetCTimerClkFreq",
+            "CLOCK_GetFlexCommClkFreq",
+            "CLOCK_GetFreq",
+            "CLOCK_GetHsLspiClkFreq",
+            "CLOCK_GetMCanClkFreq"
+        ]
+    },
+    {
+        "from": "gpio_mcux_lpc_configure",
+        "to": []
+    },
+    {
+        "from": "USB_DeviceLpc3511IpGetActualBufferAndPrime",
+        "to": [
+            "USB_DeviceLpc3511IpEndpointPrime",
+            "memcpy"
+        ]
+    },
+    {
+        "from": "main",
+        "to": [
+            "cannectivity_led_init",
+            "cannectivity_timestamp_init",
+            "cannectivity_usb_init",
+            "gs_usb_register",
+            "printk",
+            "z_impl_device_is_ready",
+            "z_impl_z_log_msg_simple_create_0",
+            "z_impl_z_log_msg_simple_create_1",
+            "z_impl_z_log_msg_static_create"
+        ]
+    },
+    {
+        "from": "usbd_enable",
+        "to": [
+            "k_mutex_unlock",
+            "k_sched_lock",
+            "k_sched_unlock",
+            "udc_ctrl_setup_alloc",
+            "udc_disable",
+            "udc_enable",
+            "udc_ep_queue_is_empty",
+            "usbd_device_lock",
+            "usbd_init_control_pipe",
+            "z_log_msg_simple_create_0"
+        ]
+    },
+    {
+        "from": "CLOCK_SetPLL1Freq",
+        "to": [
+            "CLOCK_GetPLL1InClockRate",
+            "SDK_DelayAtLeastUs"
+        ]
+    },
+    {
+        "from": "z_cstart",
+        "to": [
+            "arch_switch_to_main_thread",
+            "log_core_init",
+            "z_arm_configure_static_mpu_regions",
+            "z_arm_cpu_idle_init",
+            "z_arm_fault_init",
+            "z_arm_mpu_init",
+            "z_dummy_thread_init",
+            "z_init_cpu",
+            "z_ready_thread",
+            "z_sched_init",
+            "z_setup_new_thread",
+            "z_sys_init_run_level"
+        ]
+    },
+    {
+        "from": "z_impl_k_msgq_get",
+        "to": [
+            "memcpy",
+            "unpend_thread_no_timeout",
+            "z_abort_timeout",
+            "z_pend_curr",
+            "z_ready_thread",
+            "z_reschedule"
+        ]
+    },
+    {
+        "from": "mcux_flexcomm_init",
+        "to": [
+            "USART_GetDefaultConfig",
+            "USART_Init",
+            "__indirect_call",
+            "clock_control_get_rate",
+            "pinctrl_apply_state",
+            "z_impl_device_is_ready"
+        ]
+    },
+    {
+        "from": "bg_thread_main",
+        "to": [
+            "boot_banner",
+            "k_sched_lock",
+            "k_sched_unlock",
+            "main",
+            "z_add_timeout",
+            "z_impl_k_wakeup",
+            "z_setup_new_thread",
+            "z_sys_init_run_level"
+        ]
+    },
+    {
+        "from": "USB_DeviceLpc3511IpEndpointPrime",
+        "to": [
+            "OSA_EnterCritical",
+            "OSA_ExitCritical"
+        ]
+    },
+    {
+        "from": "usage_fault",
+        "to": [
+            "z_log_msg_simple_create_0"
+        ]
+    },
+    {
+        "from": "can_mcan_set_mode",
+        "to": [
+            "can_mcan_read_reg",
+            "can_mcan_write_reg",
+            "k_mutex_lock",
+            "k_mutex_unlock",
+            "z_log_msg_simple_create_1"
+        ]
+    },
+    {
+        "from": "udc_mcux_ep_try_feed",
+        "to": [
+            "__indirect_call",
+            "__indirect_call",
+            "udc_buf_peek",
+            "udc_ep_is_busy",
+            "udc_ep_set_busy",
+            "udc_mcux_control",
+            "udc_mcux_lock",
+            "udc_unlock_internal"
+        ]
+    },
+    {
+        "from": "z_arm_fatal_error",
+        "to": [
+            "z_fatal_error",
+            "z_impl_z_log_msg_simple_create_1",
+            "z_impl_z_log_msg_static_create"
+        ]
+    },
+    {
+        "from": "arm_core_mpu_mark_areas_for_dynamic_regions",
+        "to": [
+            "arm_cmse_mpu_region_get"
+        ]
+    },
+    {
+        "from": "usbd_register_class",
+        "to": [
+            "usbd_class_node_get",
+            "usbd_config_get",
+            "usbd_device_lock",
+            "z_impl_k_mutex_unlock",
+            "z_impl_z_log_msg_simple_create_0"
+        ]
+    },
+    {
+        "from": "gs_usb_rx_thread",
+        "to": [
+            "__indirect_call",
+            "net_buf_unref",
+            "usbd_ep_enqueue",
+            "z_impl_k_queue_get",
+            "z_impl_k_sem_take",
+            "z_log_msg_simple_create_2"
+        ]
+    },
+    {
+        "from": "gs_usb_disable",
+        "to": [
+            "gs_usb_get_bulk_in_ep_addr",
+            "gs_usb_get_bulk_out1_ep_addr",
+            "gs_usb_get_bulk_out2_ep_addr",
+            "gs_usb_reset_channel",
+            "usbd_ep_dequeue",
+            "z_impl_k_sem_reset",
+            "z_log_msg_simple_create_2"
+        ]
+    },
+    {
+        "from": "can_mcan_remove_rx_filter",
+        "to": [
+            "can_mcan_clear_mram",
+            "k_mutex_lock",
+            "k_mutex_unlock",
+            "z_log_msg_simple_create_1"
+        ]
+    },
+    {
+        "from": "can_mcan_stop",
+        "to": [
+            "__indirect_call",
+            "__indirect_call",
+            "can_mcan_enable_configuration_change",
+            "can_mcan_enter_init_mode",
+            "k_mutex_lock",
+            "k_mutex_unlock",
+            "z_impl_k_sem_give",
+            "z_log_msg_simple_create_0",
+            "z_log_msg_simple_create_1"
+        ]
+    },
+    {
+        "from": "sys_clock_announce_locked",
+        "to": [
+            "__indirect_call",
+            "first",
+            "next_timeout",
+            "remove_timeout",
+            "sys_clock_set_timeout",
+            "z_time_slice"
+        ]
+    },
+    {
+        "from": "USART_SetBaudRate",
+        "to": []
+    },
+    {
+        "from": "mpsc_pbuf_claim",
+        "to": [
+            "__indirect_call",
+            "__indirect_call",
+            "idx_inc",
+            "rd_idx_inc",
+            "z_impl_k_sem_give"
+        ]
+    },
+    {
+        "from": "udc_setup_received",
+        "to": [
+            "net_buf_simple_add_mem",
+            "udc_buf_get",
+            "udc_submit_ep_event",
+            "z_impl_k_mutex_lock",
+            "z_impl_k_mutex_unlock"
+        ]
+    },
+    {
+        "from": "z_impl_log_process",
+        "to": [
+            "__aeabi_uldivmod",
+            "__indirect_call",
+            "dropped_notify",
+            "z_impl_k_uptime_ticks",
+            "z_log_msg_free",
+            "z_log_msg_local_claim",
+            "z_log_msg_pending"
+        ]
+    },
+    {
+        "from": "usbd_config_set",
+        "to": [
+            "__indirect_call",
+            "__indirect_call",
+            "memset",
+            "usbd_bus_speed",
+            "usbd_config_get",
+            "usbd_config_get_current",
+            "usbd_interface_default",
+            "usbd_interface_shutdown",
+            "z_log_msg_simple_create_0"
+        ]
+    },
+    {
+        "from": "mcux_flexcomm_uart_configure",
+        "to": [
+            "USART_Deinit",
+            "USART_Enable9bitMode",
+            "USART_GetDefaultConfig",
+            "USART_Init",
+            "clock_control_get_rate"
+        ]
+    },
+    {
+        "from": "USB_DeviceLpc3511IpInit",
+        "to": [
+            "USB_DeviceLpc3511IpSetDefaultState",
+            "USB_DeviceLpcIp3511MallocMaxPacketBuffer"
+        ]
+    },
+    {
+        "from": "nonstd_request",
+        "to": [
+            "__aeabi_read_tp",
+            "__indirect_call",
+            "reqtype_is_to_host",
+            "usbd_class_get_by_ep",
+            "usbd_class_get_by_iface",
+            "usbd_class_get_by_req",
+            "usbd_device_get_vreq"
+        ]
+    },
+    {
+        "from": "gs_usb_can_tx_callback",
+        "to": [
+            "__indirect_call",
+            "k_queue_append",
+            "memset",
+            "net_buf_simple_add",
+            "net_buf_simple_add_le32",
+            "net_buf_simple_remove_mem",
+            "net_buf_unref",
+            "z_log_msg_simple_create_1"
+        ]
+    },
+    {
+        "from": "__ultoa_invert",
+        "to": []
+    },
+    {
+        "from": "cannectivity_timestamp_init",
+        "to": [
+            "__indirect_call",
+            "__indirect_call",
+            "__indirect_call",
+            "z_impl_device_is_ready",
+            "z_impl_z_log_msg_simple_create_0",
+            "z_impl_z_log_msg_simple_create_1"
+        ]
+    },
+    {
+        "from": "z_log_msg_runtime_vcreate",
+        "to": [
+            "cbvprintf_package",
+            "z_impl_z_log_msg_simple_create_1",
+            "z_log_msg_alloc",
+            "z_log_msg_finalize"
+        ]
+    },
+    {
+        "from": "submit_to_queue_locked",
+        "to": [
+            "k_is_in_isr",
+            "notify_queue_locked"
+        ]
+    },
+    {
+        "from": "can_mcan_enter_init_mode",
+        "to": [
+            "can_mcan_read_reg",
+            "can_mcan_write_reg",
+            "k_mutex_lock",
+            "k_mutex_unlock",
+            "z_impl_k_uptime_ticks"
+        ]
+    },
+    {
+        "from": "USB_DeviceLpc3511IpTransaction",
+        "to": [
+            "OSA_EnterCritical",
+            "OSA_ExitCritical",
+            "USB_DeviceLpc3511IpGetActualBufferAndPrime"
+        ]
+    },
+    {
+        "from": "log_process_thread_func",
+        "to": [
+            "__aeabi_read_tp",
+            "__indirect_call",
+            "activate_foreach_backend",
+            "z_impl_k_sem_give",
+            "z_impl_k_sem_take",
+            "z_impl_log_process",
+            "z_log_init"
+        ]
+    },
+    {
+        "from": "gs_usb_preinit",
+        "to": [
+            "z_impl_k_queue_init",
+            "z_impl_k_sem_init",
+            "z_impl_k_thread_create",
+            "z_impl_k_thread_name_set"
+        ]
+    },
+    {
+        "from": "can_mcan_exit_sleep_mode",
+        "to": [
+            "can_mcan_read_reg",
+            "can_mcan_write_reg",
+            "k_mutex_lock",
+            "k_mutex_unlock",
+            "sys_clock_cycle_get_32"
+        ]
+    },
+    {
+        "from": "z_impl_k_mutex_unlock",
+        "to": [
+            "adjust_owner_prio",
+            "z_abort_timeout",
+            "z_ready_thread",
+            "z_reschedule"
+        ]
+    },
+    {
+        "from": "led_indicate_activity",
+        "to": [
+            "led_off_dt",
+            "led_on_dt",
+            "z_log_msg_static_create"
+        ]
+    },
+    {
+        "from": "nxp_pint_pin_enable",
+        "to": [
+            "INPUTMUX_AttachSignal",
+            "INPUTMUX_Deinit",
+            "INPUTMUX_Init",
+            "PINT_PinInterruptConfig",
+            "arm_irq_enable"
+        ]
+    },
+    {
+        "from": "gpio_mcux_lpc_pin_interrupt_configure",
+        "to": [
+            "nxp_pint_pin_disable",
+            "nxp_pint_pin_enable",
+            "nxp_pint_pin_set_callback"
+        ]
+    },
+    {
+        "from": "z_log_init",
+        "to": [
+            "__indirect_call",
+            "__indirect_call",
+            "activate_foreach_backend",
+            "atomic_inc",
+            "log_backend_enable",
+            "z_impl_k_sleep"
+        ]
+    },
+    {
+        "from": "usbd_pre_init",
+        "to": [
+            "z_impl_k_thread_create",
+            "z_impl_k_thread_name_set"
+        ]
+    },
+    {
+        "from": "udc_ep_enable_internal",
+        "to": [
+            "__indirect_call",
+            "ep_check_config",
+            "udc_get_ep_cfg",
+            "z_impl_z_log_msg_simple_create_1"
+        ]
+    },
+    {
+        "from": "can_add_rx_filter",
+        "to": [
+            "__indirect_call",
+            "z_impl_z_log_msg_static_create"
+        ]
+    },
+    {
+        "from": "can_mcan_set_timing_data",
+        "to": [
+            "can_mcan_write_reg",
+            "k_mutex_lock",
+            "k_mutex_unlock"
+        ]
+    },
+    {
+        "from": "usbd_class_node_get",
+        "to": [
+            "strcmp",
+            "z_impl_z_log_msg_static_create"
+        ]
+    },
+    {
+        "from": "usbd_ep_ctrl_enqueue",
+        "to": [
+            "udc_ep_enqueue",
+            "usbd_bus_speed",
+            "usbd_is_suspended",
+            "z_impl_z_log_msg_simple_create_0"
+        ]
+    },
+    {
+        "from": "udc_ep_enqueue",
+        "to": [
+            "__indirect_call",
+            "__indirect_call",
+            "__indirect_call",
+            "net_buf_simple_add_mem",
+            "udc_get_ep_cfg",
+            "udc_is_enabled",
+            "udc_submit_ep_event"
+        ]
+    },
+    {
+        "from": "udc_ep_try_config",
+        "to": [
+            "__indirect_call",
+            "__indirect_call",
+            "ep_check_config",
+            "udc_get_ep_cfg"
+        ]
+    },
+    {
+        "from": "msg_work_handler",
+        "to": [
+            "__indirect_call",
+            "k_mem_slab_free",
+            "k_work_reschedule",
+            "k_work_schedule"
+        ]
+    },
+    {
+        "from": "mcux_lpc_ctimer_set_alarm",
+        "to": [
+            "CTIMER_SetupMatch",
+            "mcux_lpc_ctimer_get_top_value",
+            "z_impl_z_log_msg_simple_create_0"
+        ]
+    },
+    {
+        "from": "USB_DeviceLpc3511IpSetDefaultState",
+        "to": []
+    },
+    {
+        "from": "lowpower_set_system_voltage",
+        "to": []
+    },
+    {
+        "from": "signal_poll_event",
+        "to": [
+            "z_abort_timeout",
+            "z_ready_thread",
+            "z_unpend_thread",
+            "z_work_submit_to_queue"
+        ]
+    },
+    {
+        "from": "led_state_normal_started_run",
+        "to": [
+            "led_indicate_activity",
+            "led_indicate_error",
+            "smf_set_state"
+        ]
+    },
+    {
+        "from": "unassign_eps",
+        "to": [
+            "z_impl_z_log_msg_simple_create_1"
+        ]
+    },
+    {
+        "from": "usbd_init_configurations",
+        "to": [
+            "init_configuration",
+            "z_impl_z_log_msg_simple_create_1"
+        ]
+    },
+    {
+        "from": "udc_set_suspended",
+        "to": [
+            "z_impl_z_log_msg_static_create"
+        ]
+    },
+    {
+        "from": "CLOCK_SetFLASHAccessCyclesForFreq",
+        "to": []
+    },
+    {
+        "from": "CLOCK_GetFreq",
+        "to": [
+            "CLOCK_GetClockOutClkFreq",
+            "CLOCK_GetCoreSysClkFreq",
+            "CLOCK_GetExtClkFreq",
+            "CLOCK_GetFro12MFreq",
+            "CLOCK_GetFro1MFreq",
+            "CLOCK_GetFroHfFreq",
+            "CLOCK_GetMclkClkFreq"
+        ]
+    },
+    {
+        "from": "z_impl_k_yield",
+        "to": [
+            "z_reset_time_slice",
+            "z_swap_irqlock"
+        ]
+    },
+    {
+        "from": "z_heap_alloc_helper",
+        "to": [
+            "__indirect_call",
+            "sys_timepoint_calc",
+            "sys_timepoint_timeout",
+            "z_pend_curr"
+        ]
+    },
+    {
+        "from": "sys_heap_init",
+        "to": [
+            "free_list_add",
+            "memset"
+        ]
+    },
+    {
+        "from": "usbd_init",
+        "to": [
+            "k_mutex_unlock",
+            "k_sched_lock",
+            "k_sched_unlock",
+            "memset",
+            "usbd_device_init_core",
+            "usbd_device_lock",
+            "z_impl_device_is_ready",
+            "z_log_msg_simple_create_0"
+        ]
+    },
+    {
+        "from": "can_mcan_line_1_isr",
+        "to": [
+            "can_mcan_get_message",
+            "can_mcan_read_reg",
+            "can_mcan_write_reg",
+            "z_log_msg_simple_create_0"
+        ]
+    },
+    {
+        "from": "USB_DeviceLpcIp3511MallocMaxPacketBuffer",
+        "to": [
+            "OSA_EnterCritical",
+            "OSA_ExitCritical"
+        ]
+    },
+    {
+        "from": "SystemInit",
+        "to": [
+            "SystemInitHook"
+        ]
+    },
+    {
+        "from": "lowpower_set_voltage_for_process",
+        "to": [
+            "lowpower_set_system_voltage"
+        ]
+    },
+    {
+        "from": "k_work_queue_start",
+        "to": [
+            "z_impl_k_thread_create",
+            "z_impl_k_thread_name_set",
+            "z_impl_k_wakeup"
+        ]
+    },
+    {
+        "from": "ready_thread",
+        "to": [
+            "z_reset_time_slice"
+        ]
+    },
+    {
+        "from": "gs_usb_out_start",
+        "to": [
+            "gs_usb_buf_alloc",
+            "net_buf_unref",
+            "usbd_ep_enqueue",
+            "z_impl_z_log_msg_simple_create_0",
+            "z_log_msg_simple_create_1",
+            "z_log_msg_simple_create_2"
+        ]
+    },
+    {
+        "from": "CTIMER_SetupMatch",
+        "to": [
+            "CTIMER_GetInstance",
+            "EnableIRQ"
+        ]
+    },
+    {
+        "from": "FLEXCOMM_Init",
+        "to": [
+            "FLEXCOMM_GetInstance",
+            "RESET_PeripheralReset"
+        ]
+    },
+    {
+        "from": "z_setup_new_thread",
+        "to": [
+            "arch_new_thread",
+            "arch_tls_stack_setup"
+        ]
+    },
+    {
+        "from": "z_log_msg_post_finalize",
+        "to": [
+            "atomic_inc",
+            "z_impl_k_sem_give",
+            "z_impl_k_timer_start",
+            "z_impl_k_timer_stop",
+            "z_impl_log_process"
+        ]
+    },
+    {
+        "from": "z_impl_k_sem_reset",
+        "to": [
+            "z_abort_timeout",
+            "z_handle_obj_poll_events",
+            "z_ready_thread",
+            "z_reschedule"
+        ]
+    },
+    {
+        "from": "z_tick_sleep",
+        "to": [
+            "sys_clock_tick_get_32",
+            "unready_thread",
+            "z_add_timeout",
+            "z_impl_k_yield",
+            "z_swap_irqlock"
+        ]
+    },
+    {
+        "from": "usbd_interface_set",
+        "to": [
+            "__indirect_call",
+            "usbd_class_get_by_iface",
+            "usbd_interface_modify"
+        ]
+    },
+    {
+        "from": "mpsc_pbuf_free",
+        "to": [
+            "__indirect_call",
+            "idx_inc",
+            "rd_idx_inc",
+            "z_impl_k_sem_give"
+        ]
+    },
+    {
+        "from": "led_event_triggered_work_handler",
+        "to": [
+            "k_work_poll_submit",
+            "smf_run_state",
+            "z_impl_k_msgq_get",
+            "z_impl_z_log_msg_simple_create_1"
+        ]
+    },
+    {
+        "from": "USB_EhciPhyInit",
+        "to": [
+            "USB_EhciPhyGetBase"
+        ]
+    },
+    {
+        "from": "z_impl_k_sem_give",
+        "to": [
+            "z_abort_timeout",
+            "z_handle_obj_poll_events",
+            "z_ready_thread",
+            "z_reschedule"
+        ]
+    },
+    {
+        "from": "CLOCK_GetFlexCommInputClock",
+        "to": [
+            "CLOCK_GetCoreSysClkFreq",
+            "CLOCK_GetFro12MFreq",
+            "CLOCK_GetFro1MFreq",
+            "CLOCK_GetFroHfFreq",
+            "CLOCK_GetOsc32KFreq"
+        ]
+    },
+    {
+        "from": "POWER_SetVoltageForFreq",
+        "to": [
+            "lowpower_set_voltage_for_process"
+        ]
+    },
+    {
+        "from": "z_impl_k_timer_start",
+        "to": [
+            "z_abort_timeout",
+            "z_add_timeout"
+        ]
+    },
+    {
+        "from": "alloc_chunk",
+        "to": [
+            "chunk_size",
+            "free_list_remove_bidx"
+        ]
+    },
+    {
+        "from": "mcux_lpc_ctimer_isr",
+        "to": [
+            "__indirect_call"
+        ]
+    },
+    {
+        "from": "z_log_msg_simple_create",
+        "to": [
+            "z_log_msg_alloc",
+            "z_log_msg_finalize"
+        ]
+    },
+    {
+        "from": "smf_run_state",
+        "to": [
+            "__indirect_call",
+            "__indirect_call"
+        ]
+    },
+    {
+        "from": "k_mem_slab_free",
+        "to": [
+            "z_abort_timeout",
+            "z_ready_thread",
+            "z_reschedule"
+        ]
+    },
+    {
+        "from": "led_indicate_error",
+        "to": [
+            "led_off_dt",
+            "led_on_dt",
+            "z_log_msg_static_create"
+        ]
+    },
+    {
+        "from": "led_indicate_state",
+        "to": [
+            "led_off_dt",
+            "led_on_dt",
+            "z_log_msg_static_create"
+        ]
+    },
+    {
+        "from": "usbd_msg_pub",
+        "to": [
+            "k_mem_slab_alloc",
+            "k_work_schedule"
+        ]
+    },
+    {
+        "from": "sys_clock_isr",
+        "to": [
+            "elapsed",
+            "sys_clock_announce_locked",
+            "z_arm_exc_exit"
+        ]
+    },
+    {
+        "from": "PINT_Init",
+        "to": [
+            "PINT_GetInstance",
+            "RESET_ClearPeripheralReset",
+            "memset"
+        ]
+    },
+    {
+        "from": "z_impl_k_queue_get",
+        "to": [
+            "k_free",
+            "z_pend_curr"
+        ]
+    },
+    {
+        "from": "move_current_to_end_of_prio_q",
+        "to": [
+            "z_reset_time_slice"
+        ]
+    },
+    {
+        "from": "log_output_msg_process",
+        "to": [
+            "log_msg_get_source_id",
+            "log_output_process",
+            "log_source_name_get"
+        ]
+    },
+    {
+        "from": "z_abort_timeout",
+        "to": [
+            "elapsed",
+            "first",
+            "next_timeout",
+            "remove_timeout",
+            "sys_clock_set_timeout"
+        ]
+    },
+    {
+        "from": "gs_usb_reset_channel",
+        "to": [
+            "__indirect_call",
+            "z_impl_k_sem_reset",
+            "z_log_msg_simple_create_1",
+            "z_log_msg_simple_create_2"
+        ]
+    },
+    {
+        "from": "udc_mcux_event_submit",
+        "to": [
+            "k_mem_slab_alloc",
+            "k_queue_append",
+            "k_work_submit_to_queue",
+            "udc_submit_event",
+            "z_impl_z_log_msg_simple_create_0"
+        ]
+    },
+    {
+        "from": "z_init_cpu",
+        "to": [
+            "z_setup_new_thread"
+        ]
+    },
+    {
+        "from": "ep_check_config",
+        "to": []
+    },
+    {
+        "from": "mcux_lpc_ctimer_set_top_value",
+        "to": [
+            "CTIMER_SetupMatch"
+        ]
+    },
+    {
+        "from": "gs_usb_enable",
+        "to": [
+            "gs_usb_get_bulk_out1_ep_addr",
+            "gs_usb_get_bulk_out2_ep_addr",
+            "gs_usb_out_start",
+            "z_log_msg_simple_create_2"
+        ]
+    },
+    {
+        "from": "can_mcan_set_timing",
+        "to": [
+            "can_mcan_write_reg",
+            "k_mutex_lock",
+            "k_mutex_unlock"
+        ]
+    },
+    {
+        "from": "CLOCK_GetHsLspiClkFreq",
+        "to": [
+            "CLOCK_GetCoreSysClkFreq",
+            "CLOCK_GetFro12MFreq",
+            "CLOCK_GetFro1MFreq",
+            "CLOCK_GetFroHfFreq",
+            "CLOCK_GetOsc32KFreq"
+        ]
+    },
+    {
+        "from": "USB_DeviceLpc3511IpEndpointDeinit",
+        "to": [
+            "USB_DeviceLpc3511IpCancel",
+            "USB_DeviceLpcIp3511ReleaseMaxPacketBuffer"
+        ]
+    },
+    {
+        "from": "cbpprintf_external",
+        "to": [
+            "strlen"
+        ]
+    },
+    {
+        "from": "udc_ep_clear_halt",
+        "to": [
+            "__indirect_call",
+            "__indirect_call",
+            "__indirect_call",
+            "udc_get_ep_cfg",
+            "udc_is_enabled"
+        ]
+    },
+    {
+        "from": "USB_DeviceNotificationTrigger",
+        "to": [
+            "udc_mcux_event_submit",
+            "udc_set_suspended",
+            "udc_submit_event"
+        ]
+    },
+    {
+        "from": "activate_foreach_backend",
+        "to": [
+            "__indirect_call",
+            "log_backend_enable"
+        ]
+    },
+    {
+        "from": "USB_DeviceLpcIp3511ReleaseMaxPacketBuffer",
+        "to": [
+            "OSA_EnterCritical",
+            "OSA_ExitCritical"
+        ]
+    },
+    {
+        "from": "z_impl_k_timer_stop",
+        "to": [
+            "__indirect_call",
+            "z_abort_timeout",
+            "z_ready_thread",
+            "z_reschedule",
+            "z_unpend1_no_timeout"
+        ]
+    },
+    {
+        "from": "clear_event_registrations",
+        "to": []
+    },
+    {
+        "from": "USB_DeviceLpc3511IpTokenUpdate",
+        "to": []
+    },
+    {
+        "from": "udc_init",
+        "to": [
+            "__indirect_call",
+            "__indirect_call",
+            "__indirect_call",
+            "udc_is_initialized"
+        ]
+    },
+    {
+        "from": "check_timing_in_range",
+        "to": []
+    },
+    {
+        "from": "USB_DeviceLpc3511IpDeinit",
+        "to": [
+            "USB_DeviceLpcIp3511ReleaseMaxPacketBuffer"
+        ]
+    },
+    {
+        "from": "CLOCK_GetCoreSysClkFreq",
+        "to": [
+            "CLOCK_GetExtClkFreq",
+            "CLOCK_GetFro12MFreq",
+            "CLOCK_GetFro1MFreq",
+            "CLOCK_GetFroHfFreq",
+            "CLOCK_GetOsc32KFreq"
+        ]
+    },
+    {
+        "from": "CLOCK_GetClockOutClkFreq",
+        "to": [
+            "CLOCK_GetCoreSysClkFreq",
+            "CLOCK_GetExtClkFreq",
+            "CLOCK_GetFro1MFreq",
+            "CLOCK_GetFroHfFreq",
+            "CLOCK_GetOsc32KFreq"
+        ]
+    },
+    {
+        "from": "k_mem_slab_alloc",
+        "to": [
+            "z_pend_curr"
+        ]
+    },
+    {
+        "from": "k_work_reschedule_for_queue",
+        "to": [
+            "submit_to_queue_locked",
+            "unschedule_locked",
+            "z_add_timeout"
+        ]
+    },
+    {
+        "from": "z_time_slice",
+        "to": [
+            "move_current_to_end_of_prio_q",
+            "z_reset_time_slice",
+            "z_time_slice_size"
+        ]
+    },
+    {
+        "from": "sys_heap_alloc",
+        "to": [
+            "alloc_chunk",
+            "chunk_size",
+            "free_list_add",
+            "split_chunks"
+        ]
+    },
+    {
+        "from": "can_mcan_get_state",
+        "to": [
+            "can_mcan_read_reg"
+        ]
+    },
+    {
+        "from": "enable_logger",
+        "to": [
+            "k_timer_init",
+            "z_impl_k_thread_create",
+            "z_impl_k_thread_name_set"
+        ]
+    },
+    {
+        "from": "log_output_dropped_process",
+        "to": [
+            "log_output_write",
+            "snprintf"
+        ]
+    },
+    {
+        "from": "usbd_class_bcast_event",
+        "to": [
+            "__indirect_call",
+            "usbd_config_get_current",
+            "z_impl_z_log_msg_simple_create_0"
+        ]
+    },
+    {
+        "from": "usbd_class_get_by_ep",
+        "to": [
+            "usbd_bus_speed",
+            "usbd_config_get",
+            "z_impl_z_log_msg_simple_create_0"
+        ]
+    },
+    {
+        "from": "mcux_lpc_ctimer_init",
+        "to": [
+            "CTIMER_GetDefaultConfig",
+            "CTIMER_Init",
+            "__indirect_call",
+            "z_impl_device_is_ready",
+            "z_impl_z_log_msg_simple_create_0"
+        ]
+    },
+    {
+        "from": "CLOCK_AttachClk",
+        "to": []
+    },
+    {
+        "from": "z_impl_k_thread_create",
+        "to": [
+            "z_add_timeout",
+            "z_impl_k_wakeup",
+            "z_setup_new_thread"
+        ]
+    },
+    {
+        "from": "usbd_device_register_vreq",
+        "to": [
+            "k_mutex_unlock",
+            "usbd_device_lock"
+        ]
+    },
+    {
+        "from": "udc_ep_set_halt",
+        "to": [
+            "__indirect_call",
+            "__indirect_call",
+            "__indirect_call",
+            "udc_get_ep_cfg",
+            "udc_is_enabled"
+        ]
+    },
+    {
+        "from": "z_arm_pendsv",
+        "to": []
+    },
+    {
+        "from": "udc_ep_disable_internal",
+        "to": [
+            "__indirect_call",
+            "udc_get_ep_cfg",
+            "z_impl_z_log_msg_simple_create_1"
+        ]
+    },
+    {
+        "from": "udc_ep_buf_alloc",
+        "to": [
+            "__indirect_call",
+            "__indirect_call",
+            "net_buf_alloc_len",
+            "z_impl_z_log_msg_simple_create_2"
+        ]
+    },
+    {
+        "from": "z_impl_hwinfo_get_device_id",
+        "to": [
+            "memcpy"
+        ]
+    },
+    {
+        "from": "CTIMER_Init",
+        "to": [
+            "CTIMER_GetInstance",
+            "RESET_PeripheralReset"
+        ]
+    },
+    {
+        "from": "k_work_schedule_for_queue",
+        "to": [
+            "submit_to_queue_locked",
+            "z_add_timeout"
+        ]
+    },
+    {
+        "from": "unready_thread",
+        "to": [
+            "sys_dlist_remove",
+            "z_reset_time_slice"
+        ]
+    },
+    {
+        "from": "k_sched_unlock",
+        "to": [
+            "reschedule",
+            "z_reset_time_slice"
+        ]
+    },
+    {
+        "from": "snprintf",
+        "to": [
+            "__l_vfprintf",
+            "memset"
+        ]
+    },
+    {
+        "from": "smf_execute_all_entry_actions",
+        "to": [
+            "__indirect_call",
+            "__indirect_call"
+        ]
+    },
+    {
+        "from": "usbd_interface_shutdown",
+        "to": [
+            "usbd_ep_disable"
+        ]
+    },
+    {
+        "from": "gpio_mcux_lpc_manage_cb",
+        "to": []
+    },
+    {
+        "from": "udc_ep_enable",
+        "to": [
+            "__indirect_call",
+            "__indirect_call",
+            "udc_ep_enable_internal",
+            "udc_is_enabled"
+        ]
+    },
+    {
+        "from": "led_event_enqueue",
+        "to": [
+            "z_impl_k_msgq_put",
+            "z_log_msg_static_create"
+        ]
+    },
+    {
+        "from": "log_core_init",
+        "to": [
+            "log_set_timestamp_func",
+            "z_log_msg_init"
+        ]
+    },
+    {
+        "from": "udc_mcux_enable",
+        "to": [
+            "udc_ep_enable_internal",
+            "udc_mcux_control",
+            "z_impl_z_log_msg_simple_create_0"
+        ]
+    },
+    {
+        "from": "PINT_PinInterruptConfig",
+        "to": [
+            "PINT_GetInstance"
+        ]
+    },
+    {
+        "from": "CLOCK_SetupFROClocking",
+        "to": []
+    },
+    {
+        "from": "usbd_interface_default",
+        "to": [
+            "usbd_class_get_by_config",
+            "usbd_interface_modify"
+        ]
+    },
+    {
+        "from": "udc_enable",
+        "to": [
+            "__indirect_call",
+            "__indirect_call",
+            "__indirect_call",
+            "udc_is_enabled",
+            "udc_is_initialized"
+        ]
+    },
+    {
+        "from": "free_list_add",
+        "to": [
+            "chunk_size"
+        ]
+    },
+    {
+        "from": "udc_shutdown",
+        "to": [
+            "__indirect_call",
+            "__indirect_call",
+            "__indirect_call",
+            "udc_is_enabled",
+            "udc_is_initialized"
+        ]
+    },
+    {
+        "from": "work_timeout",
+        "to": [
+            "flag_test_and_clear",
+            "submit_to_queue_locked"
+        ]
+    },
+    {
+        "from": "add_event",
+        "to": []
+    },
+    {
+        "from": "pinctrl_configure_pins",
+        "to": []
+    },
+    {
+        "from": "CLOCK_SetupExtClocking",
+        "to": []
+    },
+    {
+        "from": "z_impl_k_sem_take",
+        "to": [
+            "z_pend_curr"
+        ]
+    },
+    {
+        "from": "z_thread_alloc_helper",
+        "to": [
+            "__indirect_call",
+            "k_is_in_isr"
+        ]
+    },
+    {
+        "from": "add_to_waitq_locked",
+        "to": [
+            "unready_thread"
+        ]
+    },
+    {
+        "from": "smf_set_initial",
+        "to": [
+            "__indirect_call",
+            "smf_execute_all_entry_actions"
+        ]
+    },
+    {
+        "from": "sys_timepoint_calc",
+        "to": [
+            "sys_clock_tick_get"
+        ]
+    },
+    {
+        "from": "net_buf_unref",
+        "to": [
+            "__indirect_call",
+            "net_buf_destroy"
+        ]
+    },
+    {
+        "from": "usbd_event_carrier",
+        "to": [
+            "z_impl_k_msgq_put"
+        ]
+    },
+    {
+        "from": "usbd_device_set_code_triple",
+        "to": [
+            "k_mutex_unlock",
+            "usbd_device_lock"
+        ]
+    },
+    {
+        "from": "udc_mcux_ep_enable",
+        "to": [
+            "udc_mcux_control"
+        ]
+    },
+    {
+        "from": "USB_DeviceLpc3511IpDoPreviousTransactionMemcpy",
+        "to": [
+            "memcpy"
+        ]
+    },
+    {
+        "from": "z_impl_log_panic",
+        "to": [
+            "__indirect_call",
+            "z_impl_log_process",
+            "z_log_init"
+        ]
+    },
+    {
+        "from": "usbd_device_init_core",
+        "to": [
+            "udc_init",
+            "udc_shutdown",
+            "usbd_init_configurations",
+            "z_impl_z_log_msg_simple_create_0"
+        ]
+    },
+    {
+        "from": "usbd_ep_set_halt",
+        "to": [
+            "udc_ep_set_halt",
+            "z_impl_z_log_msg_simple_create_1"
+        ]
+    },
+    {
+        "from": "elapsed",
+        "to": []
+    },
+    {
+        "from": "CLOCK_GetCTimerClkFreq",
+        "to": [
+            "CLOCK_GetCoreSysClkFreq",
+            "CLOCK_GetFro1MFreq",
+            "CLOCK_GetFroHfFreq",
+            "CLOCK_GetOsc32KFreq"
+        ]
+    },
+    {
+        "from": "z_pend_curr",
+        "to": [
+            "add_thread_timeout",
+            "add_to_waitq_locked",
+            "z_swap_irqlock"
+        ]
+    },
+    {
+        "from": "z_reset_time_slice",
+        "to": [
+            "z_abort_timeout",
+            "z_add_timeout",
+            "z_time_slice_size"
+        ]
+    },
+    {
+        "from": "led_gpio_set_brightness",
+        "to": []
+    },
+    {
+        "from": "create_free_list",
+        "to": []
+    },
+    {
+        "from": "z_sched_wake",
+        "to": [
+            "ready_thread",
+            "unpend_thread_no_timeout",
+            "z_abort_timeout"
+        ]
+    },
+    {
+        "from": "mpsc_pbuf_init",
+        "to": [
+            "memset",
+            "z_impl_k_sem_init"
+        ]
+    },
+    {
+        "from": "udc_ep_dequeue",
+        "to": [
+            "__indirect_call",
+            "__indirect_call",
+            "__indirect_call",
+            "udc_get_ep_cfg",
+            "udc_is_initialized"
+        ]
+    },
+    {
+        "from": "udc_mcux_init",
+        "to": [
+            "USB_EhciPhyInit",
+            "__indirect_call",
+            "__indirect_call"
+        ]
+    },
+    {
+        "from": "gpio_mcux_lpc_pm_action",
+        "to": [
+            "GPIO_PortInit",
+            "pinctrl_apply_state"
+        ]
+    },
+    {
+        "from": "sys_timepoint_timeout",
+        "to": [
+            "sys_clock_tick_get"
+        ]
+    },
+    {
+        "from": "led_state_normal_stopped_entry",
+        "to": [
+            "led_indicate_activity",
+            "led_indicate_error",
+            "led_indicate_state",
+            "smf_set_state"
+        ]
+    },
+    {
+        "from": "arch_tls_stack_setup",
+        "to": [
+            "memcpy",
+            "memset"
+        ]
+    },
+    {
+        "from": "usbd_enqueue_status_in",
+        "to": [
+            "net_buf_unref",
+            "udc_ctrl_status_alloc",
+            "usbd_ep_ctrl_enqueue",
+            "z_impl_z_log_msg_simple_create_0"
+        ]
+    },
+    {
+        "from": "CTIMER_GetInstance",
+        "to": []
+    },
+    {
+        "from": "z_time_slice_size",
+        "to": []
+    },
+    {
+        "from": "udc_test_mode",
+        "to": [
+            "__indirect_call",
+            "__indirect_call",
+            "__indirect_call"
+        ]
+    },
+    {
+        "from": "udc_disable",
+        "to": [
+            "__indirect_call",
+            "__indirect_call",
+            "__indirect_call",
+            "udc_is_enabled"
+        ]
+    },
+    {
+        "from": "z_impl_k_wakeup",
+        "to": [
+            "ready_thread",
+            "reschedule",
+            "z_abort_timeout"
+        ]
+    },
+    {
+        "from": "add_skip_item",
+        "to": [
+            "idx_inc"
+        ]
+    },
+    {
+        "from": "mpsc_pbuf_commit",
+        "to": [
+            "__indirect_call",
+            "idx_inc",
+            "max_utilization_update"
+        ]
+    },
+    {
+        "from": "usbd_device_set_bcd_usb",
+        "to": [
+            "k_mutex_unlock",
+            "usbd_device_lock"
+        ]
+    },
+    {
+        "from": "z_handle_obj_poll_events",
+        "to": [
+            "signal_poll_event"
+        ]
+    },
+    {
+        "from": "cannectivity_usb_vendorcode_handler",
+        "to": [
+            "net_buf_simple_add_mem"
+        ]
+    },
+    {
+        "from": "z_log_dropped",
+        "to": [
+            "atomic_inc",
+            "z_impl_k_sem_give",
+            "z_impl_k_timer_stop"
+        ]
+    },
+    {
+        "from": "z_arm_configure_static_mpu_regions",
+        "to": [
+            "arm_core_mpu_configure_static_mpu_regions",
+            "arm_core_mpu_mark_areas_for_dynamic_regions"
+        ]
+    },
+    {
+        "from": "gs_usb_init",
+        "to": [
+            "usbd_add_descriptor",
+            "usbd_str_desc_get_idx",
+            "z_log_msg_simple_create_1"
+        ]
+    },
+    {
+        "from": "sys_clock_elapsed",
+        "to": [
+            "elapsed"
+        ]
+    },
+    {
+        "from": "udc_mcux_disable",
+        "to": [
+            "udc_ep_disable_internal",
+            "udc_get_ep_cfg",
+            "udc_mcux_control"
+        ]
+    },
+    {
+        "from": "can_mcan_enable_configuration_change",
+        "to": [
+            "can_mcan_read_reg",
+            "can_mcan_write_reg",
+            "k_mutex_lock",
+            "k_mutex_unlock"
+        ]
+    },
+    {
+        "from": "mcux_lpc_ctimer_cancel_alarm",
+        "to": []
+    },
+    {
+        "from": "free_list_remove_bidx",
+        "to": []
+    },
+    {
+        "from": "is_ptr",
+        "to": []
+    },
+    {
+        "from": "USB_DeviceLpc3511IpSend",
+        "to": [
+            "USB_DeviceLpc3511IpTransaction"
+        ]
+    },
+    {
+        "from": "CLOCK_GetMCanClkFreq",
+        "to": [
+            "CLOCK_GetCoreSysClkFreq",
+            "CLOCK_GetFro1MFreq",
+            "CLOCK_GetOsc32KFreq"
+        ]
+    },
+    {
+        "from": "arch_data_copy",
+        "to": [
+            "arch_early_memcpy"
+        ]
+    },
+    {
+        "from": "__start",
+        "to": [
+            "soc_reset_hook",
+            "z_prep_c"
+        ]
+    },
+    {
+        "from": "z_prep_c",
+        "to": [
+            "arch_bss_zero",
+            "arch_data_copy",
+            "relocate_vector_table",
+            "z_arm_interrupt_init",
+            "z_cstart"
+        ]
+    },
+    {
+        "from": "arch_new_thread",
+        "to": []
+    },
+    {
+        "from": "arch_switch_to_main_thread",
+        "to": [
+            "__indirect_call"
+        ]
+    },
+    {
+        "from": "region_allocate_and_init",
+        "to": [
+            "region_init",
+            "z_impl_z_log_msg_simple_create_1"
+        ]
+    },
+    {
+        "from": "cbvprintf",
+        "to": [
+            "__l_vfprintf",
+            "memset"
+        ]
+    },
+    {
+        "from": "net_buf_destroy",
+        "to": [
+            "__indirect_call",
+            "k_queue_prepend"
+        ]
+    },
+    {
+        "from": "usbd_enqueue_setup",
+        "to": [
+            "net_buf_ref",
+            "net_buf_reset",
+            "net_buf_unref",
+            "usbd_ep_ctrl_enqueue",
+            "z_impl_z_log_msg_simple_create_0"
+        ]
+    },
+    {
+        "from": "nxp_pint_pin_disable",
+        "to": [
+            "PINT_PinInterruptConfig"
+        ]
+    },
+    {
+        "from": "remove_timeout",
+        "to": []
+    },
+    {
+        "from": "split_chunks",
+        "to": [
+            "chunk_size"
+        ]
+    },
+    {
+        "from": "usbd_ep_enable",
+        "to": [
+            "udc_ep_enable"
+        ]
+    },
+    {
+        "from": "udc_ep_disable",
+        "to": [
+            "__indirect_call",
+            "__indirect_call",
+            "udc_ep_disable_internal",
+            "udc_is_initialized"
+        ]
+    },
+    {
+        "from": "k_heap_free",
+        "to": [
+            "sys_heap_free",
+            "z_reschedule",
+            "z_unpend_all"
+        ]
+    },
+    {
+        "from": "post_drop_action",
+        "to": [
+            "idx_inc"
+        ]
+    },
+    {
+        "from": "triggered_work_handler",
+        "to": [
+            "clear_event_registrations"
+        ]
+    },
+    {
+        "from": "z_thread_entry",
+        "to": [
+            "__aeabi_read_tp",
+            "__indirect_call",
+            "z_impl_k_sched_current_thread_query",
+            "z_impl_k_thread_abort"
+        ]
+    },
+    {
+        "from": "usbd_ep_clear_halt",
+        "to": [
+            "udc_ep_clear_halt",
+            "usbd_ep_bm_clear",
+            "z_impl_z_log_msg_simple_create_1"
+        ]
+    },
+    {
+        "from": "nxp_pint_isr",
+        "to": [
+            "PINT_PinInterruptClrStatus"
+        ]
+    },
+    {
+        "from": "sys_clock_driver_init",
+        "to": []
+    },
+    {
+        "from": "CLOCK_GetMclkClkFreq",
+        "to": [
+            "CLOCK_GetFroHfFreq"
+        ]
+    },
+    {
+        "from": "CLOCK_GetOsc32KFreq",
+        "to": []
+    },
+    {
+        "from": "usbd_get_descriptor",
+        "to": []
+    },
+    {
+        "from": "nxp_gint_init",
+        "to": [
+            "__indirect_call",
+            "__indirect_call"
+        ]
+    },
+    {
+        "from": "udc_mcux_ep_enqueue",
+        "to": [
+            "udc_buf_put",
+            "udc_mcux_ep_try_feed"
+        ]
+    },
+    {
+        "from": "z_impl_can_set_timing_data",
+        "to": [
+            "check_timing_in_range"
+        ]
+    },
+    {
+        "from": "mcux_flexcomm_poll_out",
+        "to": [
+            "USART_GetStatusFlags",
+            "clock_control_get_rate"
+        ]
+    },
+    {
+        "from": "CLOCK_SetClkDiv",
+        "to": []
+    },
+    {
+        "from": "z_log_msg_finalize",
+        "to": [
+            "memcpy",
+            "z_log_dropped",
+            "z_log_msg_commit"
+        ]
+    },
+    {
+        "from": "panic",
+        "to": [
+            "__indirect_call"
+        ]
+    },
+    {
+        "from": "mpu_configure_region",
+        "to": [
+            "region_allocate_and_init"
+        ]
+    },
+    {
+        "from": "udc_set_address",
+        "to": [
+            "__indirect_call",
+            "__indirect_call",
+            "__indirect_call"
+        ]
+    },
+    {
+        "from": "mcux_flexcomm_err_check",
+        "to": [
+            "USART_GetStatusFlags"
+        ]
+    },
+    {
+        "from": "mcux_flexcomm_fifo_fill",
+        "to": [
+            "USART_GetStatusFlags"
+        ]
+    },
+    {
+        "from": "mcux_flexcomm_fifo_read",
+        "to": [
+            "USART_GetStatusFlags"
+        ]
+    },
+    {
+        "from": "z_impl_k_sleep",
+        "to": [
+            "__aeabi_uldivmod",
+            "z_tick_sleep"
+        ]
+    },
+    {
+        "from": "__aeabi_uldivmod",
+        "to": [
+            "__aeabi_idiv0",
+            "__udivmoddi4"
+        ]
+    },
+    {
+        "from": "dropped_notify",
+        "to": [
+            "__indirect_call",
+            "z_log_dropped_read_and_clear"
+        ]
+    },
+    {
+        "from": "region_init",
+        "to": []
+    },
+    {
+        "from": "udc_work_q_init",
+        "to": [
+            "k_work_queue_start",
+            "z_impl_k_thread_name_set"
+        ]
+    },
+    {
+        "from": "USB_EhciPhyGetBase",
+        "to": []
+    },
+    {
+        "from": "CLOCK_GetPLL1InClockRate",
+        "to": [
+            "CLOCK_GetExtClkFreq",
+            "CLOCK_GetFro1MFreq",
+            "CLOCK_GetOsc32KFreq"
+        ]
+    },
+    {
+        "from": "CLOCK_EnableUsbhs0DeviceClock",
+        "to": []
+    },
+    {
+        "from": "z_sys_init_run_level",
+        "to": [
+            "__indirect_call",
+            "do_device_init"
+        ]
+    },
+    {
+        "from": "z_swap_irqlock",
+        "to": []
+    },
+    {
+        "from": "sys_clock_tick_get",
+        "to": [
+            "elapsed"
+        ]
+    },
+    {
+        "from": "led_state_identify_entry",
+        "to": [
+            "led_indicate_activity",
+            "led_indicate_error",
+            "led_indicate_state"
+        ]
+    },
+    {
+        "from": "mpsc_pbuf_is_pending",
+        "to": []
+    },
+    {
+        "from": "usbd_ep_enqueue",
+        "to": [
+            "udc_ep_enqueue",
+            "usbd_is_suspended"
+        ]
+    },
+    {
+        "from": "udc_buf_destroy",
+        "to": [
+            "__indirect_call",
+            "k_queue_prepend",
+            "net_buf_pool_get"
+        ]
+    },
+    {
+        "from": "udc_submit_ep_event",
+        "to": [
+            "__indirect_call",
+            "udc_is_initialized"
+        ]
+    },
+    {
+        "from": "mcux_lpc_ctimer_get_freq",
+        "to": [
+            "__indirect_call",
+            "mcux_lpc_ctimer_get_freq"
+        ]
+    },
+    {
+        "from": "do_device_init",
+        "to": [
+            "__indirect_call"
+        ]
+    },
+    {
+        "from": "merge_chunks",
+        "to": [
+            "chunk_size"
+        ]
+    },
+    {
+        "from": "z_cbprintf_cpy",
+        "to": [
+            "memcpy"
+        ]
+    },
+    {
+        "from": "out_func",
+        "to": [
+            "log_output_flush"
+        ]
+    },
+    {
+        "from": "usbd_device_set_bcd_device",
+        "to": [
+            "k_mutex_unlock",
+            "usbd_device_lock"
+        ]
+    },
+    {
+        "from": "usbd_class_get_by_req",
+        "to": [
+            "usbd_config_get_current"
+        ]
+    },
+    {
+        "from": "udc_register_ep",
+        "to": [
+            "udc_is_initialized",
+            "z_impl_k_queue_init"
+        ]
+    },
+    {
+        "from": "udc_ep_queue_is_empty",
+        "to": [
+            "__indirect_call",
+            "__indirect_call",
+            "udc_get_ep_cfg",
+            "z_impl_k_queue_peek_head"
+        ]
+    },
+    {
+        "from": "usb_pool_data_alloc",
+        "to": [
+            "k_heap_aligned_alloc",
+            "net_buf_pool_get"
+        ]
+    },
+    {
+        "from": "z_unpend_all_locked",
+        "to": [
+            "ready_thread",
+            "unpend_thread_no_timeout",
+            "z_abort_timeout"
+        ]
+    },
+    {
+        "from": "next_timeout",
+        "to": [
+            "first"
+        ]
+    },
+    {
+        "from": "_irq_vector_table",
+        "to": []
+    },
+    {
+        "from": "log_output_timestamp_freq_set",
+        "to": []
+    },
+    {
+        "from": "arm_irq_priority_set",
+        "to": []
+    },
+    {
+        "from": "z_impl_k_thread_abort",
+        "to": [
+            "z_thread_abort"
+        ]
+    },
+    {
+        "from": "nxp_pint_pin_set_callback",
+        "to": []
+    },
+    {
+        "from": "z_impl_can_calc_timing",
+        "to": [
+            "can_calc_timing_internal"
+        ]
+    },
+    {
+        "from": "z_impl_can_calc_timing_data",
+        "to": [
+            "can_calc_timing_internal"
+        ]
+    },
+    {
+        "from": "can_mcan_read_reg",
+        "to": [
+            "__indirect_call",
+            "z_impl_z_log_msg_simple_create_2"
+        ]
+    },
+    {
+        "from": "can_mcan_write_reg",
+        "to": [
+            "__indirect_call",
+            "z_impl_z_log_msg_simple_create_2"
+        ]
+    },
+    {
+        "from": "GPIO_PortInit",
+        "to": [
+            "RESET_PeripheralReset"
+        ]
+    },
+    {
+        "from": "k_sys_work_q_init",
+        "to": [
+            "k_work_queue_start"
+        ]
+    },
+    {
+        "from": "led_state_normal_started_entry",
+        "to": [
+            "led_indicate_activity",
+            "led_indicate_error",
+            "led_indicate_state"
+        ]
+    },
+    {
+        "from": "usbd_ep_disable",
+        "to": [
+            "udc_ep_dequeue",
+            "udc_ep_disable",
+            "usbd_ep_bm_clear",
+            "z_impl_k_yield"
+        ]
+    },
+    {
+        "from": "udc_device_speed",
+        "to": [
+            "__indirect_call",
+            "__indirect_call",
+            "__indirect_call",
+            "udc_is_enabled"
+        ]
+    },
+    {
+        "from": "reset_nxp_syscon_line_toggle",
+        "to": [
+            "reset_nxp_syscon_line_assert",
+            "reset_nxp_syscon_line_deassert",
+            "reset_nxp_syscon_status"
+        ]
+    },
+    {
+        "from": "CLOCK_GetFlexCommClkFreq",
+        "to": [
+            "CLOCK_GetFlexCommInputClock",
+            "__aeabi_uldivmod"
+        ]
+    },
+    {
+        "from": "z_unpend1_no_timeout",
+        "to": [
+            "unpend_thread_no_timeout"
+        ]
+    },
+    {
+        "from": "usbd_device_get_vreq",
+        "to": []
+    },
+    {
+        "from": "udc_mcux_ep_dequeue",
+        "to": [
+            "udc_ep_cancel_queued",
+            "udc_ep_set_busy",
+            "udc_mcux_lock",
+            "udc_unlock_internal"
+        ]
+    },
+    {
+        "from": "z_impl_can_set_timing",
+        "to": [
+            "check_timing_in_range"
+        ]
+    },
+    {
+        "from": "gpio_fire_callbacks",
+        "to": [
+            "__indirect_call"
+        ]
+    },
+    {
+        "from": "arm_irq_disable",
+        "to": []
+    },
+    {
+        "from": "uart_console_init",
+        "to": [
+            "__printk_hook_install",
+            "__stdout_hook_install",
+            "z_impl_device_is_ready"
+        ]
+    },
+    {
+        "from": "console_out",
+        "to": [
+            "__indirect_call",
+            "__indirect_call"
+        ]
+    },
+    {
+        "from": "sys_clock_cycle_get_32",
+        "to": [
+            "elapsed"
+        ]
+    },
+    {
+        "from": "init_mem_slab_obj_core_list",
+        "to": [
+            "create_free_list"
+        ]
+    },
+    {
+        "from": "reschedule",
+        "to": [
+            "z_swap_irqlock"
+        ]
+    },
+    {
+        "from": "z_reschedule_irqlock",
+        "to": [
+            "z_swap_irqlock"
+        ]
+    },
+    {
+        "from": "k_sched_lock",
+        "to": []
+    },
+    {
+        "from": "usbd_config_get",
+        "to": []
+    },
+    {
+        "from": "udc_ctrl_data_alloc",
+        "to": [
+            "udc_ep_buf_alloc"
+        ]
+    },
+    {
+        "from": "USART_Deinit",
+        "to": []
+    },
+    {
+        "from": "z_sched_wake_thread_locked",
+        "to": [
+            "ready_thread",
+            "unpend_thread_no_timeout"
+        ]
+    },
+    {
+        "from": "led_on_dt",
+        "to": []
+    },
+    {
+        "from": "free_space",
+        "to": []
+    },
+    {
+        "from": "nxp_lpc_mcan_irq_config_0",
+        "to": [
+            "arm_irq_enable",
+            "arm_irq_priority_set"
+        ]
+    },
+    {
+        "from": "nxp_lpc_mcan_write_mram",
+        "to": []
+    },
+    {
+        "from": "mcux_flexcomm_irq_is_pending",
+        "to": [
+            "mcux_flexcomm_irq_rx_full",
+            "mcux_flexcomm_irq_tx_ready"
+        ]
+    },
+    {
+        "from": "k_msgq_init",
+        "to": []
+    },
+    {
+        "from": "z_work_submit_to_queue",
+        "to": [
+            "submit_to_queue_locked"
+        ]
+    },
+    {
+        "from": "led_state_normal_stopped_run",
+        "to": [
+            "smf_set_state"
+        ]
+    },
+    {
+        "from": "z_log_msg_commit",
+        "to": [
+            "__indirect_call",
+            "mpsc_pbuf_commit",
+            "z_log_msg_post_finalize"
+        ]
+    },
+    {
+        "from": "print_formatted",
+        "to": [
+            "cbvprintf"
+        ]
+    },
+    {
+        "from": "char_out",
+        "to": [
+            "__indirect_call"
+        ]
+    },
+    {
+        "from": "z_arm_svc",
+        "to": [
+            "z_do_kernel_oops"
+        ]
+    },
+    {
+        "from": "_isr_wrapper",
+        "to": [
+            "__indirect_call",
+            "z_arm_exc_exit"
+        ]
+    },
+    {
+        "from": "malloc_prepare",
+        "to": [
+            "sys_heap_init"
+        ]
+    },
+    {
+        "from": "fixed_data_alloc",
+        "to": [
+            "net_buf_id"
+        ]
+    },
+    {
+        "from": "statics_init",
+        "to": [
+            "k_heap_init"
+        ]
+    },
+    {
+        "from": "z_sched_wait",
+        "to": [
+            "z_pend_curr"
+        ]
+    },
+    {
+        "from": "k_work_poll_init",
+        "to": [
+            "k_work_init",
+            "memset"
+        ]
+    },
+    {
+        "from": "usbd_config_get_current",
+        "to": [
+            "usbd_bus_speed",
+            "usbd_config_get"
+        ]
+    },
+    {
+        "from": "nxp_lpc_mcan_read_mram",
+        "to": []
+    },
+    {
+        "from": "pinctrl_lookup_state",
+        "to": []
+    },
+    {
+        "from": "USART_GetStatusFlags",
+        "to": []
+    },
+    {
+        "from": "z_impl_k_queue_peek_head",
+        "to": []
+    },
+    {
+        "from": "get_usage",
+        "to": [
+            "free_space"
+        ]
+    },
+    {
+        "from": "udc_ctrl_status_alloc",
+        "to": [
+            "udc_ep_buf_alloc"
+        ]
+    },
+    {
+        "from": "udc_mcux_device_speed",
+        "to": [
+            "udc_mcux_control"
+        ]
+    },
+    {
+        "from": "udc_mcux_shutdown",
+        "to": [
+            "__indirect_call",
+            "__indirect_call"
+        ]
+    },
+    {
+        "from": "reset_nxp_syscon_status",
+        "to": []
+    },
+    {
+        "from": "mcux_flexcomm_irq_tx_ready",
+        "to": [
+            "USART_GetStatusFlags"
+        ]
+    },
+    {
+        "from": "z_unpend_thread_no_timeout",
+        "to": [
+            "unpend_thread_no_timeout"
+        ]
+    },
+    {
+        "from": "log_set_timestamp_func",
+        "to": [
+            "log_output_timestamp_freq_set"
+        ]
+    },
+    {
+        "from": "z_log_msg_init",
+        "to": [
+            "mpsc_pbuf_init"
+        ]
+    },
+    {
+        "from": "z_arm_exc_exit",
+        "to": []
+    },
+    {
+        "from": "net_buf_id",
+        "to": []
+    },
+    {
+        "from": "nxp_lpc55xxx_init",
+        "to": [
+            "PINT_Init",
+            "clock_init"
+        ]
+    },
+    {
+        "from": "k_sys_fatal_error_handler",
+        "to": [
+            "arch_system_halt",
+            "z_impl_log_panic",
+            "z_impl_z_log_msg_simple_create_0"
+        ]
+    },
+    {
+        "from": "slice_timeout",
+        "to": []
+    },
+    {
+        "from": "log_msg_generic_get_wlen",
+        "to": []
+    },
+    {
+        "from": "sreq_feature_halt_notify",
+        "to": [
+            "usbd_class_get_by_ep"
+        ]
+    },
+    {
+        "from": "usbd_class_desc_len",
+        "to": [
+            "__indirect_call"
+        ]
+    },
+    {
+        "from": "usbd_class_get_by_config",
+        "to": [
+            "usbd_config_get"
+        ]
+    },
+    {
+        "from": "usbd_class_get_by_iface",
+        "to": [
+            "usbd_config_get_current"
+        ]
+    },
+    {
+        "from": "gpio_mcux_lpc_port_set_masked_raw",
+        "to": []
+    },
+    {
+        "from": "pm_device_driver_init",
+        "to": [
+            "gpio_mcux_lpc_pm_action"
+        ]
+    },
+    {
+        "from": "mcux_flexcomm_poll_in",
+        "to": [
+            "USART_GetStatusFlags"
+        ]
+    },
+    {
+        "from": "z_impl_k_sem_init",
+        "to": []
+    },
+    {
+        "from": "k_work_submit_to_queue",
+        "to": [
+            "z_reschedule_irqlock",
+            "z_work_submit_to_queue"
+        ]
+    },
+    {
+        "from": "z_thread_timeout",
+        "to": [
+            "z_sched_wake_thread_locked"
+        ]
+    },
+    {
+        "from": "process",
+        "to": [
+            "log_format_func_t_get"
+        ]
+    },
+    {
+        "from": "nxp_gint_isr",
+        "to": []
+    },
+    {
+        "from": "udc_ep_cancel_queued",
+        "to": [
+            "udc_buf_get",
+            "udc_submit_ep_event"
+        ]
+    },
+    {
+        "from": "udc_ctrl_setup_alloc",
+        "to": [
+            "udc_ep_buf_alloc"
+        ]
+    },
+    {
+        "from": "udc_mcux_control",
+        "to": [
+            "__indirect_call"
+        ]
+    },
+    {
+        "from": "nxp_lpc_mcan_clear_mram",
+        "to": []
+    },
+    {
+        "from": "pinctrl_apply_state",
+        "to": [
+            "pinctrl_configure_pins",
+            "pinctrl_lookup_state"
+        ]
+    },
+    {
+        "from": "pinctrl_apply_state",
+        "to": [
+            "pinctrl_configure_pins",
+            "pinctrl_lookup_state"
+        ]
+    },
+    {
+        "from": "USART_Enable9bitMode",
+        "to": []
+    },
+    {
+        "from": "RESET_ClearPeripheralReset",
+        "to": []
+    },
+    {
+        "from": "unschedule_locked",
+        "to": [
+            "flag_test_and_clear",
+            "z_abort_timeout"
+        ]
+    },
+    {
+        "from": "z_ready_thread",
+        "to": [
+            "ready_thread"
+        ]
+    },
+    {
+        "from": "z_unpend_all",
+        "to": [
+            "z_unpend_all_locked"
+        ]
+    },
+    {
+        "from": "k_poll_event_init",
+        "to": []
+    },
+    {
+        "from": "led_state_normal_run",
+        "to": [
+            "smf_set_state"
+        ]
+    },
+    {
+        "from": "z_log_notify_backend_enabled",
+        "to": [
+            "z_impl_k_sem_give"
+        ]
+    },
+    {
+        "from": "log_source_name_get",
+        "to": []
+    },
+    {
+        "from": "newline_print",
+        "to": [
+            "print_formatted"
+        ]
+    },
+    {
+        "from": "arm_irq_enable",
+        "to": []
+    },
+    {
+        "from": "relocate_vector_table",
+        "to": []
+    },
+    {
+        "from": "EnableIRQ",
+        "to": []
+    },
+    {
+        "from": "FLEXCOMM_GetInstance",
+        "to": []
+    },
+    {
+        "from": "PINT_GetInstance",
+        "to": []
+    },
+    {
+        "from": "k_heap_aligned_alloc",
+        "to": [
+            "z_heap_alloc_helper"
+        ]
+    },
+    {
+        "from": "add_thread_timeout",
+        "to": [
+            "z_add_timeout"
+        ]
+    },
+    {
+        "from": "idx_inc",
+        "to": []
+    },
+    {
+        "from": "z_log_vprintk",
+        "to": [
+            "z_log_msg_runtime_vcreate"
+        ]
+    },
+    {
+        "from": "log_output_write",
+        "to": [
+            "__indirect_call"
+        ]
+    },
+    {
+        "from": "cr_out_func",
+        "to": [
+            "out_func"
+        ]
+    },
+    {
+        "from": "usbd_ep_bm_clear",
+        "to": []
+    },
+    {
+        "from": "usbd_msg_pub_simple",
+        "to": [
+            "usbd_msg_pub"
+        ]
+    },
+    {
+        "from": "udc_ep_buf_free",
+        "to": [
+            "__indirect_call",
+            "__indirect_call",
+            "net_buf_unref"
+        ]
+    },
+    {
+        "from": "udc_mcux_ep_clear_halt",
+        "to": [
+            "udc_mcux_control",
+            "udc_mcux_ep_try_feed"
+        ]
+    },
+    {
+        "from": "RESET_SetPeripheralReset",
+        "to": []
+    },
+    {
+        "from": "led_off_dt",
+        "to": []
+    },
+    {
+        "from": "free_list_remove",
+        "to": [
+            "chunk_size",
+            "free_list_remove_bidx"
+        ]
+    },
+    {
+        "from": "printk",
+        "to": [
+            "z_log_vprintk"
+        ]
+    },
+    {
+        "from": "max_utilization_update",
+        "to": [
+            "get_usage"
+        ]
+    },
+    {
+        "from": "log_output_flush",
+        "to": [
+            "log_output_write"
+        ]
+    },
+    {
+        "from": "arch_cpu_idle",
+        "to": []
+    },
+    {
+        "from": "gs_usb_get_bulk_in_ep_addr",
+        "to": [
+            "usbd_bus_speed"
+        ]
+    },
+    {
+        "from": "gs_usb_get_bulk_out1_ep_addr",
+        "to": [
+            "usbd_bus_speed"
+        ]
+    },
+    {
+        "from": "gs_usb_get_bulk_out2_ep_addr",
+        "to": [
+            "usbd_bus_speed"
+        ]
+    },
+    {
+        "from": "USART_GetDefaultConfig",
+        "to": [
+            "memset"
+        ]
+    },
+    {
+        "from": "unpend_thread_no_timeout",
+        "to": []
+    },
+    {
+        "from": "unpend_thread_no_timeout",
+        "to": []
+    },
+    {
+        "from": "memcpy",
+        "to": []
+    },
+    {
+        "from": "z_log_dropped_read_and_clear",
+        "to": []
+    },
+    {
+        "from": "log_msg_get_source_id",
+        "to": []
+    },
+    {
+        "from": "arch_bss_zero",
+        "to": [
+            "arch_early_memset"
+        ]
+    },
+    {
+        "from": "z_arm_fault_init",
+        "to": []
+    },
+    {
+        "from": "z_arm_interrupt_init",
+        "to": []
+    },
+    {
+        "from": "arm_core_mpu_enable",
+        "to": []
+    },
+    {
+        "from": "__stdout_hook_install",
+        "to": []
+    },
+    {
+        "from": "mcux_lpc_ctimer_get_freq",
+        "to": [
+            "z_impl_z_log_msg_simple_create_0"
+        ]
+    },
+    {
+        "from": "CLOCK_GetFro12MFreq",
+        "to": []
+    },
+    {
+        "from": "CLOCK_GetFro1MFreq",
+        "to": []
+    },
+    {
+        "from": "CLOCK_GetExtClkFreq",
+        "to": []
+    },
+    {
+        "from": "CLOCK_GetFroHfFreq",
+        "to": []
+    },
+    {
+        "from": "z_dummy_thread_init",
+        "to": []
+    },
+    {
+        "from": "rd_idx_inc",
+        "to": [
+            "idx_inc"
+        ]
+    },
+    {
+        "from": "z_impl_z_log_msg_simple_create_2",
+        "to": [
+            "z_log_msg_simple_create"
+        ]
+    },
+    {
+        "from": "net_buf_frag_del",
+        "to": [
+            "net_buf_unref"
+        ]
+    },
+    {
+        "from": "usbd_init_control_pipe",
+        "to": [
+            "usbd_enqueue_setup"
+        ]
+    },
+    {
+        "from": "udc_submit_event",
+        "to": [
+            "__indirect_call"
+        ]
+    },
+    {
+        "from": "usb_pool_data_unref",
+        "to": [
+            "k_heap_free",
+            "net_buf_pool_get"
+        ]
+    },
+    {
+        "from": "nxp_lpc_mcan_get_core_clock",
+        "to": []
+    },
+    {
+        "from": "mcux_lpc_syscon_clock_control_on",
+        "to": []
+    },
+    {
+        "from": "z_impl_k_queue_init",
+        "to": []
+    },
+    {
+        "from": "k_timer_init",
+        "to": []
+    },
+    {
+        "from": "triggered_work_expiration_handler",
+        "to": [
+            "k_work_submit_to_queue"
+        ]
+    },
+    {
+        "from": "strnlen",
+        "to": []
+    },
+    {
+        "from": "net_buf_simple_add_le32",
+        "to": [
+            "sys_put_le32"
+        ]
+    },
+    {
+        "from": "usbd_ep_is_halted",
+        "to": []
+    },
+    {
+        "from": "nxp_gint_irq_init_0",
+        "to": [
+            "arm_irq_enable",
+            "arm_irq_priority_set"
+        ]
+    },
+    {
+        "from": "nxp_gint_irq_init_1",
+        "to": [
+            "arm_irq_enable",
+            "arm_irq_priority_set"
+        ]
+    },
+    {
+        "from": "udc_mcux_set_address",
+        "to": [
+            "udc_mcux_control"
+        ]
+    },
+    {
+        "from": "udc_irq_enable_func0",
+        "to": [
+            "arm_irq_enable",
+            "arm_irq_priority_set"
+        ]
+    },
+    {
+        "from": "mcux_lpc_ctimer_irq_config_0",
+        "to": [
+            "arm_irq_enable",
+            "arm_irq_priority_set"
+        ]
+    },
+    {
+        "from": "mcux_lpc_ctimer_irq_config_1",
+        "to": [
+            "arm_irq_enable",
+            "arm_irq_priority_set"
+        ]
+    },
+    {
+        "from": "mcux_lpc_ctimer_irq_config_2",
+        "to": [
+            "arm_irq_enable",
+            "arm_irq_priority_set"
+        ]
+    },
+    {
+        "from": "mcux_lpc_ctimer_irq_config_3",
+        "to": [
+            "arm_irq_enable",
+            "arm_irq_priority_set"
+        ]
+    },
+    {
+        "from": "mcux_lpc_ctimer_irq_config_4",
+        "to": [
+            "arm_irq_enable",
+            "arm_irq_priority_set"
+        ]
+    },
+    {
+        "from": "reset_nxp_syscon_line_assert",
+        "to": []
+    },
+    {
+        "from": "reset_nxp_syscon_line_deassert",
+        "to": []
+    },
+    {
+        "from": "mcux_flexcomm_irq_config_func_0",
+        "to": [
+            "arm_irq_enable",
+            "arm_irq_priority_set"
+        ]
+    },
+    {
+        "from": "PINT_PinInterruptClrStatus",
+        "to": []
+    },
+    {
+        "from": "z_impl_device_is_ready",
+        "to": []
+    },
+    {
+        "from": "idle",
+        "to": [
+            "arch_cpu_idle"
+        ]
+    },
+    {
+        "from": "k_queue_append",
+        "to": [
+            "queue_insert"
+        ]
+    },
+    {
+        "from": "flag_test_and_clear",
+        "to": []
+    },
+    {
+        "from": "strcmp",
+        "to": []
+    },
+    {
+        "from": "z_arm_nmi",
+        "to": [
+            "__indirect_call",
+            "z_arm_exc_exit"
+        ]
+    },
+    {
+        "from": "z_arm_bus_fault",
+        "to": [
+            "z_arm_fault"
+        ]
+    },
+    {
+        "from": "arm_core_mpu_disable",
+        "to": []
+    },
+    {
+        "from": "arm_core_mpu_configure_static_mpu_regions",
+        "to": [
+            "mpu_configure_regions_and_partition"
+        ]
+    },
+    {
+        "from": "elapsed",
+        "to": [
+            "sys_clock_elapsed"
+        ]
+    },
+    {
+        "from": "z_impl_z_log_msg_simple_create_1",
+        "to": [
+            "z_log_msg_simple_create"
+        ]
+    },
+    {
+        "from": "net_buf_simple_add_le16",
+        "to": []
+    },
+    {
+        "from": "soc_reset_hook",
+        "to": [
+            "SystemInit"
+        ]
+    },
+    {
+        "from": "gpio_mcux_lpc_port_get_raw",
+        "to": []
+    },
+    {
+        "from": "gpio_mcux_lpc_pint_cb",
+        "to": [
+            "gpio_fire_callbacks"
+        ]
+    },
+    {
+        "from": "k_queue_prepend",
+        "to": [
+            "queue_insert"
+        ]
+    },
+    {
+        "from": "unpend_thread_no_timeout",
+        "to": [
+            "sys_dlist_remove"
+        ]
+    },
+    {
+        "from": "SDK_DelayAtLeastUs",
+        "to": [
+            "__aeabi_uldivmod"
+        ]
+    },
+    {
+        "from": "atomic_inc",
+        "to": []
+    },
+    {
+        "from": "log_backend_enable",
+        "to": [
+            "z_log_notify_backend_enabled"
+        ]
+    },
+    {
+        "from": "z_impl_z_log_msg_simple_create_0",
+        "to": [
+            "z_log_msg_simple_create"
+        ]
+    },
+    {
+        "from": "arm_cmse_mpu_region_get",
+        "to": []
+    },
+    {
+        "from": "sys_put_le32",
+        "to": []
+    },
+    {
+        "from": "net_buf_simple_add_mem",
+        "to": [
+            "memcpy"
+        ]
+    },
+    {
+        "from": "usbd_class_handle_xfer",
+        "to": []
+    },
+    {
+        "from": "gs_usb_buf_alloc",
+        "to": [
+            "net_buf_alloc_fixed"
+        ]
+    },
+    {
+        "from": "udc_get_ep_cfg",
+        "to": []
+    },
+    {
+        "from": "gpio_mcux_lpc_port_set_bits_raw",
+        "to": []
+    },
+    {
+        "from": "gpio_mcux_lpc_port_clear_bits_raw",
+        "to": []
+    },
+    {
+        "from": "gpio_mcux_lpc_port_toggle_bits",
+        "to": []
+    },
+    {
+        "from": "mcux_flexcomm_irq_err_disable",
+        "to": []
+    },
+    {
+        "from": "mcux_flexcomm_irq_err_enable",
+        "to": []
+    },
+    {
+        "from": "OSA_EnterCritical",
+        "to": []
+    },
+    {
+        "from": "INPUTMUX_Init",
+        "to": [
+            "RESET_ClearPeripheralReset"
+        ]
+    },
+    {
+        "from": "k_work_init",
+        "to": [
+            "memset"
+        ]
+    },
+    {
+        "from": "strlen",
+        "to": []
+    },
+    {
+        "from": "cannectivity_timestamp_get",
+        "to": []
+    },
+    {
+        "from": "z_log_msg_alloc",
+        "to": [
+            "mpsc_pbuf_alloc"
+        ]
+    },
+    {
+        "from": "z_log_msg_free",
+        "to": [
+            "mpsc_pbuf_free"
+        ]
+    },
+    {
+        "from": "z_impl_zephyr_fputc",
+        "to": [
+            "__indirect_call"
+        ]
+    },
+    {
+        "from": "net_buf_pool_get",
+        "to": []
+    },
+    {
+        "from": "z_sched_init",
+        "to": []
+    },
+    {
+        "from": "first",
+        "to": []
+    },
+    {
+        "from": "k_work_poll_submit",
+        "to": [
+            "k_work_poll_submit_to_queue"
+        ]
+    },
+    {
+        "from": "z_thread_malloc",
+        "to": [
+            "z_thread_alloc_helper"
+        ]
+    },
+    {
+        "from": "default_lf_get_timestamp",
+        "to": [
+            "__aeabi_uldivmod",
+            "z_impl_k_uptime_ticks"
+        ]
+    },
+    {
+        "from": "atomic_inc",
+        "to": []
+    },
+    {
+        "from": "net_buf_simple_add_u8",
+        "to": []
+    },
+    {
+        "from": "net_buf_simple_pull_mem",
+        "to": []
+    },
+    {
+        "from": "net_buf_simple_tailroom",
+        "to": []
+    },
+    {
+        "from": "gs_usb_get_desc",
+        "to": []
+    },
+    {
+        "from": "udc_mcux_lock",
+        "to": [
+            "z_impl_k_mutex_lock"
+        ]
+    },
+    {
+        "from": "mcux_lpc_ctimer_start",
+        "to": []
+    },
+    {
+        "from": "mcux_lpc_ctimer_stop",
+        "to": []
+    },
+    {
+        "from": "mcux_lpc_ctimer_get_top_value",
+        "to": []
+    },
+    {
+        "from": "mcux_lpc_ctimer_get_pending_int",
+        "to": []
+    },
+    {
+        "from": "pinctrl_clock_init",
+        "to": []
+    },
+    {
+        "from": "mcux_flexcomm_irq_rx_full",
+        "to": [
+            "USART_GetStatusFlags"
+        ]
+    },
+    {
+        "from": "mcux_flexcomm_uart_config_get",
+        "to": []
+    },
+    {
+        "from": "mcux_flexcomm_irq_tx_enable",
+        "to": []
+    },
+    {
+        "from": "mcux_flexcomm_irq_tx_disable",
+        "to": []
+    },
+    {
+        "from": "mcux_flexcomm_irq_rx_enable",
+        "to": []
+    },
+    {
+        "from": "mcux_flexcomm_irq_rx_disable",
+        "to": []
+    },
+    {
+        "from": "arch_system_halt",
+        "to": []
+    },
+    {
+        "from": "k_heap_init",
+        "to": [
+            "sys_heap_init"
+        ]
+    },
+    {
+        "from": "adjust_owner_prio",
+        "to": [
+            "z_thread_prio_set"
+        ]
+    },
+    {
+        "from": "sys_dlist_remove",
+        "to": []
+    },
+    {
+        "from": "z_unpend_thread",
+        "to": [
+            "z_abort_timeout",
+            "z_unpend_thread_no_timeout"
+        ]
+    },
+    {
+        "from": "memset",
+        "to": []
+    },
+    {
+        "from": "__file_str_put",
+        "to": []
+    },
+    {
+        "from": "loop97",
+        "to": []
+    },
+    {
+        "from": "arch_irq_unlock_outlined",
+        "to": []
+    },
+    {
+        "from": "net_buf_ref",
+        "to": [
+            "atomic_inc"
+        ]
+    },
+    {
+        "from": "net_buf_simple_remove_mem",
+        "to": []
+    },
+    {
+        "from": "usbd_device_lock",
+        "to": [
+            "z_impl_k_mutex_lock"
+        ]
+    },
+    {
+        "from": "usbd_caps_speed",
+        "to": []
+    },
+    {
+        "from": "usbd_device_lock",
+        "to": [
+            "z_impl_k_mutex_lock"
+        ]
+    },
+    {
+        "from": "usbd_config_exist",
+        "to": [
+            "usbd_config_get"
+        ]
+    },
+    {
+        "from": "usbd_device_lock",
+        "to": [
+            "z_impl_k_mutex_lock"
+        ]
+    },
+    {
+        "from": "can_mcan_read_mram",
+        "to": []
+    },
+    {
+        "from": "can_mcan_write_mram",
+        "to": []
+    },
+    {
+        "from": "can_mcan_get_max_filters",
+        "to": []
+    },
+    {
+        "from": "nxp_lpc_mcan_read_reg",
+        "to": []
+    },
+    {
+        "from": "clock_control_get_rate",
+        "to": []
+    },
+    {
+        "from": "INPUTMUX_AttachSignal",
+        "to": []
+    },
+    {
+        "from": "INPUTMUX_Deinit",
+        "to": []
+    },
+    {
+        "from": "RESET_PeripheralReset",
+        "to": [
+            "RESET_ClearPeripheralReset",
+            "RESET_SetPeripheralReset"
+        ]
+    },
+    {
+        "from": "z_impl_k_msgq_put",
+        "to": [
+            "put_msg_in_queue"
+        ]
+    },
+    {
+        "from": "z_impl_k_mutex_init",
+        "to": []
+    },
+    {
+        "from": "notify_queue_locked",
+        "to": [
+            "z_sched_wake"
+        ]
+    },
+    {
+        "from": "k_free",
+        "to": [
+            "k_heap_free"
+        ]
+    },
+    {
+        "from": "__printk_hook_install",
+        "to": []
+    },
+    {
+        "from": "log_process_thread_timer_expiry_fn",
+        "to": [
+            "z_impl_k_sem_give"
+        ]
+    },
+    {
+        "from": "log_format_func_t_get",
+        "to": []
+    },
+    {
+        "from": "z_log_msg_local_claim",
+        "to": [
+            "mpsc_pbuf_claim"
+        ]
+    },
+    {
+        "from": "z_log_msg_pending",
+        "to": [
+            "mpsc_pbuf_is_pending"
+        ]
+    },
+    {
+        "from": "mem_attr_get_regions",
+        "to": []
+    },
+    {
+        "from": "z_arm_cpu_idle_init",
+        "to": []
+    },
+    {
+        "from": "__aeabi_read_tp",
+        "to": []
+    },
+    {
+        "from": "k_work_schedule",
+        "to": [
+            "k_work_schedule_for_queue"
+        ]
+    },
+    {
+        "from": "k_work_reschedule",
+        "to": [
+            "k_work_reschedule_for_queue"
+        ]
+    },
+    {
+        "from": "z_impl_k_sched_current_thread_query",
+        "to": []
+    },
+    {
+        "from": "boot_banner",
+        "to": [
+            "printk"
+        ]
+    },
+    {
+        "from": "format_set",
+        "to": []
+    },
+    {
+        "from": "log_backend_uart_init",
+        "to": []
+    },
+    {
+        "from": "cbputc",
+        "to": [
+            "__indirect_call"
+        ]
+    },
+    {
+        "from": "net_buf_simple_add",
+        "to": []
+    },
+    {
+        "from": "reqtype_is_to_host",
+        "to": []
+    },
+    {
+        "from": "z_log_msg_simple_create_2",
+        "to": [
+            "z_impl_z_log_msg_simple_create_2"
+        ]
+    },
+    {
+        "from": "udc_is_initialized",
+        "to": []
+    },
+    {
+        "from": "udc_is_enabled",
+        "to": []
+    },
+    {
+        "from": "udc_mcux_isr",
+        "to": [
+            "USB_DeviceLpcIp3511IsrFunction"
+        ]
+    },
+    {
+        "from": "nxp_lpc_mcan_write_reg",
+        "to": []
+    },
+    {
+        "from": "mcux_lpc_ctimer_get_value",
+        "to": []
+    },
+    {
+        "from": "mcux_flexcomm_irq_tx_complete",
+        "to": []
+    },
+    {
+        "from": "mcux_flexcomm_isr",
+        "to": []
+    },
+    {
+        "from": "k_is_in_isr",
+        "to": []
+    },
+    {
+        "from": "z_log_msg_simple_create_1",
+        "to": [
+            "z_impl_z_log_msg_simple_create_1"
+        ]
+    },
+    {
+        "from": "chunk_size",
+        "to": []
+    },
+    {
+        "from": "dropped",
+        "to": [
+            "log_output_dropped_process"
+        ]
+    },
+    {
+        "from": "picolibc_put",
+        "to": [
+            "z_impl_zephyr_fputc"
+        ]
+    },
+    {
+        "from": "net_buf_reset",
+        "to": []
+    },
+    {
+        "from": "usbd_bus_speed",
+        "to": []
+    },
+    {
+        "from": "usbd_is_suspended",
+        "to": []
+    },
+    {
+        "from": "usbd_str_desc_get_idx",
+        "to": []
+    },
+    {
+        "from": "usbd_ep_ctrl_data_in_alloc",
+        "to": [
+            "udc_ctrl_data_alloc"
+        ]
+    },
+    {
+        "from": "udc_ep_set_busy",
+        "to": []
+    },
+    {
+        "from": "udc_ep_buf_clear_zlp",
+        "to": []
+    },
+    {
+        "from": "udc_mcux_ep_set_halt",
+        "to": [
+            "udc_mcux_control"
+        ]
+    },
+    {
+        "from": "udc_mcux_ep_disable",
+        "to": [
+            "udc_mcux_control"
+        ]
+    },
+    {
+        "from": "z_log_msg_simple_create_1",
+        "to": [
+            "z_impl_z_log_msg_simple_create_1"
+        ]
+    },
+    {
+        "from": "lpc_gpio_init_1",
+        "to": [
+            "pm_device_driver_init"
+        ]
+    },
+    {
+        "from": "lpc_gpio_init_0",
+        "to": [
+            "pm_device_driver_init"
+        ]
+    },
+    {
+        "from": "OSA_ExitCritical",
+        "to": []
+    },
+    {
+        "from": "CLOCK_AttachClk",
+        "to": [
+            "CLOCK_AttachClk"
+        ]
+    },
+    {
+        "from": "z_SysNmiOnReset",
+        "to": []
+    },
+    {
+        "from": "z_do_kernel_oops",
+        "to": [
+            "z_arm_fatal_error"
+        ]
+    },
+    {
+        "from": "z_log_msg_simple_create_0",
+        "to": [
+            "z_impl_z_log_msg_simple_create_0"
+        ]
+    },
+    {
+        "from": "z_irq_spurious",
+        "to": [
+            "z_arm_fatal_error"
+        ]
+    },
+    {
+        "from": "net_buf_alloc_fixed",
+        "to": [
+            "net_buf_alloc_len"
+        ]
+    },
+    {
+        "from": "z_log_msg_simple_create_0",
+        "to": [
+            "z_impl_z_log_msg_simple_create_0"
+        ]
+    },
+    {
+        "from": "udc_ep_is_busy",
+        "to": []
+    },
+    {
+        "from": "udc_buf_get",
+        "to": [
+            "z_impl_k_queue_get"
+        ]
+    },
+    {
+        "from": "udc_ep_buf_has_zlp",
+        "to": []
+    },
+    {
+        "from": "can_tx_default_cb",
+        "to": [
+            "z_impl_k_sem_give"
+        ]
+    },
+    {
+        "from": "can_mcan_clear_mram",
+        "to": []
+    },
+    {
+        "from": "can_mcan_get_capabilities",
+        "to": []
+    },
+    {
+        "from": "can_mcan_set_state_change_callback",
+        "to": []
+    },
+    {
+        "from": "mcux_flexcomm_irq_callback_set",
+        "to": []
+    },
+    {
+        "from": "CTIMER_GetDefaultConfig",
+        "to": []
+    },
+    {
+        "from": "sys_clock_tick_get_32",
+        "to": [
+            "sys_clock_tick_get"
+        ]
+    },
+    {
+        "from": "z_log_msg_static_create",
+        "to": [
+            "z_impl_z_log_msg_static_create"
+        ]
+    },
+    {
+        "from": "led_tick",
+        "to": [
+            "led_event_enqueue"
+        ]
+    },
+    {
+        "from": "sys_heap_noalign_alloc",
+        "to": [
+            "sys_heap_alloc"
+        ]
+    },
+    {
+        "from": "z_log_notify_drop",
+        "to": [
+            "z_log_dropped"
+        ]
+    },
+    {
+        "from": "arch_coprocessors_disable",
+        "to": []
+    },
+    {
+        "from": "usbd_ep_buf_free",
+        "to": [
+            "udc_ep_buf_free"
+        ]
+    },
+    {
+        "from": "usbd_ep_dequeue",
+        "to": [
+            "udc_ep_dequeue"
+        ]
+    },
+    {
+        "from": "net_buf_add_mem",
+        "to": [
+            "net_buf_simple_add_mem"
+        ]
+    },
+    {
+        "from": "udc_mcux_host_wakeup",
+        "to": []
+    },
+    {
+        "from": "udc_irq_disable_func0",
+        "to": [
+            "arm_irq_disable"
+        ]
+    },
+    {
+        "from": "udc_unlock_internal",
+        "to": [
+            "z_impl_k_mutex_unlock"
+        ]
+    },
+    {
+        "from": "udc_mcux_unlock",
+        "to": [
+            "udc_unlock_internal"
+        ]
+    },
+    {
+        "from": "mcux_lpc_syscon_clock_control_set_subsys_rate",
+        "to": []
+    },
+    {
+        "from": "z_impl_k_thread_name_set",
+        "to": []
+    },
+    {
+        "from": "z_reschedule",
+        "to": [
+            "reschedule"
+        ]
+    },
+    {
+        "from": "__aeabi_idiv0",
+        "to": []
+    },
+    {
+        "from": "arch_printk_char_out",
+        "to": []
+    },
+    {
+        "from": "dummy_timestamp",
+        "to": []
+    },
+    {
+        "from": "z_log_get_tag",
+        "to": []
+    },
+    {
+        "from": "arch_early_memset",
+        "to": [
+            "memset"
+        ]
+    },
+    {
+        "from": "arch_early_memcpy",
+        "to": [
+            "memcpy"
+        ]
+    },
+    {
+        "from": "z_log_msg_simple_create_0",
+        "to": [
+            "z_impl_z_log_msg_simple_create_0"
+        ]
+    },
+    {
+        "from": "k_mutex_unlock",
+        "to": [
+            "z_impl_k_mutex_unlock"
+        ]
+    },
+    {
+        "from": "k_mutex_unlock",
+        "to": [
+            "z_impl_k_mutex_unlock"
+        ]
+    },
+    {
+        "from": "z_log_msg_simple_create_1",
+        "to": [
+            "z_impl_z_log_msg_simple_create_1"
+        ]
+    },
+    {
+        "from": "udc_buf_peek",
+        "to": [
+            "z_impl_k_queue_peek_head"
+        ]
+    },
+    {
+        "from": "udc_buf_put",
+        "to": [
+            "k_queue_append"
+        ]
+    },
+    {
+        "from": "z_log_msg_simple_create_0",
+        "to": [
+            "z_impl_z_log_msg_simple_create_0"
+        ]
+    },
+    {
+        "from": "k_mutex_lock",
+        "to": [
+            "z_impl_k_mutex_lock"
+        ]
+    },
+    {
+        "from": "k_mutex_unlock",
+        "to": [
+            "z_impl_k_mutex_unlock"
+        ]
+    },
+    {
+        "from": "mcux_lpc_syscon_clock_control_off",
+        "to": []
+    },
+    {
+        "from": "mcux_lpc_syscon_clock_control_configure",
+        "to": []
+    },
+    {
+        "from": "mcux_flexcomm_irq_update",
+        "to": []
+    },
+    {
+        "from": "USB_DeviceLpc3511IpRecv",
+        "to": [
+            "USB_DeviceLpc3511IpSend"
+        ]
+    },
+    {
+        "from": "k_thread_name_get",
+        "to": []
+    },
+    {
+        "from": "z_impl_k_uptime_ticks",
+        "to": [
+            "sys_clock_tick_get"
+        ]
+    },
+    {
+        "from": "_OffsetAbsSyms",
+        "to": []
+    },
+    {
+        "from": "_ConfigAbsSyms",
+        "to": []
+    },
+    {
+        "from": "fixed_data_unref",
+        "to": []
+    },
+    {
+        "from": "SystemInitHook",
+        "to": []
+    }
+]

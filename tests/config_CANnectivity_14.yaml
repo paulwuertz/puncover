@@ -1,0 +1,7 @@
+elf_file: /home/paul/git/cannecti/lpcxpresso55s16_1.4/zephyr/zephyr.elf
+gcc-tools-base: /home/paul/zephyr-sdk-1.0.1/gnu/arm-zephyr-eabi/bin/arm-zephyr-eabi-
+src_root: /home/paul/zephyrproject/zephyr
+build_dir: /home/paul/git/cannecti/lpcxpresso55s16_1.4/
+generate-report: false
+non-interactive: true
+report-type: json

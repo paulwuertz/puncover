@@ -4,12 +4,12 @@ import json
 import sys
 from pprint import pprint
 
-if len(sys.argv) != 3:
+if len(sys.argv) != 4:
     print(f"Usage: {sys.argv[0]} callfile1.json callfile2.json")
     sys.exit(1)
 
 verbose = False
-file1, file2 = sys.argv[1], sys.argv[2]
+file1, file2, outfile = sys.argv[1], sys.argv[2], sys.argv[3]
 
 with open(file1, "r", encoding="utf-8") as f:
     data1 = json.load(f)
@@ -40,13 +40,13 @@ for k in map2:
     else:
         diff12 = to_set1.difference(to_set2)
         diff21 = to_set2.difference(to_set1)
-        if len(to_set1) > len(to_set2):
+        if len(to_set1) > len(to_set2) and list(diff12) != ["__indirect_call"]:
             more_calls_in_fn1 += [
                 k
                 + f" has {len(diff12)} (of {len(to_set1) - len(to_set2)}) more calls: "
                 + ",".join(diff12)
             ]
-        elif len(to_set1) < len(to_set2):
+        elif len(to_set1) < len(to_set2) and list(diff21) != ["__indirect_call"]:
             more_calls_in_fn2 += [
                 k
                 + f" has {len(diff21)} (of {len(to_set2) - len(to_set1)}) more calls: "
@@ -100,3 +100,22 @@ print(
 )
 # TODO this is just the two above combined?!
 # print(f"{len(distinct_calls)} or {distinct_calls_percent:.2f}% of functions with distinct calls between both files")
+
+resultf = open(outfile, "w", encoding="utf-8")
+resultf.write('''
+\\begin{table}[H]
+\\resizebox{\\textwidth}{!}{%
+\\begin{tabular}{|l|l|cl|}
+\\hline
+                                      &                   & \\multicolumn{2}{c|}{Call graph extraction tool}              \\\\ \\hline
+Firmware                              &                   & \\multicolumn{1}{l|}{puncover VCG} & puncover ASM             \\\\ \\hline
+''')
+resultf.write(f"""
+\\multirow{{2}}{{*}}{{CANnectivity 1.4 LPC}} & found by both     & \\multicolumn{{2}}{{c|}}{{{len(unchanged)} / {percent_equal:.2f} \%  }}                                     \\\\ \\cline{{2-4}}
+                                      & exclusively found & \\multicolumn{{1}}{{c|}}{{{len(more_calls_in_fn2)}}}          & \\multicolumn{{1}}{{c|}}{{{len(more_calls_in_fn1)}}} \\\\ \\hline
+""")
+resultf.write('''
+\end{tabular}%
+}
+\end{table}
+''')
