@@ -488,10 +488,16 @@ class Collector:
         ci_file_content = ci_file_content.replace('}\n"', '},\n"')
         # add top level objects braces
         ci_file_content = "{" + ci_file_content + "}"
+        ci_file_content = ci_file_content.replace('""', '","')
+        ci_file_content = ci_file_content.replace('" "', '","')
+        ci_file_content = ci_file_content.replace('\\0', '0')
 
-        # From string: use rapidjson.loads
-        ci = kv_decoder(ci_file_content)
-        return ci
+        try:
+            # From string: use rapidjson.loads
+            ci = kv_decoder(ci_file_content)
+            return ci, True
+        except:
+            return ci_file_content, False
 
     def parse_build_dir(self, build_dir, calls_from_build_dir):
         def gen_find(filepat, top):
@@ -523,14 +529,21 @@ class Collector:
             call_edges = []
             call_files = gen_find("*.ci", build_dir)
             ci_file_dump = {}
+            ci_file_dump_error = {}
             for ci_file in call_files:
                 ci_file_content = open(ci_file).read()
                 if True:
                     ci_file_dump[ci_file] = ci_file_content
-                cu_call_data = self.get_ci_edges_and_nodes(ci_file_content)
-                call_edges += cu_call_data["graph"].get("edges", [])
+                cu_call_data, success = self.get_ci_edges_and_nodes(ci_file_content)
+                if success:
+                    call_edges += cu_call_data["graph"].get("edges", [])
+                else:
+                    ci_file_dump_error[ci_file] = cu_call_data
             if ci_file_dump:
-                open("vcg_debug_dump.json", "w").write(json.dumps(ci_file_dump, indent=4))
+                open("vcg_debug_dump.json", "w").write(json.dumps({
+                    "files": ci_file_dump,
+                    "processed_with_errors": ci_file_dump_error
+                }, indent=4))
             unique_calls = set((c["sourcename"], c["targetname"]) for c in call_edges)
             unique_calls_list = sorted(list(unique_calls))
 
@@ -1024,10 +1037,12 @@ class Collector:
     def export_function_calls_to_file(self, export_filename):
         calls = []
         for sym in self.all_functions():
-            symname = sym[NAME]
+            symname = sym[DISPLAY_NAME] if DISPLAY_NAME in sym else sym[NAME]
             fn_calls = []
             for callee in sym.get(CALLEES, []):
-                calleename = callee[NAME]
+                calleename = callee[DISPLAY_NAME] if DISPLAY_NAME in callee else callee[NAME]
+                if calleename == "__indirect_call": # only compare resolved static calls
+                    continue
                 fn_calls += [calleename]
             calls += [{"from": symname, "to": sorted(fn_calls)}]
         print(f"found {len(calls)} function calls to export to")
