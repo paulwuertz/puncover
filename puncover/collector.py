@@ -1038,13 +1038,17 @@ class Collector:
         calls = []
         for sym in self.all_functions():
             symname = sym[DISPLAY_NAME] if DISPLAY_NAME in sym else sym[NAME]
+            symaddr = sym[ADDRESS]
             fn_calls = []
             for callee in sym.get(CALLEES, []):
                 calleename = callee[DISPLAY_NAME] if DISPLAY_NAME in callee else callee[NAME]
-                if calleename == "__indirect_call": # only compare resolved static calls
+                if calleename == "__indirect_call":
+                    # only compare resolved static calls
+                    # __indirect_call also have no address :)
                     continue
-                fn_calls += [calleename]
-            calls += [{"from": symname, "to": sorted(fn_calls)}]
+                calleeaddr = callee[ADDRESS]
+                fn_calls += [{"name": calleename, "addr":calleeaddr}]
+            calls += [{"from": {"name": symname, "addr":symaddr}, "to": sorted(fn_calls, key=lambda fn: fn["addr"])}]
         print(f"found {len(calls)} function calls to export to")
         export_filename = (
             export_filename if ".json" in export_filename else export_filename + ".json"
