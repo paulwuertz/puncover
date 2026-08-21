@@ -69,10 +69,10 @@ if verbose:
     print("\n=== Unchanged ===")
     pprint(unchanged)
 
-print("\n=== Added ===")
+print(f"\n=== Added {len(added)} ===")
 pprint(added)
 
-print("\n=== Removed ===")
+print(f"\n=== Removed {len(removed)} ===")
 pprint(removed)
 
 print("\n=== Different ===")
