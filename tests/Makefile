@@ -29,7 +29,7 @@ libresolar_bms_calls_compare.tex: libresolar_bms_calls_ASM.json libresolar_bms_c
 	../scripts/compare_fn_call_files.py libresolar_bms_calls_ASM.json libresolar_bms_calls_VCG.json libresolar_bms_calls_compare.tex
 	@echo ../scripts/compare_fn_call_files.py libresolar_bms_calls_ASM.json libresolar_bms_calls_VCG.json libresolar_bms_calls_compare.tex
 
-one.tex: CANnectivity_calls_compare.tex prusa_coreone_calls_compare.tex libresolar_bms_calls_compare.tex
+one.tex: CANnectivity_calls_compare.tex libresolar_bms_calls_compare.tex prusa_coreone_calls_compare.tex
 	cat CANnectivity_calls_compare.tex prusa_coreone_calls_compare.tex libresolar_bms_calls_compare.tex > one.tex
 
 # ../scripts/compare_fn_call_files.py /home/paul/git/pexplorer/selfperf/tmp/zephyr_cannectivity_14_gcc_lpc55s16_functions.json CANnectivity_calls_VCG.json CANnectivity_calls_compare_pexVCG.tex
