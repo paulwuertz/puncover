@@ -20,6 +20,11 @@ with open(file2, "r", encoding="utf-8") as f:
 # map all functions by name
 map1 = {obj["from"]["addr"]: obj for obj in data1}
 map2 = {obj["from"]["addr"]: obj for obj in data2}
+map1nrFnCalls = sum([len(obj["to"]) for obj in data1])
+map2nrFnCalls = sum([len(obj["to"]) for obj in data2])
+map1ExclusiveFnCalls = 0
+map2ExclusiveFnCalls = 0
+matchingFnCalls = 0
 
 added = []
 removed = []
@@ -30,29 +35,34 @@ distinct_calls = []
 
 for k in map2:
     if k not in map1:
+        # function is only in the ASM file
         added.append(map2[k])
         continue
     to_set2 = set(obj["addr"] for obj in map2[k]["to"])
     to_set1 = set(obj["addr"] for obj in map1[k]["to"])
-    print(to_set1)
-    if to_set1.intersection(to_set2) == to_set1 == to_set2:
+    fnCallMatch = to_set1.intersection(to_set2)
+    matchingFnCalls += len(fnCallMatch)
+    if fnCallMatch == to_set1 == to_set2:
         unchanged.append(k)
     else:
         diff12 = to_set1.difference(to_set2)
         diff21 = to_set2.difference(to_set1)
-        if len(to_set1) > len(to_set2):
+        map1ExclusiveFnCalls += len(diff12)
+        map2ExclusiveFnCalls += len(diff21)
+        if len(diff12) > 0:
             more_calls_in_fn1 += [
                 map2[k]["from"]["name"]
                 + f" has {len(diff12)} (of {len(to_set1) - len(to_set2)}) more calls: "
                 + ",".join(map2[d]["from"]["name"]+"("+d+")"  for d in diff12)
             ]
-        elif len(to_set1) < len(to_set2):
+        if len(diff21) > 0:
             more_calls_in_fn2 += [
                 map2[k]["from"]["name"]
                 + f" has {len(diff21)} (of {len(to_set2) - len(to_set1)}) more calls: "
                 + ",".join(map2[d]["from"]["name"]+"("+d+")"  for d in diff21)
             ]
-        elif to_set1.symmetric_difference(to_set2):
+        # functions with mismatched fn calls
+        if len(diff12) > 0 and len(diff21) > 0:
             distinct_calls += [
                 map2[k]["from"]["name"]
                 + f" \n\t\tonly in {file1}: "
@@ -79,6 +89,8 @@ print("\n=== Different ===")
 more_f1_equal = 100 * len(more_calls_in_fn1) / max(len(data1), len(data2))
 more_f2_equal = 100 * len(more_calls_in_fn2) / max(len(data1), len(data2))
 distinct_f12 = 100 * len(distinct_calls) / max(len(data1), len(data2))
+matchingFnCalls_perc = 100 * matchingFnCalls / max(map1nrFnCalls, map2nrFnCalls)
+
 print(
     f"{len(more_calls_in_fn1)} or {more_f1_equal:.2f}% of functions with more calls found in {file1}: {'\n\t* '.join(more_calls_in_fn1)}"
 )
@@ -108,19 +120,20 @@ print(f"{len(distinct_calls)} or {distinct_calls_percent:.2f}% of functions with
 
 resultf = open(outfile, "w", encoding="utf-8")
 resultf.write('''
-\\begin{table}[H]
-\\resizebox{\\textwidth}{!}{%
-\\begin{tabular}{|l|l|cl|}
+\\begin{table}[h!]
+\\begin{tabularx}{0.5\\textwidth}{|l|X|X|}
 \\hline
-                                      &                   & \\multicolumn{2}{c|}{Call graph extraction tool}              \\\\ \\hline
-Firmware                              &                   & \\multicolumn{1}{l|}{puncover VCG} & puncover ASM             \\\\ \\hline
+\\multicolumn{3}{|c|}{ ''' + file1.split("_calls")[0].replace("_", " ") + ''' Firmware }  \\\\ \\hline
+Call graph extraction method & VCG & ASM             \\\\ \\hline
 ''')
 resultf.write(f"""
-\\multirow{{2}}{{*}}{{CANnectivity 1.4 LPC}} & found by both     & \\multicolumn{{2}}{{c|}}{{{len(unchanged)} / {percent_equal:.2f} \%  }}                                     \\\\ \\cline{{2-4}}
-                                      & exclusively found & \\multicolumn{{1}}{{c|}}{{{len(more_calls_in_fn2)}}}          & \\multicolumn{{1}}{{c|}}{{{len(more_calls_in_fn1)}}} \\\\ \\hline
+\# functions found     & {len(map1)} & {len(map2)}          \\\\ \\hline
+\# functions with exactly matching calls     & \\multicolumn{{2}}{{c|}}{{{len(unchanged)} ({percent_equal:.2f}\%)  }}                           \\\\ \\hline
+\# function calls found    & {map1nrFnCalls} & {map2nrFnCalls}          \\\\ \\hline
+\# exclusive function calls      & {map1ExclusiveFnCalls} & {map2ExclusiveFnCalls}          \\\\ \\hline
+\# matching function calls      & \\multicolumn{{2}}{{c|}}{{{matchingFnCalls} ({matchingFnCalls_perc:.2f}\%)  }}                           \\\\ \\hline
 """)
 resultf.write('''
-\end{tabular}%
-}
+\end{tabularx}%
 \end{table}
 ''')
