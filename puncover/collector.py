@@ -5,7 +5,7 @@ import pathlib
 import re
 import sys
 
-import rapidjson
+from puncover.gcc_vcg_parser import VCG_Parser, FunctionCalleeEntry
 
 NAME = "name"
 DISPLAY_NAME = "display_name"
@@ -414,91 +414,6 @@ class Collector:
 
         self.elf_mtime = os.path.getmtime(elf_file)
 
-    def get_ci_edges_and_nodes(self, ci_file_content):
-        """
-        TODO: Maybe a proper VCG parser would be better.
-        This came out of beeing happy, that 30 lines convert VCG to json.
-        Now it is a 80 line code wart...
-
-        Using rapidjson was for accepting trailing commas.
-        The mess of a decoder was to unit repeated edge and node keys...
-        """
-
-        def has_edges_or_nodes(data):
-            nr_edges = sum([1 if d[0] == "edge" else 0 for d in data])
-            nr_nodes = sum([1 if d[0] == "node" else 0 for d in data])
-            return nr_edges != 0 or nr_nodes != 0
-
-        def extract_edges_and_nodes(data):
-            new_data = {}
-            edges = []
-            nodes = []
-            for d in data:
-                if d[0] == "edge":
-                    edges += [d[1]]
-                elif d[0] == "node":
-                    nodes += [d[1]]
-                else:
-                    new_data[d[0]] = d[1]
-            # add grouped data
-            new_data["edges"] = edges
-            new_data["nodes"] = nodes
-            return new_data
-
-        class KVPairsDecoder(rapidjson.Decoder):
-            def start_object(self, *args, **kwargs):
-                return []
-
-            def end_object(self, data, *args, **kwargs):
-                if has_edges_or_nodes(data):
-                    return extract_edges_and_nodes(data)
-                elif isinstance(data, list):
-                    return {t[0]: t[1] for t in data}
-                else:
-                    return data
-
-        kv_decoder = KVPairsDecoder(parse_mode=rapidjson.PM_TRAILING_COMMAS)
-
-        unquouted_keys = [
-            "graph",
-            "title",
-            "edge",
-            "sourcename",
-            "node",
-            "targetname",
-            "shape",
-            "label",
-        ]
-        unquouted_values = [" ellipse "]  # the only exception / symbol?
-
-        # add "s around keys
-        for attr in unquouted_keys:
-            attr_unquotes = attr + ":"
-            attr_quotes = '"' + attr + '":'
-            ci_file_content = ci_file_content.replace(attr_unquotes, attr_quotes)
-            # sometimes there is an extra space in the middle -.-
-            attr_unquotes = attr + " :"
-            ci_file_content = ci_file_content.replace(attr_unquotes, attr_quotes)
-        ci_file_content = ci_file_content.replace(
-            unquouted_values[0], '"' + unquouted_values[0] + '"'
-        )
-        # add commas after closing quotes and braces
-        ci_file_content = re.sub(r'(?<=[A-Za-z0-9>])"(?!:)', '",', ci_file_content)
-        ci_file_content = ci_file_content.replace('}"', '},"')
-        ci_file_content = ci_file_content.replace('}\n"', '},\n"')
-        # add top level objects braces
-        ci_file_content = "{" + ci_file_content + "}"
-        ci_file_content = ci_file_content.replace('""', '","')
-        ci_file_content = ci_file_content.replace('" "', '","')
-        ci_file_content = ci_file_content.replace("\\0", "0")
-
-        try:
-            # From string: use rapidjson.loads
-            ci = kv_decoder(ci_file_content)
-            return ci, True
-        except Exception:
-            return ci_file_content, False
-
     def parse_build_dir(self, build_dir, calls_from_build_dir):
         def gen_find(filepat, top):
             for path, dirlist, filelist in os.walk(top):
@@ -526,27 +441,34 @@ class Collector:
                 self.parse_stack_usage_line(line)
             print("parsing callgraph starting at %s" % build_dir)
 
-            call_edges = []
+            fn_callee_map = {}
             call_files = gen_find("*.ci", build_dir)
-            ci_file_dump = {}
-            ci_file_dump_error = {}
+            vcgp = VCG_Parser()
             for ci_file in call_files:
                 ci_file_content = open(ci_file).read()
-                if True:
-                    ci_file_dump[ci_file] = ci_file_content
-                cu_call_data, success = self.get_ci_edges_and_nodes(ci_file_content)
-                if success:
-                    call_edges += cu_call_data["graph"].get("edges", [])
-                else:
-                    ci_file_dump_error[ci_file] = cu_call_data
-            if ci_file_dump:
-                open("vcg_debug_dump.json", "w").write(
-                    json.dumps(
-                        {"files": ci_file_dump, "processed_with_errors": ci_file_dump_error},
-                        indent=4,
-                    )
-                )
-            unique_calls = set((c["sourcename"], c["targetname"]) for c in call_edges)
+                vcg_graph = vcgp.parse_vcg_graph(ci_file_content)
+
+                for n in vcg_graph.nodes:
+                    fn_name = n.label.function_name if "function_name" in n.label else n.title
+                    if fn_name not in fn_callee_map:
+                        fn_callee_map[fn_name] = FunctionCalleeEntry(
+                            title=fn_name,
+                            node=n,
+                            edges=[],
+                        )
+                    elif "stack_size" not in fn_callee_map[fn_name].node.label and \
+                      "stack_size" in n.label:
+                        print("adding stacksize")
+                        fn_callee_map[fn_name].label = n.label
+
+                for e in vcg_graph.edges:
+                    fn_name = e.sourcename
+                    if fn_name in fn_callee_map:
+                        fn_callee_map[fn_name].edges += [e]
+                    else:
+                        print("err node ", n, " has a call edge but no node")
+
+            unique_calls = set((c.sourcename, c.targetname) for c in call_edges)
             unique_calls_list = sorted(list(unique_calls))
 
             if calls_from_build_dir:

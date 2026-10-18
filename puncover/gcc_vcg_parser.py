@@ -31,6 +31,14 @@ class VCG_Graph(BaseModel):
     edges: list[VCG_Edge]
 
 
+class FunctionCalleeEntry(BaseModel):
+    title: str
+    node: VCG_Node
+    node_declaration: str | None | MISSING = MISSING
+    node_definition: str | None | MISSING = MISSING
+    edges: list[VCG_Edge]
+
+
 class VCG_Parser:
     su_marker_pattern = r"(\d+)\s+bytes\s+\((.*?)\)"
 
