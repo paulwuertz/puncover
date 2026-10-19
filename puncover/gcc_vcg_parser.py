@@ -63,8 +63,10 @@ def deepest_call_tree(
         callee_name = call_edge.targetname
         if callee_name not in fn_callee_map and len(fn_target_name_and_path) == 2:
             callee_name = fn_target_name_and_path[1]
-        is_callee_node_missing = callee_name not in fn_callee_map
-        if is_callee_node_missing:
+        if "." in callee_name:  # removes .constprop.0, .isra, ...
+            split_dots = callee_name.split(".")
+            callee_name = split_dots[0]
+        if callee_name not in fn_callee_map:
             continue
         callee_node = fn_callee_map[callee_name]
         if callee_node not in visited:

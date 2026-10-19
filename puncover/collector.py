@@ -455,6 +455,9 @@ class Collector:
                         if "function_name" in n.label.model_fields_set
                         else n.title
                     )
+                    if "." in fn_name:  # removes .constprop.0, .isra, ...
+                        split_dots = fn_name.split(".")
+                        fn_name = split_dots[0]
                     is_symbol_mapped = fn_name in fn_callee_map
                     is_stack_size_defined = is_symbol_mapped and isinstance(
                         fn_callee_map[fn_name].node.label.stack_size, int
@@ -467,84 +470,30 @@ class Collector:
                             edges=[],
                             visited=False,
                         )
-                    elif is_stack_size_defined and isinstance(n.label.stack_size, int):
-                        print("adding stacksize")
+                    elif not is_stack_size_defined and isinstance(n.label.stack_size, int):
                         fn_callee_map[fn_name].node.label = n.label
                     else:
-                        # TODO add definition or declaration source path
-                        print("does this ever happen?")
+                        # TODO add definition or declaration source path?!
+                        pass
 
-            matched_src = 0
             err_unmatched_edges = set()
             for e in all_edges:
-                fn_source_name = e.sourcename
-                fn_source_name_and_path = fn_source_name.split(":", 1)
-                if fn_source_name in fn_callee_map:
-                    fn_callee_map[fn_source_name].edges += [e]
-                    matched_src += 1
-                elif (
-                    len(fn_source_name_and_path) == 2
-                    and fn_source_name_and_path[1] in fn_callee_map
-                ):
-                    matched_src += 1
-                    fn_source_name = fn_source_name_and_path[1]
-                    fn_callee_map[fn_source_name].edges += [e]
+                fn_name = e.sourcename
+                fn_name_and_path = fn_name.split(":", 1)
+                if fn_name not in fn_callee_map and len(fn_name_and_path) == 2:
+                    fn_name = fn_name_and_path[1]
+                if "." in fn_name:  # removes .constprop.0, .isra, ...
+                    split_dots = fn_name.split(".")
+                    fn_name = split_dots[0]
+                if fn_name in fn_callee_map:
+                    fn_callee_map[fn_name].edges += [e]
                 else:
                     print("err #", len(err_unmatched_edges), " no node matches call edge:", e)
-                    err_unmatched_edges.add(fn_source_name)
+                    err_unmatched_edges.add(fn_name)
 
             fn_node = fn_callee_map["bg_thread_main"]
             r = deepest_call_tree(fn_node, fn_callee_map)
             print("bg_thread_main", r)
-            # unique_calls = set((c.sourcename, c.targetname) for c in call_edges)
-            # unique_calls_list = sorted(list(unique_calls))
-
-            # if calls_from_build_dir:
-            #     warning_cnt = 0
-            #     for call in unique_calls_list:
-            #         call_from, call_to = call
-            #         call_from_file_name, call_from_function_name = (
-            #             call_from.split(":", 2) if ":" in call_from else ("", call_from)
-            #         )
-            #         call_to_file_name, call_to_function_name = (
-            #             call_to.split(":", 2) if ":" in call_to else ("", call_to)
-            #         )
-            #         # TODO is there a general schema to what GCC adds to the names?
-            #         # can the name left of the first dot be used?
-            #         call_from_function_name = (
-            #             call_from_function_name.replace(".isra", "")
-            #             .replace(".constprop", "")
-            #             .replace(".part", "")
-            #             .replace(".0", "")
-            #         )
-            #         call_to_function_name = (
-            #             call_to_function_name.replace(".isra", "")
-            #             .replace(".constprop", "")
-            #             .replace(".part", "")
-            #             .replace(".0", "")
-            #         )
-            #         # find symbols of the call
-            #         from_sym = self.function_by_name(call_from_function_name)
-            #         to_sym = self.function_by_name(call_to_function_name)
-            #         if from_sym and to_sym:
-            #             self.add_function_call(from_sym, to_sym)
-            #         elif from_sym and call_to_function_name == GCC_INDIRECT_CALL_LABEL:
-            #             self.add_unresolved_indirect_call(from_sym)
-            #         else:
-            #             print("WARNING: Did not find:")
-            #             warning_cnt += 1
-            #             if not from_sym:
-            #                 print(f"\t- from {call_from_function_name}")
-            #             if not to_sym:
-            #                 print(f"\t- to {call_to_function_name}")
-            #     print(
-            #         "len(call_edges)",
-            #         len(call_edges),
-            #         "len unique_calls",
-            #         len(unique_calls_list),
-            #         "warning not found:",
-            #         warning_cnt,
-            #     )
 
     def sorted_by_size(self, symbols):
         return sorted(symbols, key=lambda k: k.get("size", 0), reverse=True)
