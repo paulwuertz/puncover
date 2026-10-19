@@ -3,6 +3,8 @@ import re
 from pydantic import BaseModel
 from pydantic.experimental.missing_sentinel import MISSING
 
+NO_WORST_STACK_SIZE_YET = -1
+
 
 # TODO add dynamic allocation parsing?
 class VCG_Label(BaseModel):
@@ -37,6 +39,43 @@ class FunctionCalleeEntry(BaseModel):
     node_declaration: str | None | MISSING = MISSING
     node_definition: str | None | MISSING = MISSING
     edges: list[VCG_Edge]
+    worst_stack_use: int
+    visited: bool
+
+
+class FunctionCallTree(BaseModel):
+    root: FunctionCalleeEntry
+    node_declaration: str | None | MISSING = MISSING
+    node_definition: str | None | MISSING = MISSING
+    edges: list[VCG_Edge]
+
+
+def deepest_call_tree(
+    f: FunctionCalleeEntry, fn_callee_map: dict[str, FunctionCalleeEntry], visited=None
+):
+    if f.worst_stack_use != NO_WORST_STACK_SIZE_YET:
+        return (f.worst_stack_use, [])
+    visited = [f] + (visited if visited else [])
+    result = (0, [])
+
+    for call_edge in f.edges:
+        fn_target_name_and_path = call_edge.targetname.split(":", 1)
+        callee_name = call_edge.targetname
+        if callee_name not in fn_callee_map and len(fn_target_name_and_path) == 2:
+            callee_name = fn_target_name_and_path[1]
+        is_callee_node_missing = callee_name not in fn_callee_map
+        if is_callee_node_missing:
+            continue
+        callee_node = fn_callee_map[callee_name]
+        if callee_node not in visited:
+            candidate = deepest_call_tree(callee_node, fn_callee_map, visited)
+            if candidate[0] > result[0]:
+                result = candidate
+
+    stack_size = f.node.label.stack_size if isinstance(f.node.label.stack_size, int) else 0
+    result = (result[0] + stack_size, [f] + result[1])
+    f.worst_stack_use = stack_size
+    return result
 
 
 class VCG_Parser:
