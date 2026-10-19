@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from pydantic.experimental.missing_sentinel import MISSING
 
 NO_WORST_STACK_SIZE_YET = -1
+GCC_INDIRECT_CALL_LABEL = "__indirect_call"
 
 
 # TODO add dynamic allocation parsing?
@@ -82,9 +83,6 @@ def deepest_call_tree(
 
 class VCG_Parser:
     su_marker_pattern = r"(\d+)\s+bytes\s+\((.*?)\)"
-
-    # def __init__(self):
-    #     pass
 
     def parse_vcg_label_attributes(self, label_str: str):
         vcg_label_lines = label_str.split("\\n")
@@ -185,6 +183,3 @@ class VCG_Parser:
 
         graph = VCG_Graph(title=title, edges=edges, nodes=nodes)
         return graph
-
-    def parse_vcg_file(self, file_name):
-        pass

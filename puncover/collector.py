@@ -121,14 +121,6 @@ class Collector:
         int_addr = int(addr, 16)
         return self.symbols.get(int_addr, None)
 
-    def function_by_name(self, name):
-        matched_function = filter(
-            lambda sym: sym[NAME] == name and sym.get(TYPE, None) == TYPE_FUNCTION,
-            self.symbols.values(),
-        )
-        # TODO what if 2 fn's have the same name?
-        return next(matched_function, None)
-
     def add_symbol(
         self,
         name,
@@ -942,7 +934,7 @@ class Collector:
             fn_calls = []
             for callee in sym.get(CALLEES, []):
                 calleename = callee[DISPLAY_NAME] if DISPLAY_NAME in callee else callee[NAME]
-                if calleename == "__indirect_call":  # only compare resolved static calls
+                if calleename == GCC_INDIRECT_CALL_LABEL:  # only compare resolved static calls
                     continue
                 fn_calls += [calleename]
             calls += [{"from": symname, "to": sorted(fn_calls)}]
